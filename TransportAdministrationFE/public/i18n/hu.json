@@ -1,1 +1,44 @@
-{}
+{
+  "common": {
+    "next": "Tovább"
+  },
+  "header": {
+    "appName": "Transport Administration"
+  },
+  "login": {
+    "title": "Bejelentkezés",
+    "username": "Felhasználónév",
+    "password": "Jelszó"
+  },
+  "home": {
+    "welcome": "Üdvözöljük, {{name}}"
+  },
+  "administrations": {
+    "vehicles": {
+      "manage": "Járművek kezelése",
+      "detail1": "Új járművek vásárlása",
+      "detail2": "Meglévő járművek eladása"
+    },
+    "trips": {
+      "manage": "Fuvarok kezelése",
+      "detail1": "Új fuvarok készítése",
+      "detail2": "Meglévő fuvar módosítása",
+      "detail3": "Meglévő fuvar törlése"
+    },
+    "shops": {
+      "manage": "Boltok kezelése",
+      "detail1": "Új bolt hozzáadása",
+      "detail2": "Meglévő bolt eltávolítása"
+    },
+    "sites": {
+      "manage": "Telephelyek kezelése",
+      "detail1": "Új telephely hozzáadása",
+      "detail2": "Meglévő telephely törlése"
+    },
+    "products": {
+      "manage": "Áruk kezelése",
+      "detail1": "Új áru felvétele",
+      "detail2": "Meglévő áru törlése"
+    }
+  }
+}
