@@ -15,28 +15,28 @@ const HomePage = () => {
       </Typography>
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
         <HomeNavigationCard
-          title={t('administrations.vehicles.manage')}
-          details={[t('administrations.vehicles.detail1'), t('administrations.vehicles.detail2')]}
-          to={ROUTES.VEHICLES()}
+          title={t('administrations.trucks.manage')}
+          details={[t('administrations.trucks.detail1'), t('administrations.trucks.detail2')]}
+          to={ROUTES.TRUCKS()}
         />
         <HomeNavigationCard
-          title={t('administrations.trips.manage')}
+          title={t('administrations.transports.manage')}
           details={[
-            t('administrations.trips.detail1'),
-            t('administrations.trips.detail2'),
-            t('administrations.trips.detail3'),
+            t('administrations.transports.detail1'),
+            t('administrations.transports.detail2'),
+            t('administrations.transports.detail3'),
           ]}
-          to={ROUTES.TRIPS()}
+          to={ROUTES.TRANSPORTS()}
         />
         <HomeNavigationCard
-          title={t('administrations.products.manage')}
-          details={[t('administrations.products.detail1'), t('administrations.products.detail2')]}
-          to={ROUTES.PRODUCTS()}
+          title={t('administrations.cargos.manage')}
+          details={[t('administrations.cargos.detail1'), t('administrations.cargos.detail2')]}
+          to={ROUTES.CARGOS()}
         />
         <HomeNavigationCard
-          title={t('administrations.shops.manage')}
-          details={[t('administrations.shops.detail1'), t('administrations.shops.detail2')]}
-          to={ROUTES.SHOPS()}
+          title={t('administrations.stores.manage')}
+          details={[t('administrations.stores.detail1'), t('administrations.stores.detail2')]}
+          to={ROUTES.STORES()}
         />
         <HomeNavigationCard
           title={t('administrations.sites.manage')}

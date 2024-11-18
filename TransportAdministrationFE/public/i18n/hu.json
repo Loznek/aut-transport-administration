@@ -1,6 +1,7 @@
 {
   "common": {
-    "next": "Tovább"
+    "next": "Tovább",
+    "save": "Mentés"
   },
   "header": {
     "appName": "Transport Administration"
@@ -13,19 +14,21 @@
   "home": {
     "welcome": "Üdvözöljük, {{name}}"
   },
+  "exception": "Váratlan hiba történt...",
+  "addNew": "Új hozzáadása",
   "administrations": {
-    "vehicles": {
+    "trucks": {
       "manage": "Járművek kezelése",
       "detail1": "Új járművek vásárlása",
       "detail2": "Meglévő járművek eladása"
     },
-    "trips": {
+    "transports": {
       "manage": "Fuvarok kezelése",
       "detail1": "Új fuvarok készítése",
       "detail2": "Meglévő fuvar módosítása",
       "detail3": "Meglévő fuvar törlése"
     },
-    "shops": {
+    "stores": {
       "manage": "Boltok kezelése",
       "detail1": "Új bolt hozzáadása",
       "detail2": "Meglévő bolt eltávolítása"
@@ -35,10 +38,14 @@
       "detail1": "Új telephely hozzáadása",
       "detail2": "Meglévő telephely törlése"
     },
-    "products": {
+    "cargos": {
       "manage": "Áruk kezelése",
       "detail1": "Új áru felvétele",
       "detail2": "Meglévő áru törlése"
     }
+  },
+  "sites": {
+    "noSites": "Nem található telephely",
+    "address": "Cím"
   }
 }

@@ -1,9 +1,16 @@
+type RouteWithIdParam = ':id' | 'new' | number;
+
 export const ROUTES = {
   HOME: () => '/',
   LOGIN: () => '/login',
-  VEHICLES: () => '/vehicles',
-  TRIPS: () => '/trips',
-  SHOPS: () => '/shops',
+  TRUCKS: () => '/trucks',
+  TRUCKS_EDIT: (id: RouteWithIdParam) => `/trucks/${id}`,
+  TRANSPORTS: () => '/transports',
+  TRANSPORTS_EDIT: (id: RouteWithIdParam) => `/transports/${id}`,
+  STORES: () => '/stores',
+  STORES_EDIT: (id: RouteWithIdParam) => `/stores/${id}`,
   SITES: () => '/sites',
-  PRODUCTS: () => '/products',
+  SITES_EDIT: (id: RouteWithIdParam) => `/sites/${id}`,
+  CARGOS: () => '/cargos',
+  CARGOS_EDIT: (id: RouteWithIdParam) => `/cargos/${id}`,
 };

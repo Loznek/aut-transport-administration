@@ -5,6 +5,8 @@ import Layout from './layout/app-layout/Layout.tsx';
 import LoginPage from './auth/login/LoginPage.tsx';
 import AdministrationLayout from './layout/administration-layout/AdministrationLayout.tsx';
 import AuthGuard from './auth/AuthGuard.tsx';
+import SitesPage from './sites/SitesPage.tsx';
+import SiteEditPage from './sites/SiteEditPage.tsx';
 
 const AppRoutes = () => {
   return (
@@ -14,11 +16,12 @@ const AppRoutes = () => {
         <Route element={<AuthGuard />}>
           <Route path={ROUTES.HOME()} element={<HomePage />} />
           <Route element={<AdministrationLayout />}>
-            <Route path={ROUTES.VEHICLES()} />
-            <Route path={ROUTES.TRIPS()} />
-            <Route path={ROUTES.PRODUCTS()} />
-            <Route path={ROUTES.SHOPS()} />
-            <Route path={ROUTES.SITES()} />
+            <Route path={ROUTES.TRUCKS()} />
+            <Route path={ROUTES.TRANSPORTS()} />
+            <Route path={ROUTES.CARGOS()} />
+            <Route path={ROUTES.STORES()} />
+            <Route path={ROUTES.SITES()} element={<SitesPage />} />
+            <Route path={ROUTES.SITES_EDIT(':id')} element={<SiteEditPage />} />
           </Route>
         </Route>
       </Route>

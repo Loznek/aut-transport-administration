@@ -37,36 +37,36 @@ const NavigatorMenu = ({ onNavigate }: NavigatorMenuProps) => {
 
   return (
     <MenuList>
-      <MenuItem onClick={handleNavigate(ROUTES.VEHICLES())} selected={getIsSelectedRoute(ROUTES.VEHICLES())}>
+      <MenuItem onClick={handleNavigate(ROUTES.TRUCKS())} selected={getIsSelectedRoute(ROUTES.TRUCKS())}>
         <ListItemIcon>
           <LocalShippingIcon />
         </ListItemIcon>
         <ListItemText>
-          <Typography>{t('administrations.vehicles.manage')}</Typography>
+          <Typography>{t('administrations.trucks.manage')}</Typography>
         </ListItemText>
       </MenuItem>
-      <MenuItem onClick={handleNavigate(ROUTES.TRIPS())} selected={getIsSelectedRoute(ROUTES.TRIPS())}>
+      <MenuItem onClick={handleNavigate(ROUTES.TRANSPORTS())} selected={getIsSelectedRoute(ROUTES.TRANSPORTS())}>
         <ListItemIcon>
           <RouteIcon />
         </ListItemIcon>
         <ListItemText>
-          <Typography>{t('administrations.trips.manage')}</Typography>
+          <Typography>{t('administrations.transports.manage')}</Typography>
         </ListItemText>
       </MenuItem>
-      <MenuItem onClick={handleNavigate(ROUTES.PRODUCTS())} selected={getIsSelectedRoute(ROUTES.PRODUCTS())}>
+      <MenuItem onClick={handleNavigate(ROUTES.CARGOS())} selected={getIsSelectedRoute(ROUTES.CARGOS())}>
         <ListItemIcon>
           <CategoryIcon />
         </ListItemIcon>
         <ListItemText>
-          <Typography>{t('administrations.products.manage')}</Typography>
+          <Typography>{t('administrations.cargos.manage')}</Typography>
         </ListItemText>
       </MenuItem>
-      <MenuItem onClick={handleNavigate(ROUTES.SHOPS())} selected={getIsSelectedRoute(ROUTES.SHOPS())}>
+      <MenuItem onClick={handleNavigate(ROUTES.STORES())} selected={getIsSelectedRoute(ROUTES.STORES())}>
         <ListItemIcon>
           <LocalGroceryStoreIcon />
         </ListItemIcon>
         <ListItemText>
-          <Typography>{t('administrations.shops.manage')}</Typography>
+          <Typography>{t('administrations.stores.manage')}</Typography>
         </ListItemText>
       </MenuItem>
       <MenuItem onClick={handleNavigate(ROUTES.SITES())} selected={getIsSelectedRoute(ROUTES.SITES())}>
