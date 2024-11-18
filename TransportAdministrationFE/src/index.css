@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    background: url("./background_truck.jpg");
+    background: url("/background_truck.jpg");
     background-position: bottom;
     background-repeat: no-repeat;
     background-size: cover;
