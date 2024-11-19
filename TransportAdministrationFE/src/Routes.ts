@@ -1,4 +1,4 @@
-type RouteWithIdParam = ':id' | 'new' | number;
+type RouteWithIdParam = ':id' | string;
 
 export const ROUTES = {
   HOME: () => '/',

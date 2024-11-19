@@ -1,5 +1,5 @@
 interface CargoDto {
-  id: number;
+  id: string;
   name: string;
   volume: number;
   weight: number;

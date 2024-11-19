@@ -1,8 +1,7 @@
-interface TruckDto {
-  id: string;
+interface TruckFormModel {
   type: string;
   volumeCapacity: number;
   weightCapacity: number;
 }
 
-export default TruckDto;
+export default TruckFormModel;

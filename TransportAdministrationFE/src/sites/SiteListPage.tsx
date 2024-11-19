@@ -1,4 +1,4 @@
-import useGetSites from './queries/use-get-sites.ts';
+import useGetSiteList from './queries/use-get-site-list.ts';
 import LoadingSection from '../components/loading-section/LoadingSection.tsx';
 import ErrorSection from '../components/error-section/ErrorSection.tsx';
 import { Box, List, ListItem, Button, Typography, Divider, IconButton } from '@mui/material';
@@ -7,21 +7,28 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../Routes.ts';
 import { Fragment } from 'react';
+import useDeleteSiteItem from './queries/use-delete-site-item.ts';
+import DeleteIconButtonWithDialog from '../components/delete-icon-button-with-dialog/DeleteIconButtonWithDialog.tsx';
 
-const SitesPage = () => {
+const SiteListPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { data, isLoading, isError } = useGetSites();
+  const { data, isFetching, isError } = useGetSiteList();
+  const { mutateAsync: deleteSiteItem, isPending: isDeleteSiteItemPending } = useDeleteSiteItem();
 
   const handleAddNew = () => {
     navigate(ROUTES.SITES_EDIT('new'));
   };
 
-  const handleEdit = (id: number) => () => {
+  const handleEdit = (id: string) => () => {
     navigate(ROUTES.SITES_EDIT(id));
   };
 
-  if (isLoading) {
+  const handleDeleteSiteItem = (id: string) => async () => {
+    await deleteSiteItem(id);
+  };
+
+  if (isFetching) {
     return <LoadingSection />;
   }
 
@@ -43,9 +50,17 @@ const SitesPage = () => {
               {index !== 0 && <Divider />}
               <ListItem
                 secondaryAction={
-                  <IconButton edge="end" onClick={handleEdit(site.id)}>
-                    <EditIcon />
-                  </IconButton>
+                  <Box sx={{ display: 'flex', gap: 1 }}>
+                    <IconButton onClick={handleEdit(site.id)}>
+                      <EditIcon />
+                    </IconButton>
+                    <DeleteIconButtonWithDialog
+                      onDelete={handleDeleteSiteItem(site.id)}
+                      dialogTitle={t('sites.confirmDeleteTitle')}
+                      dialogDescription={site.address}
+                      isLoading={isDeleteSiteItemPending}
+                    />
+                  </Box>
                 }
               >
                 {site.address}
@@ -62,4 +77,4 @@ const SitesPage = () => {
   );
 };
 
-export default SitesPage;
+export default SiteListPage;

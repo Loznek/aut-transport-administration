@@ -13,7 +13,23 @@ server.use(jsonServer.bodyParser);
 
 const lowdb = router.db;
 
-server.get('/api/vehicles', (req, res) => {
+server.get('/api/trucks', (req, res) => {
+  res.send(lowdb.get('getTrucks'));
+});
+
+server.get('/api/trucks/:id', (req, res) => {
+  res.send(lowdb.get('getTruckItem'));
+});
+
+server.put('/api/trucks/new', (req, res) => {
+  res.send();
+});
+
+server.put('/api/trucks/:id', (req, res) => {
+  res.send();
+});
+
+server.delete('/api/trucks/:id', (req, res) => {
   res.send();
 });
 
@@ -30,6 +46,28 @@ server.put('/api/sites/new', (req, res) => {
 });
 
 server.put('/api/sites/:id', (req, res) => {
+  res.send();
+});
+server.delete('/api/sites/:id', (req, res) => {
+  res.send();
+});
+
+server.get('/api/stores', (req, res) => {
+  res.send(lowdb.get('getStores'));
+});
+
+server.get('/api/stores/:id', (req, res) => {
+  res.send(lowdb.get('getStoreItem'));
+});
+
+server.put('/api/stores/new', (req, res) => {
+  res.send();
+});
+
+server.put('/api/stores/:id', (req, res) => {
+  res.send();
+});
+server.delete('/api/stores/:id', (req, res) => {
   res.send();
 });
 

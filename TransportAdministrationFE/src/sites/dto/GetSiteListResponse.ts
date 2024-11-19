@@ -1,7 +1,7 @@
 import SiteDto from '../../core/dto/SiteDto.ts';
 
-interface GetSitesResponse {
+interface GetSiteListResponse {
   sites: SiteDto[];
 }
 
-export default GetSitesResponse;
+export default GetSiteListResponse;

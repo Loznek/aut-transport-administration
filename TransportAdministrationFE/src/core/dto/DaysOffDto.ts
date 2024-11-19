@@ -1,7 +1,7 @@
 import DriverDto from './DriverDto.ts';
 
 interface DaysOffDto {
-  id: number;
+  id: string;
   driver: DriverDto;
   startTime: string;
   endTime: string;

@@ -5,8 +5,12 @@ import Layout from './layout/app-layout/Layout.tsx';
 import LoginPage from './auth/login/LoginPage.tsx';
 import AdministrationLayout from './layout/administration-layout/AdministrationLayout.tsx';
 import AuthGuard from './auth/AuthGuard.tsx';
-import SitesPage from './sites/SitesPage.tsx';
-import SiteEditPage from './sites/SiteEditPage.tsx';
+import SiteListPage from './sites/SiteListPage.tsx';
+import SiteItemPage from './sites/SiteItemPage.tsx';
+import TruckListPage from './trucks/TruckListPage.tsx';
+import TruckItemPage from './trucks/TruckItemPage.tsx';
+import StoreListPage from './store/StoreListPage.tsx';
+import StoreItemPage from './store/StoreItemPage.tsx';
 
 const AppRoutes = () => {
   return (
@@ -16,12 +20,14 @@ const AppRoutes = () => {
         <Route element={<AuthGuard />}>
           <Route path={ROUTES.HOME()} element={<HomePage />} />
           <Route element={<AdministrationLayout />}>
-            <Route path={ROUTES.TRUCKS()} />
+            <Route path={ROUTES.TRUCKS()} element={<TruckListPage />} />
+            <Route path={ROUTES.TRUCKS_EDIT(':id')} element={<TruckItemPage />} />
             <Route path={ROUTES.TRANSPORTS()} />
             <Route path={ROUTES.CARGOS()} />
-            <Route path={ROUTES.STORES()} />
-            <Route path={ROUTES.SITES()} element={<SitesPage />} />
-            <Route path={ROUTES.SITES_EDIT(':id')} element={<SiteEditPage />} />
+            <Route path={ROUTES.STORES()} element={<StoreListPage />} />
+            <Route path={ROUTES.STORES_EDIT(':id')} element={<StoreItemPage />} />
+            <Route path={ROUTES.SITES()} element={<SiteListPage />} />
+            <Route path={ROUTES.SITES_EDIT(':id')} element={<SiteItemPage />} />
           </Route>
         </Route>
       </Route>

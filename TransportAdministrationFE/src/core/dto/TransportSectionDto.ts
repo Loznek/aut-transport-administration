@@ -3,7 +3,7 @@ import DriverDto from './DriverDto.ts';
 import TransportDto from './TransportDto.ts';
 
 interface TransportSectionDto {
-  id: number;
+  id: string;
   startSite: SiteDto;
   destinationSite: SiteDto;
   startTime: string;

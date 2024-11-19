@@ -1,5 +1,5 @@
 interface SiteDto {
-  id: number;
+  id: string;
   address: string;
 }
 

@@ -1,7 +1,9 @@
 {
   "common": {
     "next": "Tovább",
-    "save": "Mentés"
+    "save": "Mentés",
+    "cancel": "Mégsem",
+    "delete": "Törlés"
   },
   "header": {
     "appName": "Transport Administration"
@@ -46,6 +48,19 @@
   },
   "sites": {
     "noSites": "Nem található telephely",
-    "address": "Cím"
+    "address": "Cím",
+    "confirmDeleteTitle": "Biztosan törlöd a telephelyet?"
+  },
+  "stores": {
+    "noStores": "Nem található üzlet",
+    "address": "Cím",
+    "confirmDeleteTitle": "Biztosan törlöd az üzletet?"
+  },
+  "trucks": {
+    "noTrucks": "Nem található jármű",
+    "confirmDeleteTitle": "Biztosan törlöd a járművet?",
+    "type": "Jármű típusa",
+    "volumeCapacity": "Jármű térfogata",
+    "weightCapacity": "Jármű terhelhetősége"
   }
 }

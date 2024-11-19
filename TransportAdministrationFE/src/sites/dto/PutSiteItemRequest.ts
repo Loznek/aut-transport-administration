@@ -1,7 +1,7 @@
 import SiteDto from '../../core/dto/SiteDto.ts';
 
-interface GetSiteResponse {
+interface PutSiteItemRequest {
   site: SiteDto;
 }
 
-export default GetSiteResponse;
+export default PutSiteItemRequest;
