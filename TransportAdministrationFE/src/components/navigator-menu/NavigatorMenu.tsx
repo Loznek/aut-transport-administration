@@ -1,13 +1,9 @@
 import { ListItemIcon, ListItemText, MenuItem, MenuList, Typography } from '@mui/material';
-import { ROUTES } from '../../Routes.ts';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import RouteIcon from '@mui/icons-material/Route';
-import CategoryIcon from '@mui/icons-material/Category';
-import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
-import FactoryIcon from '@mui/icons-material/Factory';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useCallback } from 'react';
+import { memo } from 'react';
+import getNavigatorMenuItemByFunctionMap from './get-navigator-menu-item-by-function-map.tsx';
+import useAvailableFunctionTypes from '../../auth/hooks/use-available-function-types.ts';
 
 interface NavigatorMenuProps {
   onNavigate?: () => void;
@@ -17,68 +13,35 @@ const NavigatorMenu = ({ onNavigate }: NavigatorMenuProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
+  const availableFunctionTypes = useAvailableFunctionTypes();
 
-  const handleNavigate = useCallback(
-    (to: string) => () => {
-      navigate(to);
-      if (typeof onNavigate === 'function') {
-        onNavigate();
-      }
-    },
-    [navigate, onNavigate]
-  );
+  const handleNavigate = (to: string) => () => {
+    navigate(to);
+    if (typeof onNavigate === 'function') {
+      onNavigate();
+    }
+  };
 
-  const getIsSelectedRoute = useCallback(
-    (route: string) => {
-      return location.pathname.startsWith(route);
-    },
-    [location]
+  const getIsSelectedRoute = (route: string) => {
+    return location.pathname.startsWith(route);
+  };
+
+  const navigatorMenuItems = availableFunctionTypes.map((functionType) =>
+    getNavigatorMenuItemByFunctionMap[functionType](t)
   );
 
   return (
     <MenuList>
-      <MenuItem onClick={handleNavigate(ROUTES.TRUCKS())} selected={getIsSelectedRoute(ROUTES.TRUCKS())}>
-        <ListItemIcon>
-          <LocalShippingIcon />
-        </ListItemIcon>
-        <ListItemText>
-          <Typography>{t('administrations.trucks.manage')}</Typography>
-        </ListItemText>
-      </MenuItem>
-      <MenuItem onClick={handleNavigate(ROUTES.TRANSPORTS())} selected={getIsSelectedRoute(ROUTES.TRANSPORTS())}>
-        <ListItemIcon>
-          <RouteIcon />
-        </ListItemIcon>
-        <ListItemText>
-          <Typography>{t('administrations.transports.manage')}</Typography>
-        </ListItemText>
-      </MenuItem>
-      <MenuItem onClick={handleNavigate(ROUTES.CARGOS())} selected={getIsSelectedRoute(ROUTES.CARGOS())}>
-        <ListItemIcon>
-          <CategoryIcon />
-        </ListItemIcon>
-        <ListItemText>
-          <Typography>{t('administrations.cargos.manage')}</Typography>
-        </ListItemText>
-      </MenuItem>
-      <MenuItem onClick={handleNavigate(ROUTES.STORES())} selected={getIsSelectedRoute(ROUTES.STORES())}>
-        <ListItemIcon>
-          <LocalGroceryStoreIcon />
-        </ListItemIcon>
-        <ListItemText>
-          <Typography>{t('administrations.stores.manage')}</Typography>
-        </ListItemText>
-      </MenuItem>
-      <MenuItem onClick={handleNavigate(ROUTES.SITES())} selected={getIsSelectedRoute(ROUTES.SITES())}>
-        <ListItemIcon>
-          <FactoryIcon />
-        </ListItemIcon>
-        <ListItemText>
-          <Typography>{t('administrations.sites.manage')}</Typography>
-        </ListItemText>
-      </MenuItem>
+      {navigatorMenuItems.map(({ route, icon, text }) => (
+        <MenuItem onClick={handleNavigate(route)} selected={getIsSelectedRoute(route)}>
+          <ListItemIcon>{icon}</ListItemIcon>
+          <ListItemText>
+            <Typography>{text}</Typography>
+          </ListItemText>
+        </MenuItem>
+      ))}
     </MenuList>
   );
 };
 
-export default NavigatorMenu;
+export default memo(NavigatorMenu);

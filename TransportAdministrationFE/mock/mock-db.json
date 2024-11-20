@@ -1,4 +1,18 @@
 {
+  "auth-admin": {
+    "token": "mockToken",
+    "user": {
+      "name": "Administrator",
+      "type": "ADMINISTRATOR"
+    }
+  },
+  "auth-driver": {
+    "token": "mockToken",
+    "user": {
+      "name": "Driver",
+      "type": "DRIVER"
+    }
+  },
   "getTrucks": {
     "trucks": [
       {
@@ -129,6 +143,66 @@
     "store": {
       "id": 1,
       "address": "4566 Miskolc, Hunyadi út 6."
+    }
+  },
+  "getCargos": {
+    "cargos": [
+      {
+        "id": 1,
+        "name": "Olaj",
+        "volume": 10,
+        "weight": 3
+      },
+      {
+        "id": 2,
+        "name": "Kavics",
+        "volume": 14,
+        "weight": 18
+      },
+      {
+        "id": 3,
+        "name": "Lekvár",
+        "volume": 10,
+        "weight": 8
+      },
+      {
+        "id": 4,
+        "name": "Majonéz",
+        "volume": 5,
+        "weight": 3
+      },
+      {
+        "id": 5,
+        "name": "Sültkrumpli",
+        "volume": 30,
+        "weight": 35
+      },
+      {
+        "id": 6,
+        "name": "Sonka",
+        "volume": 13,
+        "weight": 7
+      },
+      {
+        "id": 7,
+        "name": "Whisky",
+        "volume": 20,
+        "weight": 15
+      },
+      {
+        "id": 8,
+        "name": "Joghurt",
+        "volume": 4,
+        "weight": 2
+      }
+    ]
+  },
+  "getCargoItem": {
+    "cargo": {
+      "id": 7,
+      "name": "Whisky",
+      "volume": 20,
+      "weight": 15
     }
   }
 }

@@ -17,11 +17,11 @@ const SiteListPage = () => {
   const { mutateAsync: deleteSiteItem, isPending: isDeleteSiteItemPending } = useDeleteSiteItem();
 
   const handleAddNew = () => {
-    navigate(ROUTES.SITES_EDIT('new'));
+    navigate(ROUTES.SITE_ITEM('new'));
   };
 
   const handleEdit = (id: string) => () => {
-    navigate(ROUTES.SITES_EDIT(id));
+    navigate(ROUTES.SITE_ITEM(id));
   };
 
   const handleDeleteSiteItem = (id: string) => async () => {

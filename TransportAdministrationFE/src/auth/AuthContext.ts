@@ -1,20 +1,19 @@
 import { createContext } from 'react';
-import { LoginFormModel } from './login/LoginForm.schema.ts';
-
-export interface UserData {
-  name: string;
-}
+import UserDataDto from './dto/UserDataDto.ts';
+import LoginResponse from './dto/LoginResponse.ts';
 
 export interface AuthContextData {
-  user: UserData | null;
+  user: UserDataDto | null;
+  authToken: string | null;
   logout: () => void;
-  login: (data: LoginFormModel) => void;
+  setAuthData: (authData: LoginResponse) => void;
 }
 
 const defaultAuthContextData: AuthContextData = {
   user: null,
+  authToken: null,
   logout: () => {},
-  login: () => {},
+  setAuthData: () => {},
 };
 
 const AuthContext = createContext<AuthContextData>(defaultAuthContextData);

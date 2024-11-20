@@ -17,11 +17,11 @@ const StoreListPage = () => {
   const { mutateAsync: deleteStoreItem, isPending: isDeleteStoreItemPending } = useDeleteStoreItem();
 
   const handleAddNew = () => {
-    navigate(ROUTES.STORES_EDIT('new'));
+    navigate(ROUTES.STORE_ITEM('new'));
   };
 
   const handleEdit = (id: string) => () => {
-    navigate(ROUTES.STORES_EDIT(id));
+    navigate(ROUTES.STORE_ITEM(id));
   };
 
   const handleDeleteStoreItem = (id: string) => async () => {

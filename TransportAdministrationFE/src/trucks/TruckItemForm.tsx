@@ -22,7 +22,7 @@ const TruckItemForm = ({ data }: TruckItemFormProps) => {
       volumeCapacity: data?.volumeCapacity ?? 0,
       weightCapacity: data?.weightCapacity ?? 0,
     },
-    resolver: yupResolver(truckFormValidator()),
+    resolver: yupResolver(truckFormValidator(t)),
   });
 
   const handleFormSubmit: SubmitHandler<TruckFormModel> = (formData) => {

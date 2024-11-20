@@ -1,4 +1,4 @@
-import useGetTruckList from './queries/use-get-truck-list.ts';
+import useGetCargoList from './queries/use-get-cargo-list.ts';
 import LoadingSection from '../components/loading-section/LoadingSection.tsx';
 import ErrorSection from '../components/error-section/ErrorSection.tsx';
 import { Box, Button, Divider, IconButton, List, ListItem, Typography } from '@mui/material';
@@ -7,30 +7,30 @@ import EditIcon from '@mui/icons-material/Edit';
 import { ROUTES } from '../Routes.ts';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import TruckDto from '../core/dto/TruckDto.ts';
 import DeleteIconButtonWithDialog from '../components/delete-icon-button-with-dialog/DeleteIconButtonWithDialog.tsx';
-import useDeleteTruckItem from './queries/use-delete-truck-item.ts';
+import useDeleteCargoItem from './queries/use-delete-cargo-item.ts';
+import CargoDto from '../core/dto/CargoDto.ts';
 
-const TruckListPage = () => {
+const CargoListPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { data, isFetching, isError } = useGetTruckList();
-  const { mutateAsync: deleteTruckItem, isPending: isDeleteTruckItemPending } = useDeleteTruckItem();
+  const { data, isFetching, isError } = useGetCargoList();
+  const { mutateAsync: deleteCargoItem, isPending: isDeleteCargoItemPending } = useDeleteCargoItem();
 
   const handleAddNew = () => {
-    navigate(ROUTES.TRUCK_ITEM('new'));
+    navigate(ROUTES.CARGO_ITEM('new'));
   };
 
   const handleEdit = (id: string) => () => {
-    navigate(ROUTES.TRUCK_ITEM(id));
+    navigate(ROUTES.CARGO_ITEM(id));
   };
 
   const handleDelete = (id: string) => async () => {
-    await deleteTruckItem(id);
+    await deleteCargoItem(id);
   };
 
-  const concatenateTruckData = useCallback((truck: TruckDto) => {
-    return `${truck.type} - ${truck.volumeCapacity} - ${truck.weightCapacity}`;
+  const concatenateCargoData = useCallback((cargo: CargoDto) => {
+    return `${cargo.name} - ${cargo.volume} - ${cargo.weight}`;
   }, []);
 
   if (isFetching) {
@@ -48,38 +48,38 @@ const TruckListPage = () => {
           {t('addNew')}
         </Button>
       </Box>
-      {data?.trucks?.length ? (
+      {data?.cargos?.length ? (
         <List>
-          {data?.trucks.map((truck, index) => (
-            <Fragment key={truck.id}>
+          {data?.cargos.map((cargo, index) => (
+            <Fragment key={cargo.id}>
               {index !== 0 && <Divider />}
               <ListItem
                 secondaryAction={
                   <Box sx={{ display: 'flex', gap: 1 }}>
-                    <IconButton onClick={handleEdit(truck.id)}>
+                    <IconButton onClick={handleEdit(cargo.id)}>
                       <EditIcon />
                     </IconButton>
                     <DeleteIconButtonWithDialog
-                      onDelete={handleDelete(truck.id)}
-                      dialogTitle={t('trucks.confirmDeleteTitle')}
-                      isLoading={isDeleteTruckItemPending}
-                      dialogDescription={concatenateTruckData(truck)}
+                      onDelete={handleDelete(cargo.id)}
+                      dialogTitle={t('cargos.confirmDeleteTitle')}
+                      isLoading={isDeleteCargoItemPending}
+                      dialogDescription={concatenateCargoData(cargo)}
                     />
                   </Box>
                 }
               >
-                {concatenateTruckData(truck)}
+                {concatenateCargoData(cargo)}
               </ListItem>
             </Fragment>
           ))}
         </List>
       ) : (
         <Box sx={{ display: 'flex', justifyContent: 'center', padding: 2 }}>
-          <Typography sx={{ textAlign: 'center' }}>{t('trucks.noSites')}</Typography>
+          <Typography sx={{ textAlign: 'center' }}>{t('cargos.noSites')}</Typography>
         </Box>
       )}
     </Box>
   );
 };
 
-export default TruckListPage;
+export default CargoListPage;

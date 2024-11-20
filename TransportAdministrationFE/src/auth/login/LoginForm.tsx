@@ -1,27 +1,24 @@
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import { ChevronRight } from '@mui/icons-material';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import LoginFormSchema, { LoginFormModel } from './LoginForm.schema.ts';
+import LoginFormSchema from './LoginForm.schema.ts';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextFieldWithController from '../../components/text-field-with-controller/TextFieldWithController.tsx';
-import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import useAuth from '../useAuth.ts';
+import LoginFormModel from '../models/LoginFormModel.ts';
+import useLogin from '../queries/use-login.ts';
+import { LoadingButton } from '@mui/lab';
 
 const LoginForm = () => {
   const { t } = useTranslation();
-  const auth = useAuth();
+  const { mutate: login, isPending: isLoginPending } = useLogin();
   const { control, handleSubmit } = useForm<LoginFormModel>({
     resolver: yupResolver(LoginFormSchema()),
   });
 
-  const onSubmit = useCallback<SubmitHandler<LoginFormModel>>(
-    (formData) => {
-      console.log(formData);
-      auth.login(formData);
-    },
-    [auth]
-  );
+  const onSubmit: SubmitHandler<LoginFormModel> = (formData) => {
+    login(formData);
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -33,9 +30,9 @@ const LoginForm = () => {
           label={t('login.password')}
         />
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 2 }}>
-          <Button type="submit" variant="contained" endIcon={<ChevronRight />}>
+          <LoadingButton type="submit" variant="contained" endIcon={<ChevronRight />} loading={isLoginPending}>
             {t('login.title')}
-          </Button>
+          </LoadingButton>
         </Box>
       </Box>
     </form>

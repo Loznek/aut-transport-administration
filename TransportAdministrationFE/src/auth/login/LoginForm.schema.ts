@@ -1,9 +1,5 @@
 import * as yup from 'yup';
-
-export interface LoginFormModel {
-  username: string;
-  password: string;
-}
+import LoginFormModel from '../models/LoginFormModel';
 
 const LoginFormSchema = (): yup.ObjectSchema<LoginFormModel> =>
   yup.object().shape({

@@ -13,6 +13,14 @@ server.use(jsonServer.bodyParser);
 
 const lowdb = router.db;
 
+server.post('/api/login', (req, res) => {
+  if (req.body.username === 'driver') {
+    return res.send(lowdb.get('auth-driver'));
+  }
+
+  res.send(lowdb.get('auth-admin'));
+});
+
 server.get('/api/trucks', (req, res) => {
   res.send(lowdb.get('getTrucks'));
 });
@@ -67,7 +75,28 @@ server.put('/api/stores/new', (req, res) => {
 server.put('/api/stores/:id', (req, res) => {
   res.send();
 });
+
 server.delete('/api/stores/:id', (req, res) => {
+  res.send();
+});
+
+server.get('/api/cargos', (req, res) => {
+  res.send(lowdb.get('getCargos'));
+});
+
+server.get('/api/cargos/:id', (req, res) => {
+  res.send(lowdb.get('getCargoItem'));
+});
+
+server.put('/api/cargos/new', (req, res) => {
+  res.send();
+});
+
+server.put('/api/cargos/:id', (req, res) => {
+  res.send();
+});
+
+server.delete('/api/cargos/:id', (req, res) => {
   res.send();
 });
 

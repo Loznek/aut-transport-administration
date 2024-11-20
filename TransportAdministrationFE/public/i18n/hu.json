@@ -5,6 +5,9 @@
     "cancel": "Mégsem",
     "delete": "Törlés"
   },
+  "validation": {
+    "required": "A mező kitöltése kötelező"
+  },
   "header": {
     "appName": "Transport Administration"
   },
@@ -62,5 +65,12 @@
     "type": "Jármű típusa",
     "volumeCapacity": "Jármű térfogata",
     "weightCapacity": "Jármű terhelhetősége"
+  },
+  "cargos": {
+    "noCargos": "Nem található áru",
+    "confirmDeleteTitle": "Biztosan törlöd az árut?",
+    "name": "Áru neve",
+    "volume": "Áru térfogata",
+    "weight": "Áru súlya"
   }
 }
