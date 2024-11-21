@@ -1,10 +1,12 @@
+package com.transportmanagement.database.mapping
+
 import com.transportmanagement.model.entity.DaysOff
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toKotlinLocalDateTime
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
-import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.javatime.datetime
 
 // Table definition using IntIdTable
@@ -24,7 +26,7 @@ class DaysOffDAO(id: EntityID<Int>) : IntEntity(id) {
 }
 
 // Mapping function from DAO to model
-fun daoToModel(dao: DaysOffDAO): DaysOff = DaysOff(
+fun daysOffDaoToModel(dao: DaysOffDAO): DaysOff = DaysOff(
     id = dao.id.value,                 // Include the ID field here
     driverId = dao.driverId,
     startTime = dao.startTime.toKotlinLocalDateTime(),
@@ -32,7 +34,7 @@ fun daoToModel(dao: DaysOffDAO): DaysOff = DaysOff(
 )
 
 // Optional: Mapping function from model to DAO
-fun modelToDAO(daysOff: DaysOff): DaysOffDAO {
+fun daysOffModelToDAO(daysOff: DaysOff): DaysOffDAO {
     return DaysOffDAO.new(daysOff.id) {
         driverId = daysOff.driverId
         startTime = daysOff.startTime.toJavaLocalDateTime()

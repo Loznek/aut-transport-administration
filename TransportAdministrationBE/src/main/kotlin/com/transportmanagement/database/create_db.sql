@@ -2,14 +2,17 @@ CREATE TABLE site (
                       id SERIAL PRIMARY KEY,
                       postal_code INT,
                       street_name INT,
-                      house_number TEXT
+                      house_number TEXT,
+                        active BOOLEAN
 );
 
 CREATE TABLE driver (
                         id SERIAL PRIMARY KEY,
                         name TEXT,
                         date_of_birth TIMESTAMP,
-                        day_off_in_the_week INT
+                        day_off_in_the_week INT,
+                        home_site_id INT REFERENCES site(id),
+                        active BOOLEAN
 );
 
 CREATE TABLE truck (
@@ -17,13 +20,16 @@ CREATE TABLE truck (
                        license_plate TEXT,                 -- Updated column name for license plate
                        type TEXT,
                        volume_capacity DOUBLE PRECISION,
-                       weight_capacity DOUBLE PRECISION
+                       weight_capacity DOUBLE PRECISION,
+                        active BOOLEAN
 );
 
 CREATE TABLE transport (
                            id SERIAL PRIMARY KEY,
                            start_site_id INT REFERENCES site(id),
                            destination_site_id INT REFERENCES site(id),
+                           start_time TIMESTAMP,
+                           arrival_time TIMESTAMP,
                            truck_id INT REFERENCES truck(id)  -- Corrected reference to the truck table
 );
 
@@ -37,11 +43,22 @@ CREATE TABLE transport_section (
                                    transport_id INT REFERENCES transport(id)
 );
 
+CREATE TABLE store (
+                       id SERIAL PRIMARY KEY,
+                       postal_code INT,
+                       street_name TEXT,
+                       house_number TEXT,
+                       active BOOLEAN
+);
+
 CREATE TABLE cargo (
                        id SERIAL PRIMARY KEY,
                        name TEXT,
                        volume DOUBLE PRECISION,
-                       weight DOUBLE PRECISION
+                       weight DOUBLE PRECISION,
+                       destination_id INT REFERENCES store(id),
+                        delivered BOOLEAN,
+                        active BOOLEAN
 );
 
 CREATE TABLE days_off (
@@ -81,16 +98,13 @@ CREATE TABLE truck_staying (
                                start_time TIMESTAMP
 );
 
-CREATE TABLE store (
-                       id SERIAL PRIMARY KEY,
-                       postal_code INT,
-                       street_name TEXT,
-                       house_number TEXT
-);
+
+
 
 CREATE TABLE store_stop_points (
                                    id SERIAL PRIMARY KEY,
                                    transport_section_id INT REFERENCES transport_section(id),
                                    store_id INT REFERENCES store(id),
+                                   arrival_time TIMESTAMP,
                                    order_in_section INT
 );

@@ -7,5 +7,6 @@ data class Truck(
     val licensePlate: String,
     val type: String,
     val volumeCapacity: Double,
-    val weightCapacity: Double
+    val weightCapacity: Double,
+    val active: Boolean
 )

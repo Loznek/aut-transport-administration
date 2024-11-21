@@ -1,11 +1,12 @@
-import com.transportmanagement.database.mapping.SiteTable
+package com.transportmanagement.database.mapping
+
 import com.transportmanagement.model.entity.TransportSection
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toKotlinLocalDateTime
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
-import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.javatime.datetime
 
 // Table definition using IntIdTable
@@ -13,7 +14,7 @@ object TransportSectionTable : IntIdTable("transport_section") {
     val startSiteId = integer("start_site_id").references(SiteTable.id)
     val destinationSiteId = integer("destination_site_id").references(SiteTable.id)
     val startTime = datetime("start_time")
-    val arrivalTime = datetime("arrival_time")
+    val arrivalTime = datetime("arrival_time").nullable()
     val driverId = integer("driver_id").references(DriverTable.id)
     val transportId = integer("transport_id").references(TransportTable.id)
 }
@@ -31,23 +32,23 @@ class TransportSectionDAO(id: EntityID<Int>) : IntEntity(id) {
 }
 
 // Mapping function from DAO to model
-fun daoToModel(dao: TransportSectionDAO): TransportSection = TransportSection(
+fun transportSectionDaoToModel(dao: TransportSectionDAO): TransportSection = TransportSection(
     id = dao.id.value,                      // Include the ID field here
     startSiteId = dao.startSiteId,
     destinationSiteId = dao.destinationSiteId,
     startTime = dao.startTime.toKotlinLocalDateTime(),
-    arrivalTime = dao.arrivalTime.toKotlinLocalDateTime(),
+    arrivalTime = dao.arrivalTime?.toKotlinLocalDateTime(),
     driverId = dao.driverId,
     transportId = dao.transportId
 )
 
 // Optional: Mapping function from model to DAO
-fun modelToDAO(transportSection: TransportSection): TransportSectionDAO {
+fun transportSectionModelToDAO(transportSection: TransportSection): TransportSectionDAO {
     return TransportSectionDAO.new(transportSection.id) {
         startSiteId = transportSection.startSiteId
         destinationSiteId = transportSection.destinationSiteId
         startTime = transportSection.startTime.toJavaLocalDateTime()
-        arrivalTime = transportSection.arrivalTime.toJavaLocalDateTime()
+        arrivalTime = transportSection.arrivalTime?.toJavaLocalDateTime()
         driverId = transportSection.driverId
         transportId = transportSection.transportId
     }

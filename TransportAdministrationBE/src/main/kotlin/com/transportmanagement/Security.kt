@@ -1,4 +1,4 @@
-package com.transport-management
+package com.transportmanagement
 
 import io.ktor.server.application.*
 

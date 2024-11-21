@@ -1,6 +1,5 @@
 package com.transportmanagement
 
-import com.transport.configureSecurity
 import com.transportmanagement.database.configureDatabases
 import io.ktor.server.application.*
 

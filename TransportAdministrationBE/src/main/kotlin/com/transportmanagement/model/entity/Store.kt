@@ -7,5 +7,6 @@ data class Store(
     val id: Int,
     val postalCode: Int,
     val streetName: String,
-    val houseNumber: String
+    val houseNumber: String,
+    val active: Boolean
 )

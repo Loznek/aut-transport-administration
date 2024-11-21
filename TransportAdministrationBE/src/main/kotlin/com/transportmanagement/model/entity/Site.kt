@@ -1,3 +1,4 @@
+package com.transportmanagement.model.entity
 import kotlinx.serialization.Serializable
 
 
@@ -6,5 +7,6 @@ data class Site(
     val id: Int,
     val postalCode: Int,
     val streetName: Int,
-    val houseNumber: String
+    val houseNumber: String,
+    val active: Boolean
 )
