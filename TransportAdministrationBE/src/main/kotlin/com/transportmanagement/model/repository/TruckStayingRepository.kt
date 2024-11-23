@@ -66,11 +66,11 @@ class TruckStayingRepository {
         }
     }
 
-    suspend fun countReferredTrucks(transferId: Int): Int? =
+    suspend fun getReferredTruck(transferId: Int): TruckStaying? =
         suspendTransaction {
             TruckStayingDAO.find {
-                TruckStayingTable.arrivalTransportId eq transferId and TruckStayingTable.arrivalTransportId.isNull()
-            }.firstOrNull()?.truckId
+                TruckStayingTable.arrivalTransportId eq transferId and TruckStayingTable.startTransportId.isNotNull()
+            }.map(::truckStayingDaoToModel).firstOrNull()
         }
 
     suspend fun deleteTruckStayingsByArrivalTransportId(transportId: Int) {

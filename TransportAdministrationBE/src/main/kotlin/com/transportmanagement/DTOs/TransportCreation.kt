@@ -1,8 +1,10 @@
 package com.transportmanagement.DTOs
 
 import kotlinx.datetime.LocalDateTime
+import kotlinx.serialization.Serializable
 
-class TransportCreation (
+@Serializable
+data class TransportCreation (
     val startSiteId: Int,
     val startTime: LocalDateTime,
     val destinationSiteId: Int,

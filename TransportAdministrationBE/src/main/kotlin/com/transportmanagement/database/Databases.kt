@@ -1,22 +1,12 @@
 package com.transportmanagement.database
 
-import com.transportmanagement.City
-import com.transportmanagement.CityService
-import com.transportmanagement.ExposedUser
-import com.transportmanagement.UserService
-import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
-import java.sql.*
-import kotlinx.coroutines.*
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.Database
 
 fun Application.configureDatabases() {
     val database = Database.connect(
         url = "jdbc:postgresql://localhost:5432/transport_management",
-        user = "postrgres",
+        user = "postgres",
         driver = "org.h2.Driver",
         password = "dbpassword", //You need to remember that or ty admin :D
     )

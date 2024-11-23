@@ -16,14 +16,15 @@ class TruckRepository {
     }
 
     // Adds a new Truck entry to the database
-    suspend fun addTruck(truck: Truck): Unit = suspendTransaction {
-        TruckDAO.new {
+    suspend fun addTruck(truck: Truck): Int = suspendTransaction {
+        val newTruck= TruckDAO.new {
             this.licensePlate = truck.licensePlate
             this.type = truck.type
             this.volumeCapacity = truck.volumeCapacity
             this.weightCapacity = truck.weightCapacity
             this.active = true
         }
+        newTruck.id.value
     }
 
     // Removes a Truck entry by its ID, returning true if successful
@@ -35,6 +36,7 @@ class TruckRepository {
     }
 
     // Updates an existing Truck entry based on the provided model
+    /*
     suspend fun updateTruck(truck: Truck) {
         suspendTransaction {
             val truckDAO = TruckDAO.findById(truck.id) ?: return@suspendTransaction
@@ -44,7 +46,7 @@ class TruckRepository {
             truckDAO.weightCapacity = truck.weightCapacity
         }
     }
-
+    */
     // Retrieves all Truck entries
     suspend fun getAllTrucks(): List<Truck> = suspendTransaction {
         TruckDAO.all().map(::truckDaoToModel)
@@ -70,5 +72,10 @@ class TruckRepository {
             truck.active = false
             true
         }
+    }
+
+    suspend fun getAllActiveTrucks(): List<Truck> = suspendTransaction {
+        TruckDAO.find { TruckTable.active eq true }.map(::truckDaoToModel)
+
     }
 }

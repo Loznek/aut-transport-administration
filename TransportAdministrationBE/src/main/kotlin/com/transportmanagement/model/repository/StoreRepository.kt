@@ -18,9 +18,10 @@ class StoreRepository {
     // Adds a new store entry to the database
     suspend fun addStore(store: Store): Unit = suspendTransaction {
         StoreDAO.new {
-            this.postalCode = store.postalCode
-            this.streetName = store.streetName
-            this.houseNumber = store.houseNumber
+            this.name = store.name
+            this.lat = store.lat
+            this.lon = store.lon
+            this.address = store.address
             this.active = true
         }
     }
@@ -34,15 +35,17 @@ class StoreRepository {
     }
 
     // Updates an existing store entry based on the provided model
+    /*
     suspend fun updateStore(store: Store) {
         suspendTransaction {
             val storeDAO = StoreDAO.findById(store.id) ?: return@suspendTransaction
-            storeDAO.postalCode = store.postalCode
-            storeDAO.streetName = store.streetName
-            storeDAO.houseNumber = store.houseNumber
+            storeDAO.name = store.name
+            storeDAO.lat = store.lat
+            storeDAO.lon = store.lon
+            storeDAO.address = store.address
         }
     }
-
+    */
     // Retrieves all stores
     suspend fun getAllStores(): List<Store> = suspendTransaction {
         StoreDAO.all().map(::storeDaoToModel)
@@ -57,4 +60,10 @@ class StoreRepository {
         store.active = false
         true
     }
+
+    suspend fun getAllActiveStores(): List<Store> = suspendTransaction {
+        StoreDAO.find { StoreTable.active eq true }.map(::storeDaoToModel)
+    }
+
+
 }

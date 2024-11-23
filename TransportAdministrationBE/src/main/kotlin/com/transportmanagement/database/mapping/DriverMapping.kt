@@ -13,7 +13,6 @@ import org.jetbrains.exposed.sql.javatime.datetime
 object DriverTable : IntIdTable("driver") {
     val name = varchar("name", 255) // Adjust size as needed
     val dateOfBirth = datetime("date_of_birth")
-    val dayOffInTheWeek = integer("day_off_in_the_week")
     val homeSiteId = integer("home_site_id")
     val active = bool("active")
 }
@@ -24,7 +23,6 @@ class DriverDAO(id: EntityID<Int>) : IntEntity(id) {
 
     var name by DriverTable.name
     var dateOfBirth by DriverTable.dateOfBirth
-    var dayOffInTheWeek by DriverTable.dayOffInTheWeek
     var homeSiteId by DriverTable.homeSiteId
     var active by DriverTable.active
 }
@@ -34,7 +32,6 @@ fun driverDaoToModel(dao: DriverDAO): Driver = Driver(
     id = dao.id.value,                // Include the ID field here
     name = dao.name,
     dateOfBirth = dao.dateOfBirth.toKotlinLocalDateTime(),
-    dayOffInTheWeek = dao.dayOffInTheWeek,
     homeSiteId = dao.homeSiteId,
     active = dao.active
 )
@@ -44,7 +41,6 @@ fun driverModelToDAO(driver: Driver): DriverDAO {
     return DriverDAO.new(driver.id) {
         name = driver.name
         dateOfBirth = driver.dateOfBirth.toJavaLocalDateTime()
-        dayOffInTheWeek = driver.dayOffInTheWeek
         homeSiteId = driver.homeSiteId
         active = driver.active
     }

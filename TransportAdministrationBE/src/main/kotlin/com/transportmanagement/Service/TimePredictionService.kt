@@ -14,7 +14,7 @@ class TimePredictionService {
     suspend fun predictTimes(transportSectionPoint: TransportSectionPoints): TransportArrivalTimes {
         //valami okos Api hívás
         val arrivalTime = predictTime(transportSectionPoint.startTime)
-        val timeList = mutableListOf<java.time.LocalDateTime>()
-        return TransportArrivalTimes(arrivalTime.toJavaLocalDateTime(), timeList) }
+        val timeList = mutableListOf<LocalDateTime>()
+        return TransportArrivalTimes(arrivalTime, timeList) }
 
     }

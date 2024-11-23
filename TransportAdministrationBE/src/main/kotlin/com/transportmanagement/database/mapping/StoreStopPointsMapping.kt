@@ -11,7 +11,7 @@ import org.jetbrains.exposed.sql.javatime.datetime
 
 // Table definition using IntIdTable
 object StoreStopPointsTable : IntIdTable("store_stop_points") {
-    val transportSectionId = integer("transport_section_id").references(TransportSectionTable.id)
+    val transportSectionId = integer("transport_section_id").references(TransportSectionTable.id).nullable()
     val storeId = integer("store_id").references(StoreTable.id)
     val orderInSection = integer("order_in_section")
     val arrivalTime = datetime("arrival_time").nullable()

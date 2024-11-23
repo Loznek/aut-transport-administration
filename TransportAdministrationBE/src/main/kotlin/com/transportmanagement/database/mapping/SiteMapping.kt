@@ -9,38 +9,40 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 
 // Table definition
 object SiteTable : IntIdTable("site") {
-
-    val postalCode = integer("postal_code")
-    val streetName = integer("street_name")
-    val houseNumber = varchar("house_number", 255) // Adjust size as needed
+    val name = varchar("name", 255) // Adjust size as needed
+    val lon = double("lon")
+    val lat = double("lat")
+    val address = varchar("address", 255) // Adjust size as needed
     val active = bool("active")
 }
 
 // DAO class
 class SiteDAO(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<SiteDAO>(SiteTable)
-
-    var postalCode by SiteTable.postalCode
-    var streetName by SiteTable.streetName
-    var houseNumber by SiteTable.houseNumber
+    var name by SiteTable.name
+    var lon by SiteTable.lon
+    var lat by SiteTable.lat
+    var address by SiteTable.address
     var active by SiteTable.active
 }
 
 // Mapping function from DAO to model
 fun siteDaoToModel(dao: SiteDAO): Site = Site(
     id = dao.id.value,
-    postalCode = dao.postalCode,
-    streetName = dao.streetName,
-    houseNumber = dao.houseNumber,
+    name = dao.name,
+    lon = dao.lon,
+    lat = dao.lat,
+    address = dao.address,
     active = dao.active
 )
 
 // Optional: Mapping function from model to DAO (useful for creating or updating entries)
 fun siteModelToDAO(site: Site): SiteDAO {
     val dao = SiteDAO.new {
-        postalCode = site.postalCode
-        streetName = site.streetName
-        houseNumber = site.houseNumber
+        name = site.name
+        lon = site.lon
+        lat = site.lat
+        address = site.address
         active = site.active
     }
     return dao

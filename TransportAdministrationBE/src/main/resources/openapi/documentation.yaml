@@ -1,0 +1,733 @@
+openapi: "3.0.3"
+info:
+  title: "ktor_backend_app API"
+  description: "ktor_backend_app API"
+  version: "1.0.0"
+servers:
+- url: "https://ktor_backend_app"
+paths:
+  /calculate_travel_time:
+    post:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/TransportSectionPoints"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TransportArrivalTimes"
+  /cargo:
+    post:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/CargoCreation"
+        required: true
+  /cargo/{id}:
+    delete:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "204":
+          description: "No Content"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /cargo/cargo_entity/{id}:
+    get:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /drivers:
+    post:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/Driver"
+        required: true
+      responses:
+        "204":
+          description: "No Content"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /drivers/{id}:
+    delete:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "204":
+          description: "No Content"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+    get:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+  /drivers/active_drivers:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Driver"
+  /sites:
+    post:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/Site"
+        required: true
+      responses:
+        "204":
+          description: "No Content"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /sites/{id}:
+    delete:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "204":
+          description: "No Content"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /sites/{id}/available_drivers:
+    get:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/DriverWithArrivalTime"
+  /sites/{id}/available_trucks:
+    get:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/TruckWithArrivalTime"
+  /sites/{id}/site_entity:
+    get:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /sites/{id}/transportable_cargo:
+    get:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/CargoWithArrivalTime"
+  /store:
+    post:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/Store"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Truck created"
+  /store/{id}:
+    delete:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "204":
+          description: "No Content"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /store/add_to_route:
+    put:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Stop created"
+  /store/delete_from_route:
+    put:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Stop created"
+  /store/store_entity/{id}:
+    get:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /transport:
+    post:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/TransportCreation"
+        required: true
+      responses:
+        "204":
+          description: "No Content"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /transport/id:
+    delete:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /transport/transport_entity/{id}:
+    get:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /transport_sections:
+    delete:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Transport deleted"
+    post:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/TransportSectionInfo"
+        required: true
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+    put:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+  /transport_sections/transport_section_entity/{id}:
+    get:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+  /trucks:
+    post:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/TruckCreation"
+        required: true
+      responses:
+        "204":
+          description: "No Content"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /trucks/{id}:
+    delete:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "204":
+          description: "No Content"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /trucks/truck_entity/{id}:
+    get:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+components:
+  schemas:
+    LocalDateTime:
+      type: "object"
+      properties: {}
+    StoreStopPoint:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        transportSectionId:
+          type: "integer"
+          format: "int32"
+        arrivalTime:
+          $ref: "#/components/schemas/LocalDateTime"
+        storeId:
+          type: "integer"
+          format: "int32"
+        orderInSection:
+          type: "integer"
+          format: "int32"
+    TransportSectionPoints:
+      type: "object"
+      properties:
+        startSiteId:
+          type: "integer"
+          format: "int32"
+        destinationSiteId:
+          type: "integer"
+          format: "int32"
+        startTime:
+          $ref: "#/components/schemas/LocalDateTime"
+        stopPoints:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/StoreStopPoint"
+    TransportArrivalTimes:
+      type: "object"
+      properties:
+        destinationArrivalTime:
+          type: "string"
+          format: "date-time"
+        stopPointArrivalTimes:
+          type: "array"
+          items:
+            type: "string"
+            format: "date-time"
+    Cargo:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        name:
+          type: "string"
+        volume:
+          type: "number"
+          format: "double"
+        weight:
+          type: "number"
+          format: "double"
+        active:
+          type: "boolean"
+        destinationStoreId:
+          type: "integer"
+          format: "int32"
+        delivered:
+          type: "boolean"
+    CargoCreation:
+      type: "object"
+      properties:
+        cargo:
+          $ref: "#/components/schemas/Cargo"
+        startSiteId:
+          type: "integer"
+          format: "int32"
+    Object:
+      type: "object"
+      properties: {}
+    Driver:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        name:
+          type: "string"
+        dateOfBirth:
+          $ref: "#/components/schemas/LocalDateTime"
+        dayOffInTheWeek:
+          type: "integer"
+          format: "int32"
+        homeSiteId:
+          type: "integer"
+          format: "int32"
+        active:
+          type: "boolean"
+    Site:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        postalCode:
+          type: "integer"
+          format: "int32"
+        streetName:
+          type: "integer"
+          format: "int32"
+        houseNumber:
+          type: "string"
+        active:
+          type: "boolean"
+    DriverWithArrivalTime:
+      type: "object"
+      properties:
+        driver:
+          $ref: "#/components/schemas/Driver"
+        arrivalTime:
+          $ref: "#/components/schemas/LocalDateTime"
+    Truck:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        licensePlate:
+          type: "string"
+        type:
+          type: "string"
+        volumeCapacity:
+          type: "number"
+          format: "double"
+        weightCapacity:
+          type: "number"
+          format: "double"
+        active:
+          type: "boolean"
+    TruckWithArrivalTime:
+      type: "object"
+      properties:
+        truck:
+          $ref: "#/components/schemas/Truck"
+        arrivalTime:
+          $ref: "#/components/schemas/LocalDateTime"
+    CargoWithArrivalTime:
+      type: "object"
+      properties:
+        cargo:
+          $ref: "#/components/schemas/Cargo"
+        arrivalTime:
+          $ref: "#/components/schemas/LocalDateTime"
+    Store:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        postalCode:
+          type: "integer"
+          format: "int32"
+        streetName:
+          type: "string"
+        houseNumber:
+          type: "string"
+        active:
+          type: "boolean"
+    TransportSection:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        startSiteId:
+          type: "integer"
+          format: "int32"
+        destinationSiteId:
+          type: "integer"
+          format: "int32"
+        startTime:
+          $ref: "#/components/schemas/LocalDateTime"
+        arrivalTime:
+          $ref: "#/components/schemas/LocalDateTime"
+        driverId:
+          type: "integer"
+          format: "int32"
+        transportId:
+          type: "integer"
+          format: "int32"
+    TransportSectionInfo:
+      type: "object"
+      properties:
+        transportSection:
+          $ref: "#/components/schemas/TransportSection"
+        driverId:
+          type: "integer"
+          format: "int32"
+        storeStops:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/StoreStopPoint"
+    TransportCreation:
+      type: "object"
+      properties:
+        startSiteId:
+          type: "integer"
+          format: "int32"
+        startTime:
+          $ref: "#/components/schemas/LocalDateTime"
+        destinationSiteId:
+          type: "integer"
+          format: "int32"
+        transportSections:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/TransportSectionInfo"
+        truckId:
+          type: "integer"
+          format: "int32"
+        cargoIds:
+          type: "array"
+          items:
+            type: "integer"
+            format: "int32"
+    TruckCreation:
+      type: "object"
+      properties:
+        truck:
+          $ref: "#/components/schemas/Truck"
+        startSiteId:
+          type: "integer"
+          format: "int32"

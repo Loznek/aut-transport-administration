@@ -19,8 +19,8 @@ class TransportSectionRepository {
     }
 
     // Adds a new TransportSection entry to the database
-    suspend fun addTransportSection(transportSection: TransportSection): Unit = suspendTransaction {
-        TransportSectionDAO.new {
+    suspend fun addTransportSection(transportSection: TransportSection): Int = suspendTransaction {
+        val newSection = TransportSectionDAO.new {
             this.startSiteId = transportSection.startSiteId
             this.destinationSiteId = transportSection.destinationSiteId
             this.startTime = transportSection.startTime.toJavaLocalDateTime()
@@ -28,6 +28,8 @@ class TransportSectionRepository {
             this.driverId = transportSection.driverId
             this.transportId = transportSection.transportId
         }
+        newSection.id.value
+
     }
 
     // Removes a TransportSection entry by its ID, returning true if successful

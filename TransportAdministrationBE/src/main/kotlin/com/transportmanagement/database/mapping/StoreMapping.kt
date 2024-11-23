@@ -8,9 +8,10 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 
 // Table definition
 object StoreTable : IntIdTable("store") {
-    val postalCode = integer("postal_code")
-    val streetName = varchar("street_name", 255) // Adjust size as needed
-    val houseNumber = varchar("house_number", 255) // Adjust size as needed
+    val address = varchar("address", 255) // Adjust size as needed
+    val name = varchar("name", 255) // Adjust size as needed
+    val lat = double("lat")
+    val lon = double("lon")
     val active = bool("active")
 }
 
@@ -18,27 +19,30 @@ object StoreTable : IntIdTable("store") {
 class StoreDAO(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<StoreDAO>(StoreTable)
 
-    var postalCode by StoreTable.postalCode
-    var streetName by StoreTable.streetName
-    var houseNumber by StoreTable.houseNumber
+    var address by StoreTable.address
+    var name by StoreTable.name
+    var lat by StoreTable.lat
+    var lon by StoreTable.lon
     var active by StoreTable.active
 }
 
 // Mapping function from DAO to model
 fun storeDaoToModel(dao: StoreDAO): Store = Store(
-    id = dao.id.value,                // Include the ID field here
-    postalCode = dao.postalCode,
-    streetName = dao.streetName,
-    houseNumber = dao.houseNumber,
+    id = dao.id.value,
+    name = dao.name,
+    address = dao.address,
+    lat = dao.lat,
+    lon = dao.lon,
     active = dao.active
 )
 
 // Optional: Mapping function from model to DAO
 fun storeModelToDAO(store: Store): StoreDAO {
     return StoreDAO.new(store.id) {
-        postalCode = store.postalCode
-        streetName = store.streetName
-        houseNumber = store.houseNumber
+        address = store.address
+        name = store.name
+        lat = store.lat
+        lon = store.lon
         active = store.active
     }
 }

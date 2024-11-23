@@ -1,8 +1,9 @@
 CREATE TABLE site (
                       id SERIAL PRIMARY KEY,
-                      postal_code INT,
-                      street_name INT,
-                      house_number TEXT,
+                      address TEXT,
+                      name TEXT,
+                        lat DOUBLE PRECISION,
+                        lon DOUBLE PRECISION,
                         active BOOLEAN
 );
 
@@ -10,7 +11,6 @@ CREATE TABLE driver (
                         id SERIAL PRIMARY KEY,
                         name TEXT,
                         date_of_birth TIMESTAMP,
-                        day_off_in_the_week INT,
                         home_site_id INT REFERENCES site(id),
                         active BOOLEAN
 );
@@ -45,9 +45,10 @@ CREATE TABLE transport_section (
 
 CREATE TABLE store (
                        id SERIAL PRIMARY KEY,
-                       postal_code INT,
-                       street_name TEXT,
-                       house_number TEXT,
+                        name TEXT,
+                       lat DOUBLE PRECISION,
+                       lon DOUBLE PRECISION,
+                       address TEXT,
                        active BOOLEAN
 );
 
@@ -61,12 +62,6 @@ CREATE TABLE cargo (
                         active BOOLEAN
 );
 
-CREATE TABLE days_off (
-                          id SERIAL PRIMARY KEY,
-                          driver_id INT REFERENCES driver(id),
-                          start_time TIMESTAMP,
-                          end_time TIMESTAMP
-);
 
 CREATE TABLE cargo_staying (
                                id SERIAL PRIMARY KEY,

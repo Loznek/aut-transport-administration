@@ -4,9 +4,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Store(
-    val id: Int,
-    val postalCode: Int,
-    val streetName: String,
-    val houseNumber: String,
+    val id: Int?,
+    val name: String,
+    val address: String,
+    val lat: Double,
+    val lon: Double,
     val active: Boolean
 )

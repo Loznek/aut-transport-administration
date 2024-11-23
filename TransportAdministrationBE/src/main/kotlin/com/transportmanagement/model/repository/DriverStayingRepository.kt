@@ -88,18 +88,17 @@ class DriverStayingRepository {
             }
     }
 
-    suspend fun countReferredDrivers(transportsectionIds: List<Int>): List<Int> {
+    suspend fun getReferredDriver(transportSectionIds: List<Int>): List<DriverStaying> {
         return suspendTransaction {
-            DriverStayingDAO.find { DriverStayingTable.arrivalTransportSectionId inList transportsectionIds and (DriverStayingTable.startTransportSectionId notInList transportsectionIds) and DriverStayingTable.startTransportSectionId.isNotNull() }
-                .map { it.driverId }
+            DriverStayingDAO.find { DriverStayingTable.arrivalTransportSectionId inList transportSectionIds and (DriverStayingTable.startTransportSectionId notInList transportSectionIds) and DriverStayingTable.startTransportSectionId.isNotNull() }.map(::driverStayingDaoToModel)
         }
 
     }
 
-    suspend fun restoreDriverStayingsByTransportSectionId(transportSection: Int?) {
+    suspend fun restoreDriverStayingsByTransportSectionId(transportSectionId: Int?) {
         suspendTransaction {
             DriverStayingTable.update({
-                DriverStayingTable.startTransportSectionId eq transportSection
+                DriverStayingTable.startTransportSectionId eq transportSectionId
             }) {
                 it[startTransportSectionId] = null
                 it[startTime] = null
@@ -115,12 +114,12 @@ class DriverStayingRepository {
         }
     }
 
-    suspend fun refreshDriverStaying(driverId: Int, destinationSiteId: Int, id: Int, predictTime: LocalDateTime) {
+    suspend fun refreshDriverStaying(driverId: Int, destinationSiteId: Int, startTransportSectionId: Int, predictTime: LocalDateTime) {
         suspendTransaction {
             DriverStayingTable.update({
-                DriverStayingTable.driverId eq driverId and (DriverStayingTable.siteId eq destinationSiteId)
+                DriverStayingTable.driverId eq driverId and (DriverStayingTable.startTransportSectionId.isNull())
             }) {
-                it[startTransportSectionId] = id
+                it[this.startTransportSectionId] = startTransportSectionId
                 it[startTime] = predictTime.toJavaLocalDateTime()
             }
         }

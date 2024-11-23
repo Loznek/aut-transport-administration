@@ -16,7 +16,7 @@ object TransportSectionTable : IntIdTable("transport_section") {
     val startTime = datetime("start_time")
     val arrivalTime = datetime("arrival_time").nullable()
     val driverId = integer("driver_id").references(DriverTable.id)
-    val transportId = integer("transport_id").references(TransportTable.id)
+    val transportId = integer("transport_id").references(TransportTable.id).nullable()
 }
 
 // DAO class with an integer primary key

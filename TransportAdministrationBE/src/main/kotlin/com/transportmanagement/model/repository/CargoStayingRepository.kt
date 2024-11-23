@@ -55,10 +55,10 @@ class CargoStayingRepository {
         }
     }
 
-        suspend fun refreshCargoStayings(cargoIds: List<Int>, startSiteId: Int, transportId: Int, startTime: LocalDateTime) {
+        suspend fun refreshCargoStayings(cargoIds: List<Int>, transportId: Int, startTime: LocalDateTime) {
             suspendTransaction {
                 CargoStayingTable.update({
-                    CargoStayingTable.cargoId inList cargoIds and (CargoStayingTable.siteId eq startSiteId)
+                    CargoStayingTable.cargoId inList cargoIds and (CargoStayingTable.startTime.isNull())
                 }) {
                     it[startTransportId] = transportId
                     it[this.startTime] = startTime.toJavaLocalDateTime()
@@ -66,10 +66,10 @@ class CargoStayingRepository {
             }
         }
 
-    suspend fun noteDeliveredCargo(storeIds: List<Int>, transportId: Int?, arrivalTime: LocalDateTime) {
+    suspend fun noteDeliveredCargo(cargoIds: List<Int>, transportId: Int, arrivalTime: LocalDateTime) {
         suspendTransaction {
             CargoStayingTable.update({
-                CargoStayingTable.cargoId inList storeIds and (CargoStayingTable.arrivalTransportId eq transportId)
+                CargoStayingTable.cargoId inList cargoIds and CargoStayingTable.startTransportId.isNull()
             }) {
                 it[startTransportId] = transportId
                 it[startTime] = arrivalTime.toJavaLocalDateTime()
@@ -83,11 +83,11 @@ class CargoStayingRepository {
         }
     }
 
-    suspend fun countReferredCargo(transportId: Int): Int? =
+    suspend fun getReferredCargos(transportId: Int): List<CargoStaying> =
         suspendTransaction {
             CargoStayingDAO.find {
-                CargoStayingTable.arrivalTransportId eq transportId and CargoStayingTable.arrivalTransportId.isNull()
-            }.firstOrNull()?.cargoId
+                CargoStayingTable.arrivalTransportId eq transportId and CargoStayingTable.startTransportId.isNotNull() and (CargoStayingTable.startTransportId neq transportId)
+            }.map { cargoStayingDaoToModel(it) }
         }
 
     suspend fun deleteCargoStayingsByArrivalTransportId(tarnsportId: Int) {
@@ -115,6 +115,25 @@ class CargoStayingRepository {
                 CargoStayingTable.arrivalTransportId eq transportId
             }) {
                 it[arrivalTime] = predictTime.toJavaLocalDateTime()
+            }
+        }
+    }
+
+    suspend fun restoreCargoStayingByCargoIdByTransportId(transportId: Int?, cargoId: Int) {
+suspendTransaction {
+            CargoStayingTable.update({
+                CargoStayingTable.cargoId eq cargoId and (CargoStayingTable.startTransportId eq transportId)
+            }) {
+                it[startTransportId] = null
+                it[startTime] = null
+            }
+        }
+    }
+
+    suspend fun deleteCargoStayingsByCargoIdByArrivalTransportId(transportId: Int?, cargoId: Int) {
+        suspendTransaction {
+            CargoStayingTable.deleteWhere {
+                CargoStayingTable.cargoId eq cargoId and (CargoStayingTable.arrivalTransportId eq transportId)
             }
         }
     }

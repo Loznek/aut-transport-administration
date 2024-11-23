@@ -11,5 +11,5 @@ data class TransportSection(
     val startTime: LocalDateTime,
     var arrivalTime: LocalDateTime?,
     val driverId: Int,
-    val transportId: Int
+    var transportId: Int?
 )

@@ -13,7 +13,7 @@ import org.jetbrains.exposed.sql.javatime.datetime
 object DriverStayingTable : IntIdTable("driver_staying") {
     val siteId = integer("site_id").references(SiteTable.id)
     val driverId = integer("driver_id").references(DriverTable.id)
-    val arrivalTransportSectionId = integer("arrival_transport_section_id").references(TransportSectionTable.id)
+    val arrivalTransportSectionId = integer("arrival_transport_section_id").references(TransportSectionTable.id).nullable()
     val arrivalTime = datetime("arrival_time")
     val startTransportSectionId = integer("start_transport_section_id").references(TransportSectionTable.id).nullable()
     val startTime = datetime("start_time").nullable()

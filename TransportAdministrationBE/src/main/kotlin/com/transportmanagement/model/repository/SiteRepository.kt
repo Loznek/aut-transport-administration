@@ -21,9 +21,10 @@ class SiteRepository {
     // Adds a new site entry to the database
     suspend fun addSite(site: Site): Unit = suspendTransaction {
         SiteDAO.new {
-            this.postalCode = site.postalCode
-            this.streetName = site.streetName
-            this.houseNumber = site.houseNumber
+            this.name = site.name
+            this.lon = site.lon
+            this.lat = site.lat
+            this.address = site.address
             this.active = true
         }
     }
@@ -36,15 +37,19 @@ class SiteRepository {
         rowsDeleted == 1
     }
 
-    // Updates an existing site entry based on the provided model
+    // Updates an
+    /* existing site entry based on the provided model
     suspend fun updateSite(site: Site) {
         suspendTransaction {
             val siteDAO = SiteDAO.findById(site.id) ?: return@suspendTransaction
-            siteDAO.postalCode = site.postalCode
-            siteDAO.streetName = site.streetName
-            siteDAO.houseNumber = site.houseNumber
+            siteDAO.name = site.name
+            siteDAO.lon = site.lon
+            siteDAO.lat = site.lat
+            siteDAO.address = site.address
         }
     }
+
+     */
 
     // Retrieves all sites
     suspend fun getAllSites(): List<Site> = suspendTransaction {
@@ -61,6 +66,11 @@ class SiteRepository {
             site.active = false
             true
         }
+    }
+
+    suspend fun getAllActiveSites(): List<Site> = suspendTransaction {
+        SiteDAO.find { SiteTable.active eq true }.map(::siteDaoToModel)
+
     }
 
 }

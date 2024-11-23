@@ -15,7 +15,7 @@ object CargoTable : IntIdTable("cargo") {
     val volume = double("volume")
     val weight = double("weight")
     val delivered = bool("delivered")
-    val destinationStoreId = integer("destination_store_id").references(StoreTable.id)
+    val destinationStoreId = integer("destination_id").references(StoreTable.id)
     val active = bool("active")
 }
 

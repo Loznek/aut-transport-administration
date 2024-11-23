@@ -17,8 +17,8 @@ class CargoRepository {
     }
 
     // Adds a new cargo entry to the database
-    suspend fun addCargo(cargo: Cargo): Unit = suspendTransaction {
-        CargoDAO.new {
+    suspend fun addCargo(cargo: Cargo): Int = suspendTransaction {
+        val newCargo= CargoDAO.new {
             this.name = cargo.name
             this.volume = cargo.volume
             this.weight = cargo.weight
@@ -26,6 +26,7 @@ class CargoRepository {
             this.destinationStoreId = cargo.destinationStoreId
             this.delivered = false
         }
+        newCargo.id.value
     }
 
     // Removes a cargo entry by its ID, returning true if successful
@@ -39,6 +40,7 @@ class CargoRepository {
 
 
     // Updates an existing cargo entry based on the provided model
+    /*
     suspend fun updateCargo(cargo: Cargo) {
         suspendTransaction {
             val cargoDAO = CargoDAO.findById(cargo.id) ?: return@suspendTransaction
@@ -48,7 +50,7 @@ class CargoRepository {
             cargoDAO.destinationStoreId = cargo.destinationStoreId
             cargoDAO.delivered = cargo.delivered
         }
-    }
+    }*/
 
     suspend fun getAvailableCargoWithArrivalTime(siteId: Int): List<CargoWithArrivalTime> = suspendTransaction {
         CargoStayingDAO.find {
@@ -73,9 +75,9 @@ class CargoRepository {
 
     }
 
-    suspend fun noteDeliveredCargo(storeIds: List<Int>, storeIds1: List<Int>) {
+    suspend fun noteDeliveredCargo(cargoIds: List<Int>) {
         suspendTransaction {
-            CargoTable.update({ CargoTable.destinationStoreId inList storeIds }) {
+            CargoTable.update({ CargoTable.id inList cargoIds }) {
                 it[delivered] = true
             }
 
@@ -88,6 +90,32 @@ class CargoRepository {
                 it[delivered] = false
             }
         }
+    }
+
+    suspend fun getDeliveredCargos(cargoIds: List<Int>, storeIds: List<Int>): List<Int?> {
+        return suspendTransaction {
+            CargoDAO.find { (CargoTable.id inList cargoIds) and (CargoTable.destinationStoreId inList storeIds) }.map { it.id.value }
+        }
+    }
+
+    suspend fun getAllActiveCargos(): List<Cargo> = suspendTransaction {
+        CargoDAO.find { CargoTable.active eq true }.map(::cargoDaoToModel)
+
+    }
+
+    suspend fun getAllCargos(): List<Cargo> = suspendTransaction {
+        CargoDAO.all().map(::cargoDaoToModel)
+
+    }
+
+    suspend fun getNotDeliveredCargos(): List<Cargo> = suspendTransaction {
+        CargoDAO.find { CargoTable.delivered eq false and (CargoTable.active eq true) }.map(::cargoDaoToModel)
+
+    }
+
+    suspend fun getCargosByDestinationStoreId(storeId: Int): List<Cargo> = suspendTransaction {
+        CargoDAO.find { CargoTable.destinationStoreId eq storeId and (CargoTable.active eq true) and (CargoTable.delivered eq false) }.map(::cargoDaoToModel)
+
     }
 
 

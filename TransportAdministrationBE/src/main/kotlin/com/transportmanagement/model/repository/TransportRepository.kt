@@ -22,6 +22,8 @@ class TransportRepository {
     suspend fun addTransport(transport: Transport): Int = suspendTransaction {
         val newTransport = TransportDAO.new {
             this.startSiteId = transport.startSiteId
+            this.startTime = transport.startTime?.toJavaLocalDateTime()
+            this.arrivalTime = transport.arrivalTime?.toJavaLocalDateTime()
             this.destinationSiteId = transport.destinationSiteId
             this.truckId = transport.truckId
         }
@@ -41,6 +43,8 @@ class TransportRepository {
         suspendTransaction {
             val transportDAO = transport.id?.let { TransportDAO.findById(it) } ?: return@suspendTransaction
             transportDAO.startSiteId = transport.startSiteId
+            transportDAO.startTime = transport.startTime?.toJavaLocalDateTime()
+            transportDAO.arrivalTime = transport.arrivalTime?.toJavaLocalDateTime()
             transportDAO.destinationSiteId = transport.destinationSiteId
             transportDAO.truckId = transport.truckId
         }
@@ -63,6 +67,27 @@ class TransportRepository {
                 TransportTable.id eq transportId
             }) {
                 it[arrivalTime] = predictTime.toJavaLocalDateTime()
+            }
+        }
+    }
+
+    suspend fun updateTransportTruck(transportId: Int, truckId: Int) {
+        suspendTransaction {
+            TransportTable.update({
+                TransportTable.id eq transportId
+            }) {
+                it[this.truckId] = truckId
+            }
+        }
+
+    }
+
+    suspend fun updateTransportDriver(transportId: Int, truckId: Int) {
+        suspendTransaction {
+            TransportTable.update({
+                TransportTable.id eq transportId
+            }) {
+                it[this.truckId] = truckId
             }
         }
     }
