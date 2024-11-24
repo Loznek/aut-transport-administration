@@ -92,7 +92,6 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
   };
 
   const handleFormSubmitError: SubmitErrorHandler<TransportFormModel> = (formError) => {
-    console.log(formError);
     if (formError.sections?.root?.type === 'uniqueDriver') {
       setShouldUniqueDriverMessage(true);
     } else {
