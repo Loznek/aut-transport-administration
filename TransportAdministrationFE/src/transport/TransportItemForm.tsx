@@ -38,6 +38,7 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
   const [transportableCargos, setTransportableCargos] = useState<CargoWithArrivalTimeDto[]>([]);
   const [availableTrucks, setAvailableTrucks] = useState<TruckWithArrivalTimeDto[]>([]);
   const [availableSectionDrivers, setAvailableSectionDrivers] = useState<DriverWithArrivalTimeDto[][]>([]);
+  const [shouldUniqueDriverMessage, setShouldUniqueDriverMessage] = useState(false);
   const [shouldMultipleSections, setShouldMultipleSections] = useState(false);
   const { mutateAsync: getAvailableTrucks, isPending: isGetAvailableTrucksPending } = useGetSiteAvailableTrucks();
   const { mutateAsync: getTransportableCargos, isPending: isGetTransportableCargosPending } =
@@ -52,7 +53,7 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
     reset,
     formState: { isSubmitting, isValidating },
   } = useForm<TransportFormModel>({
-    defaultValues: mapTransportResponseToTransportFormData(data),
+    defaultValues: mapTransportResponseToTransportFormData({ data, stores }),
     resolver: data
       ? undefined
       : yupResolver(
@@ -82,18 +83,6 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
     }
   }, [data, getAvailableTrucks, getTransportableCargos, setValue, startSiteId]);
 
-  useEffect(() => {
-    if (data && stores?.length) {
-      data.transportSections.forEach((section, index) => {
-        const storeStopIds = section.storeStops.map((stop) => stop.storeId);
-        setValue(
-          `sections.${index}.stops`,
-          stores.filter((store) => storeStopIds.includes(store.id))
-        );
-      });
-    }
-  }, [data, stores, setValue]);
-
   const handleFormSubmit: SubmitHandler<TransportFormModel> = async (formData) => {
     if (data && idParam) {
       await updateTransport({ body: data, id: idParam });
@@ -104,7 +93,12 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
 
   const handleFormSubmitError: SubmitErrorHandler<TransportFormModel> = (formError) => {
     console.log(formError);
-    if (formError.sections?.root?.type === 'lessThen9Hour' && !shouldMultipleSections) {
+    if (formError.sections?.root?.type === 'uniqueDriver') {
+      setShouldUniqueDriverMessage(true);
+    } else {
+      setShouldUniqueDriverMessage(false);
+    }
+    if (formError.sections?.root?.type === 'moreThen9Hour' && !shouldMultipleSections) {
       setShouldMultipleSections(true);
       setCurrentStep(TransportCreationStep.DEFINE_DETAILS);
       const firstSection = watch().sections[0];
@@ -159,6 +153,7 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
     <form onSubmit={handleSubmit(handleFormSubmit, handleFormSubmitError)}>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         {shouldMultipleSections && <Alert severity="warning">{t('transports.multipleWarning')}</Alert>}
+        {shouldUniqueDriverMessage && <Alert severity="warning">{t('transports.uniqueDriverWarning')}</Alert>}
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           {controlledFields.map(({ id }, index) => (
             <Fragment key={id}>

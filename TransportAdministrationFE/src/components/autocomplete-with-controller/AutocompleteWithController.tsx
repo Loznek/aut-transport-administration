@@ -34,9 +34,10 @@ const AutocompleteWithController = <
   return (
     <Controller
       {...controllerProps}
-      render={({ field: { onChange }, fieldState: { error } }) => (
+      render={({ field: { onChange, value }, fieldState: { error } }) => (
         <Autocomplete
           {...autocompleteProps}
+          value={value}
           options={options}
           onChange={(_, value) => onChange(value)}
           renderInput={(params) => (

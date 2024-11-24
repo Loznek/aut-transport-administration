@@ -75,7 +75,7 @@ const CargoListPage = () => {
         </List>
       ) : (
         <Box sx={{ display: 'flex', justifyContent: 'center', padding: 2 }}>
-          <Typography sx={{ textAlign: 'center' }}>{t('cargos.noSites')}</Typography>
+          <Typography sx={{ textAlign: 'center' }}>{t('cargos.noCargos')}</Typography>
         </Box>
       )}
     </Box>

@@ -141,7 +141,7 @@ server.delete('/api/transport/:id', (req, res) => {
   res.send();
 });
 
-server.use(pause(3000)).post('/api/calculate-travel-time', (req, res) => {
+server.use(pause(1000)).post('/api/calculate-travel-time', (req, res) => {
   res.send(lowdb.get('calculateTravelTimeNinePlus'));
 });
 

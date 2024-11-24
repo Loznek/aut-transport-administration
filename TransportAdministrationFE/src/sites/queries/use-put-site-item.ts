@@ -12,6 +12,7 @@ const usePutSiteItem = () => {
     mutationFn: sitesClient.putSiteItem,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: [SITE_LIST_KEY] });
+      await queryClient.invalidateQueries({ queryKey: [SITE_LIST_KEY] });
       navigate(ROUTES.SITES());
     },
   });

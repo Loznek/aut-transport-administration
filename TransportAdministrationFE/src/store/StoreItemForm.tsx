@@ -19,6 +19,7 @@ const StoreItemForm = ({ data }: StoreItemFormProps) => {
   const { control, handleSubmit } = useForm<StoreFormModel>({
     defaultValues: {
       address: data?.address ?? '',
+      name: data?.name ?? '',
     },
     resolver: yupResolver(storeFormValidator()),
   });

@@ -86,7 +86,7 @@ const transportSectionFormValidator = ({
     startSite: yup.number().typeError(t('validation.required')).required(),
     destinationSite: yup.number().typeError(t('validation.required')).required(),
     stops: yup.array().of(yup.mixed<StoreDto>().required()).required(),
-    driver: yup.number().required(),
+    driver: yup.number().typeError(t('validation.required')).required(),
   });
 
 const transportFormValidator = ({
@@ -96,51 +96,45 @@ const transportFormValidator = ({
   availableDrivers,
 }: TransportSectionFormValidatorArgs): yup.ObjectSchema<TransportFormModel> =>
   yup.object().shape({
-    truck: yup.number().required(),
+    truck: yup.number().typeError(t('validation.required')).required(),
     cargos: yup
       .array()
       .of(yup.mixed<CargoDto>().required())
-      .test(
-        'tooMuchVolume',
-        t('validation.required', (value: CargoDto[], context: yup.TestContext) => {
-          const truckId = (context.parent as TransportFormModel).truck;
-          const selectedTruck = availableTrucks.find((truck) => truck.truck.id === truckId)?.truck;
-          if (selectedTruck) {
-            const sumVolume = value.reduce((acc, value) => {
-              return acc + value.volume;
-            }, 0);
+      .test('tooMuchVolume', t('transports.volumeTooMuch'), (value = [], context) => {
+        const truckId = (context.parent as TransportFormModel).truck;
+        const selectedTruck = availableTrucks.find((truck) => truck.truck.id === truckId)?.truck;
+        if (selectedTruck) {
+          const sumVolume = value.reduce((acc, value) => {
+            return acc + value.volume;
+          }, 0);
 
-            return selectedTruck.volumeCapacity >= sumVolume;
-          }
+          return selectedTruck.volumeCapacity >= sumVolume;
+        }
 
-          return true;
-        })
-      )
-      .test(
-        'tooMuchWeight',
-        t('validation.required', (value: CargoDto[], context: yup.TestContext) => {
-          const truckId = (context.parent as TransportFormModel).truck;
-          const selectedTruck = availableTrucks.find((truck) => truck.truck.id === truckId)?.truck;
-          if (selectedTruck) {
-            const sumWeight = value.reduce((acc, value) => {
-              return acc + value.weight;
-            }, 0);
+        return true;
+      })
+      .test('tooMuchWeight', t('transports.weightTooMuch'), (value = [], context) => {
+        const truckId = (context.parent as TransportFormModel).truck;
+        const selectedTruck = availableTrucks.find((truck) => truck.truck.id === truckId)?.truck;
+        if (selectedTruck) {
+          const sumWeight = value.reduce((acc, value) => {
+            return acc + value.weight;
+          }, 0);
 
-            return selectedTruck.weightCapacity >= sumWeight;
-          }
+          return selectedTruck.weightCapacity >= sumWeight;
+        }
 
-          return true;
-        })
-      )
+        return true;
+      })
       .required(),
     sections: yup
       .array()
       .of(transportSectionFormValidator({ t, transportableCargos, availableDrivers, availableTrucks }))
-      .test('uniqueDriver', t('validation.required'), (value = []) => {
+      .test('uniqueDriver', '', (value = []) => {
         const driverIds = value.map((section) => section.driver).filter(Boolean);
         return driverIds.length === new Set(driverIds).size;
       })
-      .test('lessThen9Hour', t('validation.required'), async (value = [], context): Promise<boolean> => {
+      .test('moreThen9Hour', '', async (value = [], context): Promise<boolean> => {
         let isValid = true;
         const formData = context.parent as TransportFormModel;
         let previousSectionArrivalTime: Date | null = null;

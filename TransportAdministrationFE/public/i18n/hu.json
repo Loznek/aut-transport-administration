@@ -68,7 +68,8 @@
     "type": "Jármű típusa",
     "volumeCapacity": "Jármű térfogata",
     "weightCapacity": "Jármű terhelhetősége",
-    "licencePlate": "Jármű rendszáma"
+    "licencePlate": "Jármű rendszáma",
+    "site": "Telephely"
   },
   "cargos": {
     "noCargos": "Nem található áru",
@@ -88,6 +89,9 @@
     "truck": "Jármű",
     "driver": "Sofőr",
     "addMore": "Új szakasz hozzáadása",
-    "multipleWarning": "A megadott út tovább tart mint 9 óra, így több szakaszra kell bontanod!"
+    "multipleWarning": "A megadott út tovább tart mint 9 óra, így több szakaszra kell bontanod!",
+    "uniqueDriverWarning": "Egy sofőrt nem lehet egy fuvaron belül többször megbízni!",
+    "weightTooMuch": "A rakomány túl súlyos, nem bírja el a jármű",
+    "volumeTooMuch": "A rakomány túl méretes, nem fér bele a jármű"
   }
 }

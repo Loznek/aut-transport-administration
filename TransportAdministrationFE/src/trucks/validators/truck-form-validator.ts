@@ -5,8 +5,10 @@ import TruckFormModel from '../models/TruckFormModel.ts';
 const truckFormValidator = (t: TFunction): yup.ObjectSchema<TruckFormModel> =>
   yup.object().shape({
     type: yup.string().required(),
-    weightCapacity: yup.number().typeError(t('validation.required')).required(),
-    volumeCapacity: yup.number().typeError(t('validation.required')).required(),
+    licencePlate: yup.string().required(),
+    weightCapacity: yup.number().typeError(t('validation.required')).moreThan(0, t('validation.required')).required(),
+    volumeCapacity: yup.number().typeError(t('validation.required')).moreThan(0, t('validation.required')).required(),
+    startSiteId: yup.number().typeError(t('validation.required')).required(),
   });
 
 export default truckFormValidator;
