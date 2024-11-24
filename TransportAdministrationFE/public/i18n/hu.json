@@ -1,1 +1,97 @@
-{}
+{
+  "common": {
+    "next": "Tovább",
+    "save": "Mentés",
+    "cancel": "Mégsem",
+    "delete": "Törlés",
+    "back": "Vissza"
+  },
+  "validation": {
+    "required": "A mező kitöltése kötelező"
+  },
+  "header": {
+    "appName": "Transport Administration"
+  },
+  "login": {
+    "title": "Bejelentkezés",
+    "username": "Felhasználónév",
+    "password": "Jelszó"
+  },
+  "home": {
+    "welcome": "Üdvözöljük, {{name}}"
+  },
+  "exception": "Váratlan hiba történt...",
+  "addNew": "Új hozzáadása",
+  "administrations": {
+    "trucks": {
+      "manage": "Járművek kezelése",
+      "detail1": "Új járművek vásárlása",
+      "detail2": "Meglévő járművek eladása"
+    },
+    "transports": {
+      "manage": "Fuvarok kezelése",
+      "detail1": "Új fuvarok készítése",
+      "detail2": "Meglévő fuvar módosítása",
+      "detail3": "Meglévő fuvar törlése"
+    },
+    "stores": {
+      "manage": "Boltok kezelése",
+      "detail1": "Új bolt hozzáadása",
+      "detail2": "Meglévő bolt eltávolítása"
+    },
+    "sites": {
+      "manage": "Telephelyek kezelése",
+      "detail1": "Új telephely hozzáadása",
+      "detail2": "Meglévő telephely törlése"
+    },
+    "cargos": {
+      "manage": "Áruk kezelése",
+      "detail1": "Új áru felvétele",
+      "detail2": "Meglévő áru törlése"
+    }
+  },
+  "sites": {
+    "noSites": "Nem található telephely",
+    "name": "Név",
+    "address": "Cím",
+    "confirmDeleteTitle": "Biztosan törlöd a telephelyet?"
+  },
+  "stores": {
+    "noStores": "Nem található üzlet",
+    "name": "Név",
+    "address": "Cím",
+    "confirmDeleteTitle": "Biztosan törlöd az üzletet?"
+  },
+  "trucks": {
+    "noTrucks": "Nem található jármű",
+    "confirmDeleteTitle": "Biztosan törlöd a járművet?",
+    "type": "Jármű típusa",
+    "volumeCapacity": "Jármű térfogata",
+    "weightCapacity": "Jármű terhelhetősége",
+    "licencePlate": "Jármű rendszáma",
+    "site": "Telephely"
+  },
+  "cargos": {
+    "noCargos": "Nem található áru",
+    "confirmDeleteTitle": "Biztosan törlöd az árut?",
+    "name": "Áru neve",
+    "volume": "Áru térfogata",
+    "weight": "Áru súlya",
+    "site": "Telephely"
+  },
+  "transports": {
+    "noTransports": "Nem található fuvar",
+    "confirmDeleteTitle": "Biztosan törlöd a fuvart?",
+    "startSite": "Indulási telephely",
+    "destinationSite": "Érkezési telephely",
+    "stops": "Megállók",
+    "cargos": "Áruk",
+    "truck": "Jármű",
+    "driver": "Sofőr",
+    "addMore": "Új szakasz hozzáadása",
+    "multipleWarning": "A megadott út tovább tart mint 9 óra, így több szakaszra kell bontanod!",
+    "uniqueDriverWarning": "Egy sofőrt nem lehet egy fuvaron belül többször megbízni!",
+    "weightTooMuch": "A rakomány túl súlyos, nem bírja el a jármű",
+    "volumeTooMuch": "A rakomány túl méretes, nem fér bele a jármű"
+  }
+}

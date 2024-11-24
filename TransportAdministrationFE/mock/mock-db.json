@@ -1,0 +1,390 @@
+{
+  "auth-admin": {
+    "token": "mockAdminToken",
+    "user": {
+      "name": "Administrator",
+      "type": "ADMINISTRATOR"
+    }
+  },
+  "auth-driver": {
+    "token": "mockDriverToken",
+    "user": {
+      "name": "Driver",
+      "type": "DRIVER"
+    }
+  },
+  "me-driver": {
+    "name": "Driver",
+    "type": "DRIVER"
+  },
+  "me-admin": {
+    "name": "Administrator",
+    "type": "ADMINISTRATOR"
+  },
+  "getTrucks": [
+    {
+      "id": 1,
+      "type": "Iveco",
+      "volumeCapacity": 200,
+      "weightCapacity": 50,
+      "licencePlate": "ABC123"
+    },
+    {
+      "id": 2,
+      "type": "Volvo",
+      "volumeCapacity": 240,
+      "weightCapacity": 62,
+      "licencePlate": "ABC123"
+    },
+    {
+      "id": 3,
+      "type": "Ford",
+      "volumeCapacity": 160,
+      "weightCapacity": 48,
+      "licencePlate": "ABC123"
+    },
+    {
+      "id": 4,
+      "type": "IFA",
+      "volumeCapacity": 60,
+      "weightCapacity": 10,
+      "licencePlate": "ABC123"
+    },
+    {
+      "id": 5,
+      "type": "Scania",
+      "volumeCapacity": 190,
+      "weightCapacity": 45,
+      "licencePlate": "ABC123"
+    },
+    {
+      "id": 6,
+      "type": "MAN",
+      "volumeCapacity": 220,
+      "weightCapacity": 60,
+      "licencePlate": "ABC123"
+    }
+  ],
+  "getTruckItem": {
+    "id": 2,
+    "type": "Volvo",
+    "volumeCapacity": 240,
+    "weightCapacity": 62,
+    "licencePlate": "ABC123"
+  },
+  "getSites": [
+    {
+      "id": 1,
+      "address": "1000 Budapest, Kossuth tér 1."
+    },
+    {
+      "id": 2,
+      "address": "4000 Baja, Rákóczi utca 22."
+    },
+    {
+      "id": 3,
+      "address": "4566 Miskolc, Hunyadi út 6."
+    },
+    {
+      "id": 4,
+      "address": "1450 Miskolc, Malom tér 22."
+    },
+    {
+      "id": 5,
+      "address": "4430 Solymár, Major tér 12."
+    },
+    {
+      "id": 6,
+      "address": "5000 Szolnok, Kacsóh út 56."
+    },
+    {
+      "id": 7,
+      "address": "2230 Fót, Ilona utca 25."
+    },
+    {
+      "id": 8,
+      "address": "2231 Vecsés, Ceglédi út 266."
+    }
+  ],
+  "getSiteItem": {
+    "id": 1,
+    "address": "4566 Miskolc, Hunyadi út 6."
+  },
+  "getStores": [
+    {
+      "id": 1,
+      "address": "1000 Budapest, Kossuth tér 1."
+    },
+    {
+      "id": 2,
+      "address": "4000 Baja, Rákóczi utca 22."
+    },
+    {
+      "id": 3,
+      "address": "4566 Miskolc, Hunyadi út 6."
+    },
+    {
+      "id": 4,
+      "address": "4423 Szeged, Rákosi köz 32."
+    },
+    {
+      "id": 5,
+      "address": "3442 Győr, Horváth utca 1a."
+    },
+    {
+      "id": 6,
+      "address": "5000 Szolnok, Baros út 9."
+    },
+    {
+      "id": 7,
+      "address": "2211 Szentendre, Alma köz 33."
+    },
+    {
+      "id": 8,
+      "address": "5543 Debrecen, Nagy István park 2."
+    }
+  ],
+  "getStoreItem": {
+    "id": 1,
+    "address": "4566 Miskolc, Hunyadi út 6."
+  },
+  "getCargos": [
+    {
+      "id": 1,
+      "name": "Olaj",
+      "volume": 10,
+      "weight": 3
+    },
+    {
+      "id": 2,
+      "name": "Kavics",
+      "volume": 14,
+      "weight": 18
+    },
+    {
+      "id": 3,
+      "name": "Lekvár",
+      "volume": 10,
+      "weight": 8
+    },
+    {
+      "id": 4,
+      "name": "Majonéz",
+      "volume": 5,
+      "weight": 3
+    },
+    {
+      "id": 5,
+      "name": "Sültkrumpli",
+      "volume": 30,
+      "weight": 35
+    },
+    {
+      "id": 6,
+      "name": "Sonka",
+      "volume": 13,
+      "weight": 7
+    },
+    {
+      "id": 7,
+      "name": "Whisky",
+      "volume": 20,
+      "weight": 15
+    },
+    {
+      "id": 8,
+      "name": "Joghurt",
+      "volume": 4,
+      "weight": 2
+    }
+  ],
+  "getCargoItem": {
+    "id": 7,
+    "name": "Whisky",
+    "volume": 20,
+    "weight": 15,
+    "destinationStoreId": 4
+  },
+  "calculateTravelTimeNinePlus": {
+    "destinationArrivalTime": "Fri Nov 22 2027 10:00:00 GMT+0100 (Central European Standard Time)"
+  },
+  "getSiteTransportableCargos": [
+    {
+      "arrivalTime": "Fri Nov 22 2025 10:00:00 GMT+0100 (Central European Standard Time)",
+      "cargo": {
+        "id": 1,
+        "name": "Olaj",
+        "volume": 10,
+        "weight": 3
+      }
+    },
+    {
+      "arrivalTime": "Fri Nov 22 2025 10:00:00 GMT+0100 (Central European Standard Time)",
+      "cargo": {
+        "id": 5,
+        "name": "Sültkrumpli",
+        "volume": 30,
+        "weight": 35
+      }
+    },
+    {
+      "arrivalTime": "Fri Nov 22 2025 10:00:00 GMT+0100 (Central European Standard Time)",
+      "cargo": {
+        "id": 7,
+        "name": "Whisky",
+        "volume": 20,
+        "weight": 15
+      }
+    },
+    {
+      "arrivalTime": "Fri Nov 22 2025 10:00:00 GMT+0100 (Central European Standard Time)",
+      "cargo": {
+        "id": 8,
+        "name": "Joghurt",
+        "volume": 4,
+        "weight": 2
+      }
+    }
+  ],
+  "getSiteAvailableTrucks": [
+    {
+      "arrivalTime": "Fri Nov 22 2025 10:00:00 GMT+0100 (Central European Standard Time)",
+      "truck": {
+        "id": 6,
+        "type": "MAN",
+        "volumeCapacity": 220,
+        "weightCapacity": 60,
+        "licencePlate": "ABC123"
+      }
+    },
+    {
+      "arrivalTime": "Fri Nov 22 2025 10:00:00 GMT+0100 (Central European Standard Time)",
+      "truck": {
+        "id": 3,
+        "type": "VOLVO",
+        "volumeCapacity": 220,
+        "weightCapacity": 60,
+        "licencePlate": "ABC123"
+      }
+    },
+    {
+      "arrivalTime": "Fri Nov 22 2025 10:00:00 GMT+0100 (Central European Standard Time)",
+      "truck": {
+        "id": 2,
+        "type": "MERCEDES",
+        "volumeCapacity": 220,
+        "weightCapacity": 60,
+        "licencePlate": "ABC123"
+      }
+    },
+    {
+      "arrivalTime": "Fri Nov 22 2025 10:00:00 GMT+0100 (Central European Standard Time)",
+      "truck": {
+        "id": 1,
+        "type": "FORD",
+        "volumeCapacity": 220,
+        "weightCapacity": 60,
+        "licencePlate": "ABC123"
+      }
+    }
+  ],
+  "getSiteAvailableDrivers": [
+    {
+      "driver": {
+        "id": 0,
+        "name": "Feri"
+      },
+      "arrivalTime": "Fri Nov 22 2025 10:00:00 GMT+0100 (Central European Standard Time)"
+    },
+    {
+      "driver": {
+        "id": 1,
+        "name": "Lajos"
+      },
+      "arrivalTime": "Fri Nov 22 2025 10:00:00 GMT+0100 (Central European Standard Time)"
+    },
+    {
+      "driver": {
+        "id": 2,
+        "name": "Laci"
+      },
+      "arrivalTime": "Fri Nov 22 2025 10:00:00 GMT+0100 (Central European Standard Time)"
+    },
+    {
+      "driver": {
+        "id": 3,
+        "name": "Aladár"
+      },
+      "arrivalTime": "Fri Nov 22 2025 10:00:00 GMT+0100 (Central European Standard Time)"
+    }
+  ],
+  "getAllTransport": [
+    {
+      "id": 0,
+      "startSiteId": 1,
+      "destinationSiteId": 2,
+      "arrivalTime": "Fri Nov 22 2025 10:00:00 GMT+0100 (Central European Standard Time)",
+      "startTime": "Fri Nov 22 2025 10:00:00 GMT+0100 (Central European Standard Time)",
+      "truckId": 1
+    },
+    {
+      "id": 1,
+      "startSiteId": 2,
+      "destinationSiteId": 3,
+      "arrivalTime": "Fri Nov 22 2025 10:00:00 GMT+0100 (Central European Standard Time)",
+      "startTime": "Fri Nov 22 2025 10:00:00 GMT+0100 (Central European Standard Time)",
+      "truckId": 2
+    },
+    {
+      "id": 2,
+      "startSiteId": 3,
+      "destinationSiteId": 4,
+      "arrivalTime": "Fri Nov 22 2025 10:00:00 GMT+0100 (Central European Standard Time)",
+      "startTime": "Fri Nov 22 2025 10:00:00 GMT+0100 (Central European Standard Time)",
+      "truckId": 3
+    }
+  ],
+  "getTransport": {
+    "startSiteId": 1,
+    "startTime": "Fri Nov 22 2025 10:00:00 GMT+0100 (Central European Standard Time)",
+    "destinationSiteId": 2,
+    "truckId": 1,
+    "cargoIds": [
+      1,
+      5,
+      3
+    ],
+    "transportSections": [
+      {
+        "transportSection": {
+          "startSiteId": 1,
+          "destinationSiteId": 3,
+          "driverId": 1
+        },
+        "storeStops": [
+          {
+            "storeId": 1
+          },
+          {
+            "storeId": 2
+          }
+        ]
+      },
+      {
+        "transportSection": {
+          "startSiteId": 3,
+          "destinationSiteId": 2,
+          "driverId": 2
+        },
+        "storeStops": [
+          {
+            "storeId": 3
+          },
+          {
+            "storeId": 4
+          }
+        ]
+      }
+    ]
+  }
+}
