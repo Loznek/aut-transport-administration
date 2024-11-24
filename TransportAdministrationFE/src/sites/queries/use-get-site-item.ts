@@ -9,7 +9,7 @@ const useGetSiteItem = () => {
 
   return useQuery({
     queryKey: [SITE_ITEM_KEY, idParam],
-    queryFn: () => sitesClient.getSiteItem(idParam).then((res) => res.data),
+    queryFn: () => sitesClient.getSiteItem(idParam!).then((res) => res.data),
     enabled: !!idParam && idParam !== 'new',
   });
 };

@@ -17,7 +17,7 @@ const SiteItemPage = () => {
 
   return (
     <Box sx={{ padding: 2 }}>
-      <SiteItemForm data={data?.site} />
+      <SiteItemForm data={data} />
     </Box>
   );
 };

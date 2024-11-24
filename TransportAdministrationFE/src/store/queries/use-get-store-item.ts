@@ -9,7 +9,7 @@ const useGetStoreItem = () => {
 
   return useQuery({
     queryKey: [STORE_ITEM_KEY, idParam],
-    queryFn: () => storesClient.getStoreItem(idParam).then((res) => res.data),
+    queryFn: () => storesClient.getStoreItem(idParam!).then((res) => res.data),
     enabled: !!idParam && idParam !== 'new',
   });
 };
