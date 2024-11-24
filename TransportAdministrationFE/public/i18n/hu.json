@@ -52,11 +52,13 @@
   },
   "sites": {
     "noSites": "Nem található telephely",
+    "name": "Név",
     "address": "Cím",
     "confirmDeleteTitle": "Biztosan törlöd a telephelyet?"
   },
   "stores": {
     "noStores": "Nem található üzlet",
+    "name": "Név",
     "address": "Cím",
     "confirmDeleteTitle": "Biztosan törlöd az üzletet?"
   },

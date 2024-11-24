@@ -6,7 +6,11 @@ import DriverWithArrivalTimeDto from '../../core/dto/DriverWithArrivalTimeDto';
 import SiteDto from '../../core/dto/SiteDto';
 
 const getSiteList = (): AxiosPromise<SiteDto[]> => {
-  return apiClient.private.get('/sites');
+  return apiClient.private.get('/sites/active-sites');
+};
+
+const getAllSiteList = (): AxiosPromise<SiteDto[]> => {
+  return apiClient.private.get('/sites/all-sites');
 };
 
 const getSiteItem = (id: string): AxiosPromise<SiteDto> => {
@@ -35,6 +39,7 @@ const getSiteAvailableDrivers = (id: number): AxiosPromise<DriverWithArrivalTime
 
 const sitesClient = {
   getSiteList,
+  getAllSiteList,
   getSiteItem,
   putSiteItem,
   deleteSiteItem,

@@ -20,12 +20,12 @@ const SiteListPage = () => {
     navigate(ROUTES.SITE_ITEM('new'));
   };
 
-  const handleEdit = (id: string) => () => {
-    navigate(ROUTES.SITE_ITEM(id));
+  const handleEdit = (id: number) => () => {
+    navigate(ROUTES.SITE_ITEM(id.toString()));
   };
 
-  const handleDeleteSiteItem = (id: string) => async () => {
-    await deleteSiteItem(id);
+  const handleDeleteSiteItem = (id: number) => async () => {
+    await deleteSiteItem(id.toString());
   };
 
   if (isFetching) {
@@ -43,9 +43,9 @@ const SiteListPage = () => {
           {t('addNew')}
         </Button>
       </Box>
-      {data?.sites?.length ? (
+      {data?.length ? (
         <List>
-          {data?.sites.map((site, index) => (
+          {data?.map((site, index) => (
             <Fragment key={site.id}>
               {index !== 0 && <Divider />}
               <ListItem

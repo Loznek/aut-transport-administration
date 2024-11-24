@@ -97,7 +97,42 @@ const transportFormValidator = ({
 }: TransportSectionFormValidatorArgs): yup.ObjectSchema<TransportFormModel> =>
   yup.object().shape({
     truck: yup.number().required(),
-    cargos: yup.array().of(yup.mixed<CargoDto>().required()).required(),
+    cargos: yup
+      .array()
+      .of(yup.mixed<CargoDto>().required())
+      .test(
+        'tooMuchVolume',
+        t('validation.required', (value: CargoDto[], context: yup.TestContext) => {
+          const truckId = (context.parent as TransportFormModel).truck;
+          const selectedTruck = availableTrucks.find((truck) => truck.truck.id === truckId)?.truck;
+          if (selectedTruck) {
+            const sumVolume = value.reduce((acc, value) => {
+              return acc + value.volume;
+            }, 0);
+
+            return selectedTruck.volumeCapacity >= sumVolume;
+          }
+
+          return true;
+        })
+      )
+      .test(
+        'tooMuchWeight',
+        t('validation.required', (value: CargoDto[], context: yup.TestContext) => {
+          const truckId = (context.parent as TransportFormModel).truck;
+          const selectedTruck = availableTrucks.find((truck) => truck.truck.id === truckId)?.truck;
+          if (selectedTruck) {
+            const sumWeight = value.reduce((acc, value) => {
+              return acc + value.weight;
+            }, 0);
+
+            return selectedTruck.weightCapacity >= sumWeight;
+          }
+
+          return true;
+        })
+      )
+      .required(),
     sections: yup
       .array()
       .of(transportSectionFormValidator({ t, transportableCargos, availableDrivers, availableTrucks }))

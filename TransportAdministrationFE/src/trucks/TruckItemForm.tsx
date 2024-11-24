@@ -28,13 +28,11 @@ const TruckItemForm = ({ data }: TruckItemFormProps) => {
 
   const handleFormSubmit: SubmitHandler<TruckFormModel> = (formData) => {
     putTruckItem({
-      truck: {
-        id: data?.id ?? null,
-        type: formData.type,
-        licencePlate: formData.licencePlate,
-        volumeCapacity: formData.volumeCapacity,
-        weightCapacity: formData.weightCapacity,
-      },
+      id: data?.id ?? null,
+      type: formData.type,
+      licencePlate: formData.licencePlate,
+      volumeCapacity: formData.volumeCapacity,
+      weightCapacity: formData.weightCapacity,
     });
   };
 

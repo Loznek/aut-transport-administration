@@ -30,7 +30,11 @@ server.get('/api/me', (req, res) => {
   res.send(lowdb.get('me-admin'));
 });
 
-server.get('/api/trucks', (req, res) => {
+server.get('/api/trucks/active-trucks', (req, res) => {
+  res.send(lowdb.get('getTrucks'));
+});
+
+server.get('/api/trucks/all-trucks', (req, res) => {
   res.send(lowdb.get('getTrucks'));
 });
 
@@ -46,7 +50,11 @@ server.delete('/api/trucks/:id', (req, res) => {
   res.send();
 });
 
-server.get('/api/sites', (req, res) => {
+server.get('/api/sites/active-sites', (req, res) => {
+  res.send(lowdb.get('getSites'));
+});
+
+server.get('/api/sites/all-sites', (req, res) => {
   res.send(lowdb.get('getSites'));
 });
 
@@ -74,7 +82,11 @@ server.get('/api/sites/available-drivers/:id', (req, res) => {
   res.send(lowdb.get('getSiteAvailableDrivers'));
 });
 
-server.get('/api/stores', (req, res) => {
+server.get('/api/stores/active-stores', (req, res) => {
+  res.send(lowdb.get('getStores'));
+});
+
+server.get('/api/stores/all-stores', (req, res) => {
   res.send(lowdb.get('getStores'));
 });
 
@@ -90,7 +102,11 @@ server.delete('/api/stores/:id', (req, res) => {
   res.send();
 });
 
-server.get('/api/cargos', (req, res) => {
+server.get('/api/cargos/active-cargos', (req, res) => {
+  res.send(lowdb.get('getCargos'));
+});
+
+server.get('/api/cargos/all-cargos', (req, res) => {
   res.send(lowdb.get('getCargos'));
 });
 

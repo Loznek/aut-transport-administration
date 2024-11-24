@@ -9,8 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import DeleteIconButtonWithDialog from '../components/delete-icon-button-with-dialog/DeleteIconButtonWithDialog.tsx';
 import useDeleteTransportItem from './queries/use-delete-transport-item.ts';
-import useGetSiteList from '../sites/queries/use-get-site-list';
-import useGetTruckList from '../trucks/queries/use-get-truck-list';
+import useGetAllSiteList from '../sites/queries/use-get-all-site-list';
+import useGetAllTruckList from '../trucks/queries/use-get-all-truck-list';
 
 const TransportListPage = () => {
   const { t } = useTranslation();
@@ -20,8 +20,8 @@ const TransportListPage = () => {
     isFetching: isTransportListFetching,
     isError: isTransportListError,
   } = useGetTransportList();
-  const { data: siteList, isFetching: isSiteListFetching, isError: isSiteListError } = useGetSiteList();
-  const { data: truckList, isFetching: isTruckListFetching, isError: isTruckListError } = useGetTruckList();
+  const { data: siteList, isFetching: isSiteListFetching, isError: isSiteListError } = useGetAllSiteList();
+  const { data: truckList, isFetching: isTruckListFetching, isError: isTruckListError } = useGetAllTruckList();
   const { mutateAsync: deleteTransportItem, isPending: isDeleteTransportItemPending } = useDeleteTransportItem();
 
   const handleAddNew = () => {

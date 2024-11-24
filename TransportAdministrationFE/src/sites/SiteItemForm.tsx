@@ -19,22 +19,23 @@ const SiteItemForm = ({ data }: SiteItemFormProps) => {
   const { control, handleSubmit } = useForm<SiteFormModel>({
     defaultValues: {
       address: data?.address ?? '',
+      name: data?.name ?? '',
     },
     resolver: yupResolver(siteFormValidator()),
   });
 
   const handleFormSubmit: SubmitHandler<SiteFormModel> = (formData) => {
     putSiteItem({
-      site: {
-        id: data?.id ?? 'new',
-        address: formData.address,
-      },
+      id: data?.id ?? (null as unknown as number),
+      address: formData.address,
+      name: formData.name,
     });
   };
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)}>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <TextFieldWithController controllerProps={{ control, name: 'name' }} label={t('sites.name')} />
         <TextFieldWithController controllerProps={{ control, name: 'address' }} label={t('sites.address')} />
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <LoadingButton variant="contained" type="submit" loading={isPutSiteItemPending}>

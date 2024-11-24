@@ -25,16 +25,16 @@ const StoreItemForm = ({ data }: StoreItemFormProps) => {
 
   const handleFormSubmit: SubmitHandler<StoreFormModel> = (formData) => {
     putStoreItem({
-      store: {
-        id: data!.id,
-        address: formData.address,
-      },
+      id: data!.id,
+      address: formData.address,
+      name: formData.name,
     });
   };
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)}>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <TextFieldWithController controllerProps={{ control, name: 'name' }} label={t('stores.name')} />
         <TextFieldWithController controllerProps={{ control, name: 'address' }} label={t('stores.address')} />
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <LoadingButton variant="contained" type="submit" loading={isPutStoreItemPending}>
