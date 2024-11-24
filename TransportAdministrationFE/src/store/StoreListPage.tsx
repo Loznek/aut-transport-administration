@@ -20,12 +20,12 @@ const StoreListPage = () => {
     navigate(ROUTES.STORE_ITEM('new'));
   };
 
-  const handleEdit = (id: string) => () => {
-    navigate(ROUTES.STORE_ITEM(id));
+  const handleEdit = (id: number) => () => {
+    navigate(ROUTES.STORE_ITEM(id.toString()));
   };
 
-  const handleDeleteStoreItem = (id: string) => async () => {
-    await deleteStoreItem(id);
+  const handleDeleteStoreItem = (id: number) => async () => {
+    await deleteStoreItem(id.toString());
   };
 
   if (isFetching) {
@@ -43,9 +43,9 @@ const StoreListPage = () => {
           {t('addNew')}
         </Button>
       </Box>
-      {data?.stores?.length ? (
+      {data?.length ? (
         <List>
-          {data?.stores.map((store, index) => (
+          {data.map((store, index) => (
             <Fragment key={store.id}>
               {index !== 0 && <Divider />}
               <ListItem

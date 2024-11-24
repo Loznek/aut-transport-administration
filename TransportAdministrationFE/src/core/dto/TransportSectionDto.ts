@@ -1,15 +1,13 @@
-import SiteDto from './SiteDto.ts';
-import DriverDto from './DriverDto.ts';
-import TransportDto from './TransportDto.ts';
-
 interface TransportSectionDto {
-  id: string;
-  startSite: SiteDto;
-  destinationSite: SiteDto;
-  startTime: string;
-  arrivalTime: string;
-  driver: DriverDto;
-  transport: TransportDto;
+  id?: number;
+  startSiteId: number;
+  destinationSiteId: number;
+  /** Date format string */
+  startTime?: string;
+  /** Date format string */
+  arrivalTime?: string;
+  driverId: number;
+  transportId?: number;
 }
 
 export default TransportSectionDto;

@@ -1,7 +1,8 @@
-import CargoDto from '../../core/dto/CargoDto.ts';
+import CreateCargoDto from './CreateCargoDto';
 
 interface PutCargoItemRequest {
-  cargo: CargoDto;
+  cargo: CreateCargoDto;
+  startSiteId: number;
 }
 
 export default PutCargoItemRequest;

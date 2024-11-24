@@ -1,5 +1,5 @@
 interface DriverDto {
-  id: string;
+  id: number;
   name: string;
   /** Date format string */
   dateOfBirth: string;

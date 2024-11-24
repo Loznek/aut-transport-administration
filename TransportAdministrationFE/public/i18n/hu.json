@@ -3,7 +3,8 @@
     "next": "Tovább",
     "save": "Mentés",
     "cancel": "Mégsem",
-    "delete": "Törlés"
+    "delete": "Törlés",
+    "back": "Vissza"
   },
   "validation": {
     "required": "A mező kitöltése kötelező"
@@ -64,13 +65,27 @@
     "confirmDeleteTitle": "Biztosan törlöd a járművet?",
     "type": "Jármű típusa",
     "volumeCapacity": "Jármű térfogata",
-    "weightCapacity": "Jármű terhelhetősége"
+    "weightCapacity": "Jármű terhelhetősége",
+    "licencePlate": "Jármű rendszáma"
   },
   "cargos": {
     "noCargos": "Nem található áru",
     "confirmDeleteTitle": "Biztosan törlöd az árut?",
     "name": "Áru neve",
     "volume": "Áru térfogata",
-    "weight": "Áru súlya"
+    "weight": "Áru súlya",
+    "site": "Telephely"
+  },
+  "transports": {
+    "noTransports": "Nem található fuvar",
+    "confirmDeleteTitle": "Biztosan törlöd a fuvart?",
+    "startSite": "Indulási telephely",
+    "destinationSite": "Érkezési telephely",
+    "stops": "Megállók",
+    "cargos": "Áruk",
+    "truck": "Jármű",
+    "driver": "Sofőr",
+    "addMore": "Új szakasz hozzáadása",
+    "multipleWarning": "A megadott út tovább tart mint 9 óra, így több szakaszra kell bontanod!"
   }
 }

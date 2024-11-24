@@ -34,7 +34,9 @@ const HomeNavigationCard = ({ title, details, to }: HomeNavigationCardProps) => 
           {!!details?.length && (
             <Box component="ul" sx={{ margin: 0, paddingLeft: 3 }}>
               {details.map((detail) => (
-                <Typography component="li">{detail}</Typography>
+                <Typography component="li" key={detail}>
+                  {detail}
+                </Typography>
               ))}
             </Box>
           )}

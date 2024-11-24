@@ -1,11 +1,10 @@
-import SiteDto from './SiteDto.ts';
-import TruckDto from './TruckDto.ts';
-
 interface TransportDto {
-  id: string;
-  startSite: SiteDto;
-  destinationSite: SiteDto;
-  truck: TruckDto;
+  id: number;
+  startSiteId: number;
+  destinationSiteId: number;
+  arrivalTime: string;
+  startTime: string;
+  truckId: number;
 }
 
 export default TransportDto;

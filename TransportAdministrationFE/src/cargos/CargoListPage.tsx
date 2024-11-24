@@ -21,12 +21,12 @@ const CargoListPage = () => {
     navigate(ROUTES.CARGO_ITEM('new'));
   };
 
-  const handleEdit = (id: string) => () => {
-    navigate(ROUTES.CARGO_ITEM(id));
+  const handleEdit = (id: number) => () => {
+    navigate(ROUTES.CARGO_ITEM(id.toString()));
   };
 
-  const handleDelete = (id: string) => async () => {
-    await deleteCargoItem(id);
+  const handleDelete = (id: number) => async () => {
+    await deleteCargoItem(id.toString());
   };
 
   const concatenateCargoData = useCallback((cargo: CargoDto) => {
@@ -48,9 +48,9 @@ const CargoListPage = () => {
           {t('addNew')}
         </Button>
       </Box>
-      {data?.cargos?.length ? (
+      {data?.length ? (
         <List>
-          {data?.cargos.map((cargo, index) => (
+          {data?.map((cargo, index) => (
             <Fragment key={cargo.id}>
               {index !== 0 && <Divider />}
               <ListItem

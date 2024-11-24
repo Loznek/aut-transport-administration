@@ -17,7 +17,7 @@ const TruckItemPage = () => {
 
   return (
     <Box sx={{ padding: 2 }}>
-      <TruckItemForm data={data?.truck} />
+      <TruckItemForm data={data} />
     </Box>
   );
 };

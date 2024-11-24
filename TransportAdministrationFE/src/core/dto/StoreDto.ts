@@ -1,5 +1,5 @@
 interface StoreDto {
-  id: string;
+  id: number;
   address: string;
 }
 

@@ -1,36 +1,35 @@
-import { PropsWithChildren, useCallback, useState } from 'react';
+import { PropsWithChildren, useCallback } from 'react';
 import AuthContext, { AuthContextData } from './AuthContext.ts';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../Routes.ts';
-import { useLocalStorage } from 'usehooks-ts';
-
-const AUTH_TOKEN_STORAGE_KEY = 'authToken';
+import useGetMe from './queries/use-get-me';
+import { useQueryClient } from '@tanstack/react-query';
+import useAuthToken from './hooks/use-auth-token';
+import AuthTokenInterceptorSetter from './AuthTokenInterceptorSetter';
 
 const AuthProvider = ({ children }: PropsWithChildren) => {
-  const [authToken, setAuthToken, removeAuthToken] = useLocalStorage<AuthContextData['authToken']>(
-    AUTH_TOKEN_STORAGE_KEY,
-    null
-  );
+  const queryClient = useQueryClient();
+  const { authToken, removeAuthToken } = useAuthToken();
+  const { data: user } = useGetMe();
   const navigate = useNavigate();
-  const location = useLocation();
-  const [user, setUser] = useState<AuthContextData['user']>(null);
 
   const logout = useCallback<AuthContextData['logout']>(() => {
-    setUser(null);
     removeAuthToken();
+    queryClient.clear();
     navigate(ROUTES.LOGIN());
-  }, [navigate, removeAuthToken]);
+  }, [navigate, queryClient, removeAuthToken]);
 
-  const setAuthData = useCallback<AuthContextData['setAuthData']>(
-    ({ user, token }) => {
-      setUser(user);
-      setAuthToken(token);
-      navigate(location.state?.returnPath ?? ROUTES.HOME());
-    },
-    [setAuthToken, navigate, location]
+  return (
+    <AuthContext.Provider
+      value={{
+        user: user,
+        logout,
+        authToken: authToken,
+      }}
+    >
+      <AuthTokenInterceptorSetter>{children}</AuthTokenInterceptorSetter>
+    </AuthContext.Provider>
   );
-
-  return <AuthContext.Provider value={{ user, logout, setAuthData, authToken }}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;

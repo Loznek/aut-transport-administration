@@ -19,6 +19,7 @@ const TruckItemForm = ({ data }: TruckItemFormProps) => {
   const { control, handleSubmit } = useForm<TruckFormModel>({
     defaultValues: {
       type: data?.type ?? '',
+      licencePlate: data?.licencePlate ?? '',
       volumeCapacity: data?.volumeCapacity ?? 0,
       weightCapacity: data?.weightCapacity ?? 0,
     },
@@ -28,8 +29,9 @@ const TruckItemForm = ({ data }: TruckItemFormProps) => {
   const handleFormSubmit: SubmitHandler<TruckFormModel> = (formData) => {
     putTruckItem({
       truck: {
-        id: data?.id ?? 'new',
+        id: data?.id ?? null,
         type: formData.type,
+        licencePlate: formData.licencePlate,
         volumeCapacity: formData.volumeCapacity,
         weightCapacity: formData.weightCapacity,
       },
@@ -40,6 +42,7 @@ const TruckItemForm = ({ data }: TruckItemFormProps) => {
     <form onSubmit={handleSubmit(handleFormSubmit)}>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <TextFieldWithController controllerProps={{ control, name: 'type' }} label={t('trucks.type')} />
+        <TextFieldWithController controllerProps={{ control, name: 'licencePlate' }} label={t('trucks.licencePlate')} />
         <TextFieldWithController
           controllerProps={{ control, name: 'weightCapacity' }}
           label={t('trucks.weightCapacity')}

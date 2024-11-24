@@ -1,19 +1,18 @@
 import { apiClient } from '../../core/services/api-client.ts';
 import { AxiosPromise } from 'axios';
-import GetCargoListResponse from '../dto/GetCargoListResponse.ts';
-import GetCargoItemResponse from '../dto/GetCargoItemResponse.ts';
 import PutCargoItemRequest from '../dto/PutCargoItemRequest.ts';
+import CargoDto from '../../core/dto/CargoDto';
 
-const getCargoList = (): AxiosPromise<GetCargoListResponse> => {
+const getCargoList = (): AxiosPromise<CargoDto[]> => {
   return apiClient.private.get('/cargos');
 };
 
-const getCargoItem = (id: string): AxiosPromise<GetCargoItemResponse> => {
+const getCargoItem = (id: string): AxiosPromise<CargoDto> => {
   return apiClient.private.get(`/cargos/${id}`);
 };
 
 const putCargoItem = (body: PutCargoItemRequest): AxiosPromise<void> => {
-  return apiClient.private.put(`/cargos/${body.cargo.id}`, body);
+  return apiClient.private.post('/cargos', body);
 };
 
 const deleteCargoItem = (id: string): AxiosPromise<void> => {

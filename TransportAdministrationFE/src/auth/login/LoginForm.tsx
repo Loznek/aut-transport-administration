@@ -13,6 +13,10 @@ const LoginForm = () => {
   const { t } = useTranslation();
   const { mutate: login, isPending: isLoginPending } = useLogin();
   const { control, handleSubmit } = useForm<LoginFormModel>({
+    defaultValues: {
+      username: '',
+      password: '',
+    },
     resolver: yupResolver(LoginFormSchema()),
   });
 

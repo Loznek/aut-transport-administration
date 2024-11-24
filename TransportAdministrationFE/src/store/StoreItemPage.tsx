@@ -17,7 +17,7 @@ const StoreItemPage = () => {
 
   return (
     <Box sx={{ padding: 2 }}>
-      <StoreItemForm data={data?.store} />
+      <StoreItemForm data={data} />
     </Box>
   );
 };

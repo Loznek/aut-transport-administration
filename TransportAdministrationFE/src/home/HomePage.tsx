@@ -22,7 +22,7 @@ const HomePage = () => {
       </Typography>
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
         {homeNavigationCards.map(({ title, details, to }) => (
-          <HomeNavigationCard title={title} details={details} to={to} />
+          <HomeNavigationCard title={title} details={details} to={to} key={to} />
         ))}
       </Box>
     </Box>

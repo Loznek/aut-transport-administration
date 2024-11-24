@@ -13,6 +13,8 @@ import StoreListPage from './store/StoreListPage.tsx';
 import StoreItemPage from './store/StoreItemPage.tsx';
 import CargoListPage from './cargos/CargoListPage.tsx';
 import CargoItemPage from './cargos/CargoItemPage.tsx';
+import TransportListPage from './transport/TransportListPage';
+import TransportItemPage from './transport/TransportItemPage';
 
 const AppRoutes = () => {
   return (
@@ -24,8 +26,8 @@ const AppRoutes = () => {
           <Route element={<AdministrationLayout />}>
             <Route path={ROUTES.TRUCKS()} element={<TruckListPage />} />
             <Route path={ROUTES.TRUCK_ITEM(':id')} element={<TruckItemPage />} />
-            <Route path={ROUTES.TRANSPORTS()} />
-            <Route path={ROUTES.TRANSPORT_ITEM(':id')} />
+            <Route path={ROUTES.TRANSPORTS()} element={<TransportListPage />} />
+            <Route path={ROUTES.TRANSPORT_ITEM(':id')} element={<TransportItemPage />} />
             <Route path={ROUTES.CARGOS()} element={<CargoListPage />} />
             <Route path={ROUTES.CARGO_ITEM(':id')} element={<CargoItemPage />} />
             <Route path={ROUTES.STORES()} element={<StoreListPage />} />

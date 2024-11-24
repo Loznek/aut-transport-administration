@@ -1,7 +1,7 @@
-import truckDto from '../../core/dto/TruckDto.ts';
+import TruckCreationDto from './TruckCreationDto';
 
 interface PutTruckItemRequest {
-  truck: truckDto;
+  truck: TruckCreationDto;
 }
 
 export default PutTruckItemRequest;

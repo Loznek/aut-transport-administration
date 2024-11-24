@@ -21,16 +21,16 @@ const TruckListPage = () => {
     navigate(ROUTES.TRUCK_ITEM('new'));
   };
 
-  const handleEdit = (id: string) => () => {
-    navigate(ROUTES.TRUCK_ITEM(id));
+  const handleEdit = (id: number) => () => {
+    navigate(ROUTES.TRUCK_ITEM(id.toString()));
   };
 
-  const handleDelete = (id: string) => async () => {
-    await deleteTruckItem(id);
+  const handleDelete = (id: number) => async () => {
+    await deleteTruckItem(id.toString());
   };
 
   const concatenateTruckData = useCallback((truck: TruckDto) => {
-    return `${truck.type} - ${truck.volumeCapacity} - ${truck.weightCapacity}`;
+    return `${truck.licencePlate} - ${truck.type} - ${truck.volumeCapacity} - ${truck.weightCapacity}`;
   }, []);
 
   if (isFetching) {
@@ -48,9 +48,9 @@ const TruckListPage = () => {
           {t('addNew')}
         </Button>
       </Box>
-      {data?.trucks?.length ? (
+      {data?.length ? (
         <List>
-          {data?.trucks.map((truck, index) => (
+          {data?.map((truck, index) => (
             <Fragment key={truck.id}>
               {index !== 0 && <Divider />}
               <ListItem
@@ -75,7 +75,7 @@ const TruckListPage = () => {
         </List>
       ) : (
         <Box sx={{ display: 'flex', justifyContent: 'center', padding: 2 }}>
-          <Typography sx={{ textAlign: 'center' }}>{t('trucks.noSites')}</Typography>
+          <Typography sx={{ textAlign: 'center' }}>{t('trucks.noTrucks')}</Typography>
         </Box>
       )}
     </Box>

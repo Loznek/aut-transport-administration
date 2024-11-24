@@ -26,7 +26,7 @@ const StoreItemForm = ({ data }: StoreItemFormProps) => {
   const handleFormSubmit: SubmitHandler<StoreFormModel> = (formData) => {
     putStoreItem({
       store: {
-        id: data?.id ?? 'new',
+        id: data!.id,
         address: formData.address,
       },
     });

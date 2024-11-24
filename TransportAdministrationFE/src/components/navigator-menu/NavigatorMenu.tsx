@@ -33,7 +33,7 @@ const NavigatorMenu = ({ onNavigate }: NavigatorMenuProps) => {
   return (
     <MenuList>
       {navigatorMenuItems.map(({ route, icon, text }) => (
-        <MenuItem onClick={handleNavigate(route)} selected={getIsSelectedRoute(route)}>
+        <MenuItem onClick={handleNavigate(route)} selected={getIsSelectedRoute(route)} key={route}>
           <ListItemIcon>{icon}</ListItemIcon>
           <ListItemText>
             <Typography>{text}</Typography>
