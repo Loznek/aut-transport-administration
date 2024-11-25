@@ -71,10 +71,10 @@ fun Route.transportRoutes(
                 var timeCounter=0.0;
                 for(i in 0 until timeList.size-1){
                     timeCounter+=timeList[i]
-                    trans.storeStops[i].arrivalTime = trans.storeStops[i].arrivalTime!!.toJavaLocalDateTime().plusMinutes(timeCounter.toLong()).toKotlinLocalDateTime()
+                    trans.storeStops[i].arrivalTime = trans.transportSection.startTime.toJavaLocalDateTime().plusMinutes(timeCounter.toLong()).toKotlinLocalDateTime()
                 }
-                timeCounter+timeList[timeList.size-1]
-                trans.transportSection.arrivalTime=trans.transportSection.arrivalTime!!.toJavaLocalDateTime().plusMinutes(timeCounter.toLong()).toKotlinLocalDateTime()
+                timeCounter+=timeList[timeList.size-1]
+                trans.transportSection.arrivalTime=trans.transportSection.startTime.toJavaLocalDateTime().plusMinutes(timeCounter.toLong()).toKotlinLocalDateTime()
             }
 
 
