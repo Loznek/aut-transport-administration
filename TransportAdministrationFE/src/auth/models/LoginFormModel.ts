@@ -1,4 +1,5 @@
 interface LoginFormModel {
+  email: string;
   username: string;
   password: string;
 }

@@ -14,6 +14,7 @@ import { useEffect } from 'react';
 import DriverWithArrivalTimeDto from '../core/dto/DriverWithArrivalTimeDto';
 import DriverDto from '../core/dto/DriverDto';
 import TransportCreationDto from './dto/TransportCreationDto';
+import { GoogleMap, MarkerF } from '@react-google-maps/api';
 
 interface TransportItemSectionFormProps {
   data?: TransportCreationDto;
@@ -50,6 +51,15 @@ const TransportItemSectionForm = ({
   const { mutateAsync: getAvailableDrivers } = useGetSiteAvailableDrivers();
   const startSiteFormName: FieldPath<TransportFormModel> =
     index === 0 ? `sections.${index}.startSite` : `sections.${index - 1}.destinationSite`;
+  const mapContainerStyle = {
+    width: '100%',
+    height: '400px',
+  };
+
+  const center = {
+    lat: Number(sites?.[0]?.lan) || 47.4979,
+    lng: Number(sites?.[0]?.lon) || 19.0402,
+  };
 
   const startSiteId = useWatch({
     control,
@@ -94,6 +104,22 @@ const TransportItemSectionForm = ({
                 {site.address}
               </MenuItem>
             ))}
+            {sites !== null && sites.length === 0 && t('sites.noSites') && (
+              <GoogleMap mapContainerStyle={mapContainerStyle} zoom={6} center={center}>
+                {sites
+                  ?.filter((site) => site.lan !== null && site.lon !== null)
+                  .map((site) => (
+                    <MarkerF
+                      position={{
+                        lat: Number(site.lan),
+                        lng: Number(site.lon),
+                      }}
+                      key={site.id}
+                      label={site.id.toString()}
+                    />
+                  ))}
+              </GoogleMap>
+            )}
           </TextFieldWithController>
         </Box>
         <AutocompleteWithController

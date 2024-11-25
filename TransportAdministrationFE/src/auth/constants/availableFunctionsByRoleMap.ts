@@ -8,6 +8,7 @@ const availableFunctionsByRoleMap: Record<UserType, FunctionType[]> = {
     FunctionType.SITES,
     FunctionType.CARGOS,
     FunctionType.TRUCKS,
+    FunctionType.DRIVERS,
   ],
   [UserType.DRIVER]: [FunctionType.TRANSPORTS, FunctionType.STORES, FunctionType.SITES],
 };
