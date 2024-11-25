@@ -26,7 +26,7 @@ interface CalculateSectionTravelTimeInHoursArgs {
   sectionFormData: TransportSectionFormModel;
 }
 
-export let sectionsStartArrivalTime: { startTime: Date; arrivalTime: Date }[] = [];
+export let sectionsStartArrivalTime: { startTime: Date; arrivalTime: Date; stopTimes: Date[] }[] = [];
 
 const calculateSectionTravelDestinationArrivalTime = async ({
   sectionIndex,
@@ -40,6 +40,7 @@ const calculateSectionTravelDestinationArrivalTime = async ({
   startTime: Date;
   destinationArrivalTime: Date;
   travelTimeInHour: number;
+  stopTimes: Date[];
 }> => {
   let maxSectionStartTime: Date;
   const driverArrivalTime = availableDrivers.find((ad) => ad.driver.id === sectionFormData.driver)?.arrivalTime;
@@ -77,10 +78,11 @@ const calculateSectionTravelDestinationArrivalTime = async ({
       startTime: maxSectionStartTime,
       destinationArrivalTime: new Date(data.destinationArrivalTime),
       travelTimeInHour,
+      stopTimes: data.stopPointArrivalTimes.map((time) => new Date(time)),
     };
   }
 
-  return { startTime: new Date(), destinationArrivalTime: new Date(), travelTimeInHour: 0 };
+  return { startTime: new Date(), destinationArrivalTime: new Date(), travelTimeInHour: 0, stopTimes: [] };
 };
 
 const transportSectionFormValidator = ({
@@ -157,7 +159,7 @@ const transportFormValidator = ({
           if (previousSectionDestinationSiteId) {
             sectionFormData.startSite = previousSectionDestinationSiteId;
           }
-          const { startTime, destinationArrivalTime, travelTimeInHour } =
+          const { startTime, destinationArrivalTime, travelTimeInHour, stopTimes } =
             await calculateSectionTravelDestinationArrivalTime({
               sectionIndex: i,
               formData,
@@ -170,7 +172,7 @@ const transportFormValidator = ({
 
           previousSectionArrivalTime = destinationArrivalTime;
           previousSectionDestinationSiteId = sectionFormData.destinationSite;
-          sectionsStartArrivalTime[i] = { startTime, arrivalTime: destinationArrivalTime };
+          sectionsStartArrivalTime[i] = { startTime, arrivalTime: destinationArrivalTime, stopTimes };
 
           if (travelTimeInHour > 9) {
             isValid = false;

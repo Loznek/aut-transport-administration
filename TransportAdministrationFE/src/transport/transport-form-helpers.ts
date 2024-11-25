@@ -14,7 +14,7 @@ interface MapTransportResponseToTransportFormDataArgs {
 interface MapTransportFormDataToPostTransportItemRequestArgs {
   formData: TransportFormModel;
   startTime: Date;
-  sectionsStartArrivalTimes: { startTime: Date; arrivalTime: Date }[];
+  sectionsStartArrivalTimes: { startTime: Date; arrivalTime: Date; stopTimes: Date[] }[];
 }
 
 interface GetFirstSectionStartTimeArgs {
@@ -103,9 +103,10 @@ export const mapTransportFormDataToPostTransportItemRequest = ({
         destinationSiteId: section.destinationSite,
         driverId: section.driver!,
       },
-      storeStops: section.stops.map((stop, index) => ({
+      storeStops: section.stops.map((stop, stopIndex) => ({
         storeId: stop.id,
-        orderInSection: index,
+        orderInSection: stopIndex,
+        arrivalTime: sectionsStartArrivalTimes[index]?.stopTimes[stopIndex],
       })),
     })),
   };
