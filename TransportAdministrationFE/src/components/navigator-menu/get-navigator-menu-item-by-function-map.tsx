@@ -7,6 +7,7 @@ import RouteIcon from '@mui/icons-material/Route';
 import CategoryIcon from '@mui/icons-material/Category';
 import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
 import FactoryIcon from '@mui/icons-material/Factory';
+import PersonIcon from '@mui/icons-material/Person';
 
 interface NavigationMenuItemData {
   icon: ReactNode;
@@ -39,6 +40,11 @@ const getNavigatorMenuItemByFunctionMap: Record<FunctionType, (t: TFunction) => 
     icon: <FactoryIcon />,
     route: ROUTES.SITES(),
     text: t('administrations.sites.manage'),
+  }),
+  [FunctionType.DRIVERS]: (t) => ({
+    icon: <PersonIcon />,
+    route: ROUTES.DRIVERS(),
+    text: t('administrations.drivers.manage'),
   }),
 };
 

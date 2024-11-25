@@ -6,6 +6,7 @@ import useGetMe from './queries/use-get-me';
 import { useQueryClient } from '@tanstack/react-query';
 import useAuthToken from './hooks/use-auth-token';
 import AuthTokenInterceptorSetter from './AuthTokenInterceptorSetter';
+import { auth } from './login/firebase';
 
 const AuthProvider = ({ children }: PropsWithChildren) => {
   const queryClient = useQueryClient();
@@ -16,6 +17,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
   const logout = useCallback<AuthContextData['logout']>(() => {
     removeAuthToken();
     queryClient.clear();
+    auth.signOut();
     navigate(ROUTES.LOGIN());
   }, [navigate, queryClient, removeAuthToken]);
 
