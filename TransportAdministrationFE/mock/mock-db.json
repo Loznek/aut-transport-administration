@@ -206,7 +206,7 @@
     "destinationStoreId": 4
   },
   "calculateTravelTimeNinePlus": {
-    "destinationArrivalTime": "Fri Nov 22 2027 10:00:00 GMT+0100 (Central European Standard Time)"
+    "destinationArrivalTime": "Fri Nov 22 2025 10:00:00 GMT+0100 (Central European Standard Time)"
   },
   "getSiteTransportableCargos": [
     {

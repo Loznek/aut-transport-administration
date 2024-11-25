@@ -7,12 +7,15 @@ import CargoWithArrivalTimeDto from '../../core/dto/CargoWithArrivalTimeDto';
 import transportClient from '../services/transport-client';
 import CargoDto from '../../core/dto/CargoDto';
 import StoreDto from '../../core/dto/StoreDto';
+import { getFirstSectionStartTime } from '../transport-form-helpers';
+import { Dispatch } from 'react';
 
 interface TransportSectionFormValidatorArgs {
   t: TFunction;
   availableDrivers: DriverWithArrivalTimeDto[][];
   availableTrucks: TruckWithArrivalTimeDto[];
   transportableCargos: CargoWithArrivalTimeDto[];
+  saveSectionTimes: Dispatch<{ startTime: Date; arrivalTime: Date }[]>;
 }
 
 interface CalculateSectionTravelTimeInHoursArgs {
@@ -33,24 +36,21 @@ const calculateSectionTravelDestinationArrivalTime = async ({
   transportableCargos,
   previousSectionArrivalTime,
   sectionFormData,
-}: CalculateSectionTravelTimeInHoursArgs): Promise<{ destinationArrivalTime: Date; travelTimeInHour: number }> => {
+}: CalculateSectionTravelTimeInHoursArgs): Promise<{
+  startTime: Date;
+  destinationArrivalTime: Date;
+  travelTimeInHour: number;
+}> => {
   let maxSectionStartTime: Date;
   const driverArrivalTime = availableDrivers.find((ad) => ad.driver.id === sectionFormData.driver)?.arrivalTime;
 
   if (sectionIndex === 0) {
-    const truckArrivalTime = availableTrucks.find((at) => at.truck.id === formData.truck)?.arrivalTime;
-    const cargosArrivalTime = transportableCargos
-      .filter((tc) => formData.cargos?.map((cargo) => cargo.id)?.includes(tc.cargo.id))
-      .map((cargo) => cargo.arrivalTime);
-
-    maxSectionStartTime = new Date(
-      Math.max(
-        ...[driverArrivalTime, truckArrivalTime, ...cargosArrivalTime]
-          .filter(Boolean)
-          .map((time) => new Date(time!).getTime()),
-        new Date().getTime()
-      )
-    );
+    maxSectionStartTime = getFirstSectionStartTime({
+      formData,
+      availableDrivers,
+      availableTrucks,
+      transportableCargos,
+    });
   } else {
     maxSectionStartTime = new Date(
       Math.max(
@@ -73,10 +73,14 @@ const calculateSectionTravelDestinationArrivalTime = async ({
     const diffInMs = Math.abs(maxSectionStartTime.getTime() - destinationDate);
     const travelTimeInHour = diffInMs / (1000 * 60 * 60);
 
-    return { destinationArrivalTime: new Date(data.destinationArrivalTime), travelTimeInHour };
+    return {
+      startTime: maxSectionStartTime,
+      destinationArrivalTime: new Date(data.destinationArrivalTime),
+      travelTimeInHour,
+    };
   }
 
-  return { destinationArrivalTime: new Date(), travelTimeInHour: 0 };
+  return { startTime: new Date(), destinationArrivalTime: new Date(), travelTimeInHour: 0 };
 };
 
 const transportSectionFormValidator = ({
@@ -94,6 +98,7 @@ const transportFormValidator = ({
   transportableCargos,
   availableTrucks,
   availableDrivers,
+  saveSectionTimes,
 }: TransportSectionFormValidatorArgs): yup.ObjectSchema<TransportFormModel> =>
   yup.object().shape({
     truck: yup.number().typeError(t('validation.required')).required(),
@@ -129,7 +134,15 @@ const transportFormValidator = ({
       .required(),
     sections: yup
       .array()
-      .of(transportSectionFormValidator({ t, transportableCargos, availableDrivers, availableTrucks }))
+      .of(
+        transportSectionFormValidator({
+          t,
+          transportableCargos,
+          availableDrivers,
+          availableTrucks,
+          saveSectionTimes,
+        })
+      )
       .test('uniqueDriver', '', (value = []) => {
         const driverIds = value.map((section) => section.driver).filter(Boolean);
         return driverIds.length === new Set(driverIds).size;
@@ -139,29 +152,34 @@ const transportFormValidator = ({
         const formData = context.parent as TransportFormModel;
         let previousSectionArrivalTime: Date | null = null;
         let previousSectionDestinationSiteId: number | null = null;
+        const sectionsStartArrivalTime: { startTime: Date; arrivalTime: Date }[] = [];
 
         for (let i = 0; i < value.length; i++) {
           const sectionFormData = value[i];
           if (previousSectionDestinationSiteId) {
             sectionFormData.startSite = previousSectionDestinationSiteId;
           }
-          const { destinationArrivalTime, travelTimeInHour } = await calculateSectionTravelDestinationArrivalTime({
-            sectionIndex: i,
-            formData,
-            availableDrivers: availableDrivers[i] || [],
-            availableTrucks,
-            transportableCargos,
-            previousSectionArrivalTime,
-            sectionFormData,
-          });
+          const { startTime, destinationArrivalTime, travelTimeInHour } =
+            await calculateSectionTravelDestinationArrivalTime({
+              sectionIndex: i,
+              formData,
+              availableDrivers: availableDrivers[i] || [],
+              availableTrucks,
+              transportableCargos,
+              previousSectionArrivalTime,
+              sectionFormData,
+            });
 
           previousSectionArrivalTime = destinationArrivalTime;
           previousSectionDestinationSiteId = sectionFormData.destinationSite;
+          sectionsStartArrivalTime[i] = { startTime, arrivalTime: destinationArrivalTime };
 
           if (travelTimeInHour > 9) {
             isValid = false;
           }
         }
+
+        saveSectionTimes(sectionsStartArrivalTime);
 
         return isValid;
       })

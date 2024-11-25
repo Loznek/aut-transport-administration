@@ -18,6 +18,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import DriverWithArrivalTimeDto from '../core/dto/DriverWithArrivalTimeDto';
 import usePostTransportItem from './queries/use-post-transport-item';
 import {
+  getFirstSectionStartTime,
   mapTransportFormDataToPostTransportItemRequest,
   mapTransportResponseToTransportFormData,
 } from './transport-form-helpers';
@@ -38,6 +39,12 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
   const [transportableCargos, setTransportableCargos] = useState<CargoWithArrivalTimeDto[]>([]);
   const [availableTrucks, setAvailableTrucks] = useState<TruckWithArrivalTimeDto[]>([]);
   const [availableSectionDrivers, setAvailableSectionDrivers] = useState<DriverWithArrivalTimeDto[][]>([]);
+  const [sectionStartArrivalTimes, setSectionStartArrivalTimes] = useState<
+    {
+      startTime: Date;
+      arrivalTime: Date;
+    }[]
+  >([]);
   const [shouldUniqueDriverMessage, setShouldUniqueDriverMessage] = useState(false);
   const [shouldMultipleSections, setShouldMultipleSections] = useState(false);
   const { mutateAsync: getAvailableTrucks, isPending: isGetAvailableTrucksPending } = useGetSiteAvailableTrucks();
@@ -57,7 +64,13 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
     resolver: data
       ? undefined
       : yupResolver(
-          transportFormValidator({ t, transportableCargos, availableTrucks, availableDrivers: availableSectionDrivers })
+          transportFormValidator({
+            t,
+            transportableCargos,
+            availableTrucks,
+            availableDrivers: availableSectionDrivers,
+            saveSectionTimes: setSectionStartArrivalTimes,
+          })
         ),
     reValidateMode: 'onSubmit',
   });
@@ -87,7 +100,19 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
     if (data && idParam) {
       await updateTransport({ body: data, id: idParam });
     } else {
-      await createTransport(mapTransportFormDataToPostTransportItemRequest(formData));
+      const startTime = getFirstSectionStartTime({
+        formData,
+        availableDrivers: availableSectionDrivers[0],
+        availableTrucks,
+        transportableCargos,
+      });
+      await createTransport(
+        mapTransportFormDataToPostTransportItemRequest({
+          formData,
+          sectionsStartArrivalTimes: sectionStartArrivalTimes,
+          startTime,
+        })
+      );
     }
   };
 
