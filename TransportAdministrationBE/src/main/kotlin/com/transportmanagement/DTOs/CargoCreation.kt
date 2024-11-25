@@ -1,10 +1,14 @@
 package com.transportmanagement.DTOs
 
-import com.transportmanagement.model.entity.Cargo
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class CargoCreation (
-    val cargo: Cargo,
+
     val startSiteId: Int,
+    val destinationStoreId: Int,
+    val cargoName: String,
+    val cargoWeight: Double,
+    val cargoVolume: Double,
+
 )

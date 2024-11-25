@@ -2,6 +2,7 @@ package com.transportmanagement.plugins.Routing
 
 import CargoRepository
 import com.transportmanagement.DTOs.CargoCreation
+import com.transportmanagement.model.entity.Cargo
 import com.transportmanagement.model.entity.CargoStaying
 import com.transportmanagement.model.repository.CargoStayingRepository
 import io.ktor.http.*
@@ -33,7 +34,7 @@ fun Route.cargoRoutes(cargoRepository: CargoRepository, cargoStayingRepository: 
         }
         post() {
             val cargo = call.receive<CargoCreation>()
-           val newCargoId= cargoRepository.addCargo(cargo.cargo)
+           val newCargoId= cargoRepository.addCargo(Cargo(id=null, name = cargo.cargoName, volume = cargo.cargoVolume, weight = cargo.cargoWeight, active = true, destinationStoreId = cargo.destinationStoreId, delivered = false))
             val staying = CargoStaying(
                 id = null,
                 cargoId = newCargoId,

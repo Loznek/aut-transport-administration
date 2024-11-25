@@ -1,5 +1,6 @@
 package com.transportmanagement.plugins.Routing
 
+import com.transportmanagement.DTOs.DriverCreation
 import com.transportmanagement.model.entity.Driver
 import com.transportmanagement.model.entity.DriverStaying
 import com.transportmanagement.model.repository.DriverRepository
@@ -31,8 +32,8 @@ fun Route.driverRoutes(driverRepository: DriverRepository, driverStayingReposito
         }
         post() {
             try {
-                val driver = call.receive<Driver>()
-                val driverId= driverRepository.addDriver(driver)
+                val driver = call.receive<DriverCreation>()
+                val driverId= driverRepository.addDriver(Driver(id=null, name = driver.name, dateOfBirth = driver.dateOfBirth, active = true, homeSiteId = driver.homeSiteId))
                 val staying = DriverStaying(
                     id = null,
                     driverId = driverId,

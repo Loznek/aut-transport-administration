@@ -1,6 +1,7 @@
 package com.transportmanagement.plugins.Routing
 
 import com.transportmanagement.DTOs.TruckCreation
+import com.transportmanagement.model.entity.Truck
 import com.transportmanagement.model.entity.TruckStaying
 import com.transportmanagement.model.repository.TruckRepository
 import com.transportmanagement.model.repository.TruckStayingRepository
@@ -31,7 +32,7 @@ fun Route.truckRoutes(truckRepository: TruckRepository, truckStayingRepository: 
         }
         post() {
             val truckCreation = call.receive<TruckCreation>()
-            val newTruckId= truckRepository.addTruck(truckCreation.truck)
+            val newTruckId= truckRepository.addTruck(Truck(id=null, type = truckCreation.type, licensePlate = truckCreation.licensePlate, active=true, volumeCapacity = truckCreation.volumeCapacity, weightCapacity = truckCreation.weightCapacity) )
             val staying = TruckStaying(
                 id = null,
                 truckId = newTruckId,
