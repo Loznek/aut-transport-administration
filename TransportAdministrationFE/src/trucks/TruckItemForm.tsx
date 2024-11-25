@@ -2,13 +2,15 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextFieldWithController from '../components/text-field-with-controller/TextFieldWithController.tsx';
 import { useTranslation } from 'react-i18next';
-import { Box, MenuItem } from '@mui/material';
+import { Box, Button, MenuItem } from '@mui/material';
 import usePutTruckItem from './queries/use-put-truck-item.ts';
 import { LoadingButton } from '@mui/lab';
 import TruckDto from '../core/dto/TruckDto.ts';
 import TruckFormModel from './models/TruckFormModel.ts';
 import truckFormValidator from './validators/truck-form-validator.ts';
 import SiteDto from '../core/dto/SiteDto';
+import { ROUTES } from '../Routes';
+import { useNavigate } from 'react-router-dom';
 
 interface TruckItemFormProps {
   data?: TruckDto;
@@ -17,11 +19,12 @@ interface TruckItemFormProps {
 
 const TruckItemForm = ({ data, sites = [] }: TruckItemFormProps) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { mutate: putTruckItem, isPending: isPutTruckItemPending } = usePutTruckItem();
   const { control, handleSubmit } = useForm<TruckFormModel>({
     defaultValues: {
       type: data?.type ?? '',
-      licencePlate: data?.licencePlate ?? '',
+      licencePlate: data?.licensePlate ?? '',
       volumeCapacity: data?.volumeCapacity ?? 0,
       weightCapacity: data?.weightCapacity ?? 0,
       startSiteId: '' as unknown as number,
@@ -32,11 +35,11 @@ const TruckItemForm = ({ data, sites = [] }: TruckItemFormProps) => {
   const handleFormSubmit: SubmitHandler<TruckFormModel> = (formData) => {
     putTruckItem({
       truck: {
-        id: data?.id ?? null,
         type: formData.type,
-        licencePlate: formData.licencePlate,
+        licensePlate: formData.licencePlate,
         volumeCapacity: formData.volumeCapacity,
         weightCapacity: formData.weightCapacity,
+        active: true,
       },
       startSiteId: formData.startSiteId,
     });
@@ -45,15 +48,25 @@ const TruckItemForm = ({ data, sites = [] }: TruckItemFormProps) => {
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)}>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <TextFieldWithController controllerProps={{ control, name: 'type' }} label={t('trucks.type')} />
-        <TextFieldWithController controllerProps={{ control, name: 'licencePlate' }} label={t('trucks.licencePlate')} />
+        <TextFieldWithController
+          controllerProps={{ control, name: 'type' }}
+          label={t('trucks.type')}
+          disabled={!!data}
+        />
+        <TextFieldWithController
+          controllerProps={{ control, name: 'licencePlate' }}
+          label={t('trucks.licencePlate')}
+          disabled={!!data}
+        />
         <TextFieldWithController
           controllerProps={{ control, name: 'weightCapacity' }}
           label={t('trucks.weightCapacity')}
+          disabled={!!data}
         />
         <TextFieldWithController
           controllerProps={{ control, name: 'volumeCapacity' }}
           label={t('trucks.volumeCapacity')}
+          disabled={!!data}
         />
         <TextFieldWithController
           controllerProps={{ control, name: 'startSiteId' }}
@@ -66,9 +79,15 @@ const TruckItemForm = ({ data, sites = [] }: TruckItemFormProps) => {
           ))}
         </TextFieldWithController>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <LoadingButton variant="contained" type="submit" loading={isPutTruckItemPending}>
-            {t('common.save')}
-          </LoadingButton>
+          {data ? (
+            <Button variant="contained" type="button" onClick={() => navigate(ROUTES.TRUCKS())}>
+              {t('common.back')}
+            </Button>
+          ) : (
+            <LoadingButton variant="contained" type="submit" loading={isPutTruckItemPending}>
+              {t('common.save')}
+            </LoadingButton>
+          )}
         </Box>
       </Box>
     </form>

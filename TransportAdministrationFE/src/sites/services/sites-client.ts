@@ -17,7 +17,7 @@ const getSiteItem = (id: string): AxiosPromise<SiteDto> => {
   return apiClient.private.get(`/sites/${id}`);
 };
 
-const putSiteItem = (body: SiteDto): AxiosPromise<void> => {
+const putSiteItem = (body: Omit<SiteDto, 'id'>): AxiosPromise<void> => {
   return apiClient.private.post(`/sites`, body);
 };
 

@@ -1,16 +1,18 @@
 import useGetSiteList from './queries/use-get-site-list.ts';
 import LoadingSection from '../components/loading-section/LoadingSection.tsx';
 import ErrorSection from '../components/error-section/ErrorSection.tsx';
-import { Box, List, ListItem, Button, Typography, Divider, IconButton } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
+import { Box, Button, Divider, IconButton, List, ListItem, Typography } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../Routes.ts';
 import { Fragment } from 'react';
 import useDeleteSiteItem from './queries/use-delete-site-item.ts';
 import DeleteIconButtonWithDialog from '../components/delete-icon-button-with-dialog/DeleteIconButtonWithDialog.tsx';
+import useIsAdmin from '../auth/hooks/use-is-admin';
 
 const SiteListPage = () => {
+  const isAdmin = useIsAdmin();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { data, isFetching, isError } = useGetSiteList();
@@ -38,11 +40,13 @@ const SiteListPage = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: 2 }}>
-        <Button variant="contained" onClick={handleAddNew}>
-          {t('addNew')}
-        </Button>
-      </Box>
+      {isAdmin && (
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: 2 }}>
+          <Button variant="contained" onClick={handleAddNew}>
+            {t('addNew')}
+          </Button>
+        </Box>
+      )}
       {data?.length ? (
         <List>
           {data?.map((site, index) => (
@@ -52,7 +56,7 @@ const SiteListPage = () => {
                 secondaryAction={
                   <Box sx={{ display: 'flex', gap: 1 }}>
                     <IconButton onClick={handleEdit(site.id)}>
-                      <EditIcon />
+                      <VisibilityIcon />
                     </IconButton>
                     <DeleteIconButtonWithDialog
                       onDelete={handleDeleteSiteItem(site.id)}
@@ -63,7 +67,7 @@ const SiteListPage = () => {
                   </Box>
                 }
               >
-                {site.address}
+                {`${site.name} - ${site.address}`}
               </ListItem>
             </Fragment>
           ))}
@@ -76,5 +80,4 @@ const SiteListPage = () => {
     </Box>
   );
 };
-
 export default SiteListPage;

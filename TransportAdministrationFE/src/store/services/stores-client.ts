@@ -13,7 +13,7 @@ const getStoreItem = (id: string): AxiosPromise<StoreDto> => {
   return apiClient.private.get(`/stores/${id}`);
 };
 
-const putStoreItem = (body: StoreDto): AxiosPromise<void> => {
+const putStoreItem = (body: Omit<StoreDto, 'id'>): AxiosPromise<void> => {
   return apiClient.private.post(`/stores`, body);
 };
 

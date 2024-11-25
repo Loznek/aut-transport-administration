@@ -1,9 +1,10 @@
 interface TruckDto {
   id: number;
   type: string;
-  licencePlate: string;
+  licensePlate: string;
   volumeCapacity: number;
   weightCapacity: number;
+  active: boolean;
 }
 
 export default TruckDto;

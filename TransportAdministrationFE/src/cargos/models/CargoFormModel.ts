@@ -3,6 +3,7 @@ interface CargoFormModel {
   volume: number;
   weight: number;
   startSiteId: number;
+  destinationStoreId: number;
 }
 
 export default CargoFormModel;

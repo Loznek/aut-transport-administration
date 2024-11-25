@@ -118,7 +118,7 @@ const TransportItemSectionForm = ({
           >
             {trucks.map((truck) => (
               <MenuItem key={truck.id} value={truck.id}>
-                {truck.licencePlate}
+                {truck.licensePlate}
               </MenuItem>
             ))}
           </TextFieldWithController>

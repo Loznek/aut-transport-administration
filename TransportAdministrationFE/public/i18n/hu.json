@@ -77,7 +77,8 @@
     "name": "Áru neve",
     "volume": "Áru térfogata",
     "weight": "Áru súlya",
-    "site": "Telephely"
+    "site": "Telephely",
+    "destinationStore": "Cél bolt"
   },
   "transports": {
     "noTransports": "Nem található fuvar",

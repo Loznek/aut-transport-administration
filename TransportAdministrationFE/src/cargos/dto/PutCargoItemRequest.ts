@@ -1,7 +1,7 @@
-import CreateCargoDto from './CreateCargoDto';
+import CargoDto from '../../core/dto/CargoDto';
 
 interface PutCargoItemRequest {
-  cargo: CreateCargoDto;
+  cargo: Omit<CargoDto, 'id'>;
   startSiteId: number;
 }
 
