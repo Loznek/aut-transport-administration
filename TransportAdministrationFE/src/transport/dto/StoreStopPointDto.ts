@@ -1,7 +1,9 @@
 interface StoreStopPointDto {
   storeId: number;
   orderInSection: number;
-  arrivalTime: Date;
+  arrivalTime: string | null;
+  id: number | null;
+  transportSectionId: number | null;
 }
 
 export default StoreStopPointDto;

@@ -20,9 +20,9 @@ interface TransportItemSectionFormProps {
   currentStep: TransportCreationStep;
   stores: StoreDto[];
   sites: SiteDto[];
-  trucks: TruckDto[];
-  cargos: CargoDto[];
-  drivers: DriverDto[];
+  trucks: TruckDto[] | null;
+  cargos: CargoDto[] | null;
+  drivers: DriverDto[] | null;
   setDrivers: (drivers: DriverWithArrivalTimeDto[], index: number) => void;
   sectionsAmount: number;
   multiple: boolean;
@@ -109,7 +109,7 @@ const TransportItemSectionForm = ({
           filterSelectedOptions
           multiple
         />
-        {index === 0 && !!trucks?.length && (
+        {index === 0 && !!trucks && (
           <TextFieldWithController
             controllerProps={{ control, name: 'truck' }}
             label={t('transports.truck')}
@@ -118,25 +118,25 @@ const TransportItemSectionForm = ({
           >
             {trucks.map((truck) => (
               <MenuItem key={truck.id} value={truck.id}>
-                {truck.licensePlate}
+                {`${truck.licensePlate} - ${truck.type} - ${truck.volumeCapacity}m³ - ${truck.weightCapacity} tonna`}
               </MenuItem>
             ))}
           </TextFieldWithController>
         )}
-        {index === 0 && !!cargos?.length && (
+        {index === 0 && !!cargos && (
           <AutocompleteWithController
             controllerProps={{ control, name: 'cargos' }}
             textFieldProps={{ label: t('transports.cargos') }}
             options={cargos}
             disabled={disabled}
             getOptionKey={(option) => option.id}
-            getOptionLabel={(option) => option.name}
+            getOptionLabel={(option) => `${option.name} - ${option.volume}m³ - ${option.weight} tonna`}
             noOptionsText={t('cargos.noCargos')}
             filterSelectedOptions
             multiple
           />
         )}
-        {!!drivers?.length && (
+        {!!drivers && (
           <TextFieldWithController
             controllerProps={{ control, name: `sections.${index}.driver` }}
             label={t('transports.driver')}

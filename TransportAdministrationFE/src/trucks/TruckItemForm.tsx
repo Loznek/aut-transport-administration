@@ -2,7 +2,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextFieldWithController from '../components/text-field-with-controller/TextFieldWithController.tsx';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, MenuItem } from '@mui/material';
+import { Box, Button, InputAdornment, MenuItem } from '@mui/material';
 import usePutTruckItem from './queries/use-put-truck-item.ts';
 import { LoadingButton } from '@mui/lab';
 import TruckDto from '../core/dto/TruckDto.ts';
@@ -34,13 +34,10 @@ const TruckItemForm = ({ data, sites = [] }: TruckItemFormProps) => {
 
   const handleFormSubmit: SubmitHandler<TruckFormModel> = (formData) => {
     putTruckItem({
-      truck: {
-        type: formData.type,
-        licensePlate: formData.licencePlate,
-        volumeCapacity: formData.volumeCapacity,
-        weightCapacity: formData.weightCapacity,
-        active: true,
-      },
+      type: formData.type,
+      licensePlate: formData.licencePlate,
+      volumeCapacity: formData.volumeCapacity,
+      weightCapacity: formData.weightCapacity,
       startSiteId: formData.startSiteId,
     });
   };
@@ -60,24 +57,32 @@ const TruckItemForm = ({ data, sites = [] }: TruckItemFormProps) => {
         />
         <TextFieldWithController
           controllerProps={{ control, name: 'weightCapacity' }}
+          InputProps={{
+            endAdornment: <InputAdornment position="end">{t('common.tons')}</InputAdornment>,
+          }}
           label={t('trucks.weightCapacity')}
           disabled={!!data}
         />
         <TextFieldWithController
           controllerProps={{ control, name: 'volumeCapacity' }}
+          InputProps={{
+            endAdornment: <InputAdornment position="end">{t('common.meter3')}</InputAdornment>,
+          }}
           label={t('trucks.volumeCapacity')}
           disabled={!!data}
         />
-        <TextFieldWithController
-          controllerProps={{ control, name: 'startSiteId' }}
-          label={t('trucks.site')}
-          disabled={!!data}
-          select
-        >
-          {sites.map((site) => (
-            <MenuItem key={site.id} value={site.id}>{`${site.address}`}</MenuItem>
-          ))}
-        </TextFieldWithController>
+        {!data && (
+          <TextFieldWithController
+            controllerProps={{ control, name: 'startSiteId' }}
+            label={t('trucks.site')}
+            disabled={!!data}
+            select
+          >
+            {sites.map((site) => (
+              <MenuItem key={site.id} value={site.id}>{`${site.address}`}</MenuItem>
+            ))}
+          </TextFieldWithController>
+        )}
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           {data ? (
             <Button variant="contained" type="button" onClick={() => navigate(ROUTES.TRUCKS())}>
@@ -93,5 +98,4 @@ const TruckItemForm = ({ data, sites = [] }: TruckItemFormProps) => {
     </form>
   );
 };
-
 export default TruckItemForm;

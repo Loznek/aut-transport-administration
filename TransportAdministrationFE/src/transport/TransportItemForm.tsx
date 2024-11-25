@@ -36,15 +36,15 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
   const { t } = useTranslation();
   const idParam = useIdParam();
   const [currentStep, setCurrentStep] = useState(TransportCreationStep.DEFINE_SITES);
-  const [transportableCargos, setTransportableCargos] = useState<CargoWithArrivalTimeDto[]>([]);
-  const [availableTrucks, setAvailableTrucks] = useState<TruckWithArrivalTimeDto[]>([]);
-  const [availableSectionDrivers, setAvailableSectionDrivers] = useState<DriverWithArrivalTimeDto[][]>([]);
+  const [transportableCargos, setTransportableCargos] = useState<CargoWithArrivalTimeDto[] | null>(null);
+  const [availableTrucks, setAvailableTrucks] = useState<TruckWithArrivalTimeDto[] | null>(null);
+  const [availableSectionDrivers, setAvailableSectionDrivers] = useState<DriverWithArrivalTimeDto[][] | null>(null);
   const [shouldUniqueDriverMessage, setShouldUniqueDriverMessage] = useState(false);
   const [shouldMultipleSections, setShouldMultipleSections] = useState(false);
   const { mutateAsync: getAvailableTrucks, isPending: isGetAvailableTrucksPending } = useGetSiteAvailableTrucks();
   const { mutateAsync: getTransportableCargos, isPending: isGetTransportableCargosPending } =
     useGetSiteTransportableCargos();
-  const { mutateAsync: createTransport } = usePostTransportItem();
+  const { mutateAsync: createTransport, isPending: isCreateTransportPending } = usePostTransportItem();
   const { mutateAsync: updateTransport } = usePutTransportItem();
   const {
     control,
@@ -60,9 +60,9 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
       : yupResolver(
           transportFormValidator({
             t,
-            transportableCargos,
-            availableTrucks,
-            availableDrivers: availableSectionDrivers,
+            transportableCargos: transportableCargos || [],
+            availableTrucks: availableTrucks || [],
+            availableDrivers: availableSectionDrivers || [],
           })
         ),
     reValidateMode: 'onSubmit',
@@ -95,9 +95,9 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
     } else {
       const startTime = getFirstSectionStartTime({
         formData,
-        availableDrivers: availableSectionDrivers[0],
-        availableTrucks,
-        transportableCargos,
+        availableDrivers: (availableSectionDrivers || [])[0],
+        availableTrucks: availableTrucks || [],
+        transportableCargos: transportableCargos || [],
       });
       await createTransport(
         mapTransportFormDataToPostTransportItemRequest({
@@ -153,7 +153,7 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
 
   const handleSetDriverForSection = useCallback((drivers: DriverWithArrivalTimeDto[], index: number) => {
     setAvailableSectionDrivers((prev) => {
-      const newArray = [...prev];
+      const newArray = [...(prev || [])];
       newArray[index] = drivers;
       return newArray;
     });
@@ -185,9 +185,9 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
                 currentStep={currentStep}
                 sites={sites}
                 stores={stores}
-                trucks={availableTrucks.map((at) => at.truck)}
-                cargos={transportableCargos.map((tc) => tc.cargo)}
-                drivers={availableSectionDrivers[index]?.map((asd) => asd.driver) || []}
+                trucks={availableTrucks?.map((at) => at.truck) || null}
+                cargos={transportableCargos?.map((tc) => tc.cargo) || null}
+                drivers={availableSectionDrivers?.[index]?.map((asd) => asd.driver) || null}
                 multiple={shouldMultipleSections}
                 sectionsAmount={fields.length}
                 setDrivers={handleSetDriverForSection}
@@ -215,7 +215,7 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
           ) : (
             <Box />
           )}
-          <LoadingButton variant="contained" type="submit" loading={isSubmitting || isValidating}>
+          <LoadingButton variant="contained" type="submit" loading={isValidating || isCreateTransportPending}>
             {t('common.next')}
           </LoadingButton>
         </Box>

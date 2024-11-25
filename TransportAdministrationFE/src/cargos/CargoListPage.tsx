@@ -32,7 +32,7 @@ const CargoListPage = () => {
   };
 
   const concatenateCargoData = useCallback((cargo: CargoDto) => {
-    return `${cargo.name} - ${cargo.volume} - ${cargo.weight}`;
+    return `${cargo.name} - ${cargo.volume} m³ - ${cargo.weight} tonna`;
   }, []);
 
   if (isFetching) {

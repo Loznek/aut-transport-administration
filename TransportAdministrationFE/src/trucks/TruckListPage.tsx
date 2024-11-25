@@ -32,7 +32,7 @@ const TruckListPage = () => {
   };
 
   const concatenateTruckData = useCallback((truck: TruckDto) => {
-    return `${truck.licensePlate} - ${truck.type} - ${truck.volumeCapacity} - ${truck.weightCapacity}`;
+    return `${truck.licensePlate} - ${truck.type} - ${truck.volumeCapacity}m³ - ${truck.weightCapacity} tonna`;
   }, []);
 
   if (isFetching) {

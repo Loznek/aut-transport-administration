@@ -1,7 +1,9 @@
-import TruckDto from '../../core/dto/TruckDto';
-
-interface TruckCreationDto extends Omit<TruckDto, 'id'> {
-  id: number | null;
+interface TruckCreationDto {
+  licensePlate: string;
+  type: string;
+  volumeCapacity: number;
+  weightCapacity: number;
+  startSiteId: number;
 }
 
 export default TruckCreationDto;

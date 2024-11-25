@@ -4,7 +4,9 @@
     "save": "Mentés",
     "cancel": "Mégsem",
     "delete": "Törlés",
-    "back": "Vissza"
+    "back": "Vissza",
+    "tons": "tonna",
+    "meter3": "m³"
   },
   "validation": {
     "required": "A mező kitöltése kötelező"

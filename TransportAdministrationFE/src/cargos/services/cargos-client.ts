@@ -1,7 +1,7 @@
 import { apiClient } from '../../core/services/api-client.ts';
 import { AxiosPromise } from 'axios';
-import PutCargoItemRequest from '../dto/PutCargoItemRequest.ts';
 import CargoDto from '../../core/dto/CargoDto';
+import CargoCreationDto from '../dto/CargoCreationDto';
 
 const getCargoList = (): AxiosPromise<CargoDto[]> => {
   return apiClient.private.get('/cargos/active-cargos');
@@ -15,7 +15,7 @@ const getCargoItem = (id: string): AxiosPromise<CargoDto> => {
   return apiClient.private.get(`/cargos/${id}`);
 };
 
-const putCargoItem = (body: PutCargoItemRequest): AxiosPromise<void> => {
+const putCargoItem = (body: CargoCreationDto): AxiosPromise<void> => {
   return apiClient.private.post('/cargos', body);
 };
 

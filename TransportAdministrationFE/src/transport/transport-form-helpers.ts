@@ -14,7 +14,7 @@ interface MapTransportResponseToTransportFormDataArgs {
 interface MapTransportFormDataToPostTransportItemRequestArgs {
   formData: TransportFormModel;
   startTime: Date;
-  sectionsStartArrivalTimes: { startTime: Date; arrivalTime: Date; stopTimes: Date[] }[];
+  sectionsStartArrivalTimes: { startTime: Date; arrivalTime: Date }[];
 }
 
 interface GetFirstSectionStartTimeArgs {
@@ -84,6 +84,11 @@ export const mapTransportResponseToTransportFormData = ({
   };
 };
 
+export const formatDate = (date: Date): string => {
+  const dateString = new Date(date).toISOString();
+  return dateString.substring(0, dateString.length - 1);
+};
+
 export const mapTransportFormDataToPostTransportItemRequest = ({
   formData,
   startTime,
@@ -92,13 +97,15 @@ export const mapTransportFormDataToPostTransportItemRequest = ({
   return {
     startSiteId: formData.sections[0].startSite,
     destinationSiteId: formData.sections[formData.sections.length - 1].destinationSite,
-    startTime: sectionsStartArrivalTimes[0]?.startTime || startTime || new Date(),
+    startTime: formatDate(sectionsStartArrivalTimes[0]?.startTime || startTime || new Date()),
     truckId: formData.truck!,
     cargoIds: formData.cargos?.map((cargo) => cargo.id) || [],
     transportSections: formData.sections.map((section, index) => ({
       transportSection: {
-        startTime: sectionsStartArrivalTimes[index]?.startTime?.toLocaleString(),
-        arrivalTime: sectionsStartArrivalTimes[index]?.arrivalTime?.toLocaleString(),
+        id: null,
+        transportId: null,
+        startTime: formatDate(sectionsStartArrivalTimes[index]?.startTime || new Date()),
+        arrivalTime: formatDate(sectionsStartArrivalTimes[index]?.arrivalTime || new Date()),
         startSiteId: section.startSite,
         destinationSiteId: section.destinationSite,
         driverId: section.driver!,
@@ -106,7 +113,9 @@ export const mapTransportFormDataToPostTransportItemRequest = ({
       storeStops: section.stops.map((stop, stopIndex) => ({
         storeId: stop.id,
         orderInSection: stopIndex,
-        arrivalTime: sectionsStartArrivalTimes[index]?.stopTimes[stopIndex],
+        arrivalTime: null,
+        id: null,
+        transportSectionId: null,
       })),
     })),
   };
