@@ -3,16 +3,18 @@ import LoadingSection from '../components/loading-section/LoadingSection.tsx';
 import ErrorSection from '../components/error-section/ErrorSection.tsx';
 import { Box, Button, Divider, IconButton, List, ListItem, Typography } from '@mui/material';
 import { Fragment, useCallback } from 'react';
-import EditIcon from '@mui/icons-material/Edit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { ROUTES } from '../Routes.ts';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import DeleteIconButtonWithDialog from '../components/delete-icon-button-with-dialog/DeleteIconButtonWithDialog.tsx';
 import useDeleteCargoItem from './queries/use-delete-cargo-item.ts';
 import CargoDto from '../core/dto/CargoDto.ts';
+import useIsAdmin from '../auth/hooks/use-is-admin';
 
 const CargoListPage = () => {
   const { t } = useTranslation();
+  const isAdmin = useIsAdmin();
   const navigate = useNavigate();
   const { data, isFetching, isError } = useGetCargoList();
   const { mutateAsync: deleteCargoItem, isPending: isDeleteCargoItemPending } = useDeleteCargoItem();
@@ -30,7 +32,7 @@ const CargoListPage = () => {
   };
 
   const concatenateCargoData = useCallback((cargo: CargoDto) => {
-    return `${cargo.name} - ${cargo.volume} - ${cargo.weight}`;
+    return `${cargo.name} - ${cargo.volume} m³ - ${cargo.weight} tonna`;
   }, []);
 
   if (isFetching) {
@@ -43,11 +45,13 @@ const CargoListPage = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: 2 }}>
-        <Button variant="contained" onClick={handleAddNew}>
-          {t('addNew')}
-        </Button>
-      </Box>
+      {isAdmin && (
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: 2 }}>
+          <Button variant="contained" onClick={handleAddNew}>
+            {t('addNew')}
+          </Button>
+        </Box>
+      )}
       {data?.length ? (
         <List>
           {data?.map((cargo, index) => (
@@ -57,7 +61,7 @@ const CargoListPage = () => {
                 secondaryAction={
                   <Box sx={{ display: 'flex', gap: 1 }}>
                     <IconButton onClick={handleEdit(cargo.id)}>
-                      <EditIcon />
+                      <VisibilityIcon />
                     </IconButton>
                     <DeleteIconButtonWithDialog
                       onDelete={handleDelete(cargo.id)}

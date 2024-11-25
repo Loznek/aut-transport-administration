@@ -1,7 +1,7 @@
-import TruckCreationDto from './TruckCreationDto';
+import TruckDto from '../../core/dto/TruckDto';
 
 interface PutTruckItemRequest {
-  truck: TruckCreationDto;
+  truck: Omit<TruckDto, 'id'>;
   startSiteId: number;
 }
 

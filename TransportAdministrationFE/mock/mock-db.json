@@ -75,79 +75,173 @@
   "getSites": [
     {
       "id": 1,
-      "address": "1000 Budapest, Kossuth tér 1."
+      "address": "1000 Budapest, Kossuth tér 1.",
+      "lan": "47.5075",
+      "lon": "19.0466"
     },
     {
       "id": 2,
-      "address": "4000 Baja, Rákóczi utca 22."
+      "address": "4000 Baja, Rákóczi utca 22.",
+      "lan": "46.1771",
+      "lon": "18.9558"
     },
     {
       "id": 3,
-      "address": "4566 Miskolc, Hunyadi út 6."
+      "address": "4566 Miskolc, Hunyadi út 6.",
+      "lan": "48.1047",
+      "lon": "20.7919"
     },
     {
       "id": 4,
-      "address": "1450 Miskolc, Malom tér 22."
+      "address": "1450 Miskolc, Malom tér 22.",
+      "lan": "48.1040",
+      "lon": "20.7880"
     },
     {
       "id": 5,
-      "address": "4430 Solymár, Major tér 12."
+      "address": "4430 Solymár, Major tér 12.",
+      "lan": "47.5897",
+      "lon": "18.9377"
     },
     {
       "id": 6,
-      "address": "5000 Szolnok, Kacsóh út 56."
+      "address": "5000 Szolnok, Kacsóh út 56.",
+      "lan": "47.1833",
+      "lon": "20.2025"
     },
     {
       "id": 7,
-      "address": "2230 Fót, Ilona utca 25."
+      "address": "2230 Fót, Ilona utca 25.",
+      "lan": "47.6182",
+      "lon": "19.1986"
     },
     {
       "id": 8,
-      "address": "2231 Vecsés, Ceglédi út 266."
+      "address": "2231 Vecsés, Ceglédi út 266.",
+      "lan": "47.4079",
+      "lon": "19.2776"
     }
   ],
   "getSiteItem": {
     "id": 1,
-    "address": "4566 Miskolc, Hunyadi út 6."
+    "address": "4566 Miskolc, Hunyadi út 6.",
+    "lan": "48.1047",
+    "lon": "20.7919"
   },
   "getStores": [
     {
       "id": 1,
-      "address": "1000 Budapest, Kossuth tér 1."
+      "name": "Kossuth Square Store",
+      "address": "1000 Budapest, Kossuth tér 1.",
+      "lan": "47.5075",
+      "lon": "19.0466"
     },
     {
       "id": 2,
-      "address": "4000 Baja, Rákóczi utca 22."
+      "name": "Rákóczi Street Store",
+      "address": "4000 Baja, Rákóczi utca 22.",
+      "lan": "46.1783",
+      "lon": "18.9536"
     },
     {
       "id": 3,
-      "address": "4566 Miskolc, Hunyadi út 6."
+      "name": "Hunyadi Road Store",
+      "address": "4566 Miskolc, Hunyadi út 6.",
+      "lan": "48.1047",
+      "lon": "20.7919"
     },
     {
       "id": 4,
-      "address": "4423 Szeged, Rákosi köz 32."
+      "name": "Rákosi Lane Store",
+      "address": "4423 Szeged, Rákosi köz 32.",
+      "lan": "46.2530",
+      "lon": "20.1414"
     },
     {
       "id": 5,
-      "address": "3442 Győr, Horváth utca 1a."
+      "name": "Horváth Street Store",
+      "address": "3442 Győr, Horváth utca 1a.",
+      "lan": "47.6875",
+      "lon": "17.6504"
     },
     {
       "id": 6,
-      "address": "5000 Szolnok, Baros út 9."
+      "name": "Baros Road Store",
+      "address": "5000 Szolnok, Baros út 9.",
+      "lan": "47.1801",
+      "lon": "20.1960"
     },
     {
       "id": 7,
-      "address": "2211 Szentendre, Alma köz 33."
+      "name": "Alma Lane Store",
+      "address": "2211 Szentendre, Alma köz 33.",
+      "lan": "47.6715",
+      "lon": "19.0750"
     },
     {
       "id": 8,
-      "address": "5543 Debrecen, Nagy István park 2."
+      "name": "Nagy István Park Store",
+      "address": "5543 Debrecen, Nagy István park 2.",
+      "lan": "47.5317",
+      "lon": "21.6273"
     }
   ],
   "getStoreItem": {
     "id": 1,
-    "address": "4566 Miskolc, Hunyadi út 6."
+    "address": "4566 Miskolc, Hunyadi út 6.",
+    "lan": "48.1047",
+    "lon": "20.7919"
   },
+  "getDriverItem": {
+    "id": 1,
+    "name": "Lajos",
+    "dateOfBirth": "1980-01-01",
+    "dayOfInTheWeek": "hétfő"
+  },
+    "getDrivers": [
+        {
+        "id": 1,
+        "name": "Lajos",
+        "dateOfBirth": "1988-01-01",
+        "dayOfInTheWeek": "hétfő"
+        },
+        {
+        "id": 2,
+        "name": "Laci",
+        "dateOfBirth": "1980-01-01",
+        "dayOfInTheWeek": "kedd"
+        },
+        {
+        "id": 3,
+        "name": "Aladár",
+        "dateOfBirth": "1980-01-01",
+        "dayOfInTheWeek": "szerda"
+        },
+        {
+        "id": 4,
+        "name": "Feri",
+        "dateOfBirth": "1980-01-01",
+        "dayOfInTheWeek": "csütörtök"
+        },
+        {
+        "id": 5,
+        "name": "Józsi",
+        "dateOfBirth": "1980-01-01",
+        "dayOfInTheWeek": "péntek"
+        },
+        {
+        "id": 6,
+        "name": "Pista",
+        "dateOfBirth": "1980-01-01",
+        "dayOfInTheWeek": "szombat"
+        },
+        {
+        "id": 7,
+        "name": "Géza",
+        "dateOfBirth": "1980-01-01",
+        "dayOfInTheWeek": "vasárnap"
+        }
+    ],
   "getCargos": [
     {
       "id": 1,
@@ -206,7 +300,7 @@
     "destinationStoreId": 4
   },
   "calculateTravelTimeNinePlus": {
-    "destinationArrivalTime": "Fri Nov 22 2027 10:00:00 GMT+0100 (Central European Standard Time)"
+    "destinationArrivalTime": "Fri Nov 22 2025 10:00:00 GMT+0100 (Central European Standard Time)"
   },
   "getSiteTransportableCargos": [
     {

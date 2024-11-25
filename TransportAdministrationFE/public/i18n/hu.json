@@ -4,7 +4,9 @@
     "save": "Mentés",
     "cancel": "Mégsem",
     "delete": "Törlés",
-    "back": "Vissza"
+    "back": "Vissza",
+    "tons": "tonna",
+    "meter3": "m³"
   },
   "validation": {
     "required": "A mező kitöltése kötelező"
@@ -14,8 +16,13 @@
   },
   "login": {
     "title": "Bejelentkezés",
-    "username": "Felhasználónév",
-    "password": "Jelszó"
+    "username": "Név",
+    "email": "E-mail",
+    "password": "Jelszó",
+    "googleSignIn": "Google-fiókkal",
+    "loading": "Bejelentkezés...",
+    "invalidCredentials": "Hibás email, felhasználónév vagy jelszó",
+    "unexpectedError": "Váratlan hiba történt"
   },
   "home": {
     "welcome": "Üdvözöljük, {{name}}"
@@ -37,17 +44,29 @@
     "stores": {
       "manage": "Boltok kezelése",
       "detail1": "Új bolt hozzáadása",
-      "detail2": "Meglévő bolt eltávolítása"
+      "detail2": "Meglévő bolt eltávolítása",
+      "storeLocation": "Bolt helye",
+      "stores": "Boltok"
     },
     "sites": {
       "manage": "Telephelyek kezelése",
       "detail1": "Új telephely hozzáadása",
-      "detail2": "Meglévő telephely törlése"
+      "detail2": "Meglévő telephely törlése",
+      "siteLocation": "Telephely helye"
     },
     "cargos": {
       "manage": "Áruk kezelése",
       "detail1": "Új áru felvétele",
       "detail2": "Meglévő áru törlése"
+    },
+    "drivers": {
+      "manage": "Sofőrök kezelése",
+      "detail1": "Új sofőr hozzáadása",
+      "detail2": "Sofőrök adatainak módosítása",
+      "confirmDeleteTitle": "Biztosan törlöd a sofőrt?",
+      "name": "Név",
+      "dateOfBirth": "Születési dátum",
+      "dayOfTheWeek": "Szünnap"
     }
   },
   "sites": {
@@ -77,7 +96,8 @@
     "name": "Áru neve",
     "volume": "Áru térfogata",
     "weight": "Áru súlya",
-    "site": "Telephely"
+    "site": "Telephely",
+    "destinationStore": "Cél bolt"
   },
   "transports": {
     "noTransports": "Nem található fuvar",

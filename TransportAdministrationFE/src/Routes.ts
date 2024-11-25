@@ -13,4 +13,6 @@ export const ROUTES = {
   SITE_ITEM: (id: RouteWithIdParam) => `/sites/${id}`,
   CARGOS: () => '/cargos',
   CARGO_ITEM: (id: RouteWithIdParam) => `/cargos/${id}`,
+  DRIVERS: () => '/drivers',
+  DRIVER_ITEM: (id: RouteWithIdParam) => `/drivers/${id}`,
 };

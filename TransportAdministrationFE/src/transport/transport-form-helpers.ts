@@ -2,11 +2,53 @@ import PostTransportItemRequest from './dto/PostTransportItemRequest';
 import TransportFormModel from './models/TransportFormModel';
 import TransportCreationDto from './dto/TransportCreationDto';
 import SiteDto from '../core/dto/SiteDto';
+import DriverWithArrivalTimeDto from '../core/dto/DriverWithArrivalTimeDto';
+import TruckWithArrivalTimeDto from '../core/dto/TruckWithArrivalTimeDto';
+import CargoWithArrivalTimeDto from '../core/dto/CargoWithArrivalTimeDto';
+import TruckDto from '../core/dto/TruckDto';
+import CargoDto from '../core/dto/CargoDto';
+import DriverDto from '../core/dto/DriverDto';
 
 interface MapTransportResponseToTransportFormDataArgs {
   data?: TransportCreationDto;
   stores?: SiteDto[];
 }
+
+interface MapTransportFormDataToPostTransportItemRequestArgs {
+  formData: TransportFormModel;
+  startTime: Date;
+  sectionsStartArrivalTimes: { startTime: Date; arrivalTime: Date }[];
+}
+
+interface GetFirstSectionStartTimeArgs {
+  formData: TransportFormModel;
+  availableDrivers: DriverWithArrivalTimeDto[];
+  availableTrucks: TruckWithArrivalTimeDto[];
+  transportableCargos: CargoWithArrivalTimeDto[];
+}
+
+export const getFirstSectionStartTime = ({
+  formData,
+  availableTrucks,
+  availableDrivers,
+  transportableCargos,
+}: GetFirstSectionStartTimeArgs): Date => {
+  const sectionFormData = formData.sections[0];
+  const driverArrivalTime = availableDrivers.find((ad) => ad.driver.id === sectionFormData.driver)?.arrivalTime;
+  const truckArrivalTime = availableTrucks.find((at) => at.truck.id === formData.truck)?.arrivalTime;
+  const cargosArrivalTime = transportableCargos
+    .filter((tc) => formData.cargos?.map((cargo) => cargo.id)?.includes(tc.cargo.id))
+    .map((cargo) => cargo.arrivalTime);
+
+  return new Date(
+    Math.max(
+      ...[driverArrivalTime, truckArrivalTime, ...cargosArrivalTime]
+        .filter(Boolean)
+        .map((time) => new Date(time!).getTime()),
+      new Date().getTime()
+    )
+  );
+};
 
 export const mapTransportResponseToTransportFormData = ({
   data,
@@ -45,24 +87,72 @@ export const mapTransportResponseToTransportFormData = ({
   };
 };
 
-export const mapTransportFormDataToPostTransportItemRequest = (
-  formData: TransportFormModel
-): PostTransportItemRequest => {
+export const formatDate = (date: Date): string => {
+  const dateString = new Date(date).toISOString();
+  return dateString.substring(0, dateString.length - 1);
+};
+
+export const getAvailableTrucksInitialData = (
+  data: TransportCreationDto | undefined,
+  allTrucks: TruckDto[]
+): TruckWithArrivalTimeDto[] | null => {
+  if (!data) {
+    return null;
+  }
+
+  return allTrucks.filter((truck) => truck.id === data.truckId).map((truck) => ({ truck, arrivalTime: '' }));
+};
+
+export const getTransportableCargosInitialData = (
+  data: TransportCreationDto | undefined,
+  allCargos: CargoDto[]
+): CargoWithArrivalTimeDto[] | null => {
+  if (!data) {
+    return null;
+  }
+  return allCargos.filter((cargo) => data.cargoIds.includes(cargo.id)).map((cargo) => ({ cargo, arrivalTime: '' }));
+};
+
+export const getAvailableDriversInitialData = (
+  data: TransportCreationDto | undefined,
+  allDrivers: DriverDto[]
+): DriverWithArrivalTimeDto[][] | null => {
+  if (!data) {
+    return null;
+  }
+
+  return data?.transportSections
+    .map((ts) => ts.transportSection.driverId)
+    .map((driver) => [{ driver: allDrivers.find((d) => d.id === driver)!, arrivalTime: '' }]);
+};
+
+export const mapTransportFormDataToPostTransportItemRequest = ({
+  formData,
+  startTime,
+  sectionsStartArrivalTimes,
+}: MapTransportFormDataToPostTransportItemRequestArgs): PostTransportItemRequest => {
   return {
     startSiteId: formData.sections[0].startSite,
     destinationSiteId: formData.sections[formData.sections.length - 1].destinationSite,
-    startTime: new Date(),
+    startTime: formatDate(sectionsStartArrivalTimes[0]?.startTime || startTime || new Date()),
     truckId: formData.truck!,
     cargoIds: formData.cargos?.map((cargo) => cargo.id) || [],
-    transportSections: formData.sections.map((section) => ({
+    transportSections: formData.sections.map((section, index) => ({
       transportSection: {
+        id: null,
+        transportId: null,
+        startTime: formatDate(sectionsStartArrivalTimes[index]?.startTime || new Date()),
+        arrivalTime: formatDate(sectionsStartArrivalTimes[index]?.arrivalTime || new Date()),
         startSiteId: section.startSite,
         destinationSiteId: section.destinationSite,
         driverId: section.driver!,
       },
-      storeStops: section.stops.map((stop, index) => ({
+      storeStops: section.stops.map((stop, stopIndex) => ({
         storeId: stop.id,
-        orderInSection: index,
+        orderInSection: stopIndex,
+        arrivalTime: null,
+        id: null,
+        transportSectionId: null,
       })),
     })),
   };

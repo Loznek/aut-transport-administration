@@ -9,7 +9,7 @@ const useGetMe = () => {
 
   return useQuery({
     queryKey: [ME_KEY],
-    queryFn: () => authClient.getMe().then((res) => res.data),
+    queryFn: () => authClient.getMe().then((res) => res),
     enabled: !!auth.authToken,
   });
 };

@@ -2,7 +2,6 @@ import { apiClient } from '../../core/services/api-client.ts';
 import { AxiosPromise } from 'axios';
 import PostTransportItemRequest from '../dto/PostTransportItemRequest.ts';
 import CalculateTravelTimeRequest from '../dto/CalculateTravelTimeRequest';
-import CalculateTravelTimeResponse from '../dto/CalculateTravelTimeResponse';
 import TransportCreationDto from '../dto/TransportCreationDto';
 import TransportDto from '../../core/dto/TransportDto';
 
@@ -26,7 +25,7 @@ const deleteTransportItem = (id: string): AxiosPromise<void> => {
   return apiClient.private.delete(`/transport/${id}`);
 };
 
-const calculateTravelTime = (body: CalculateTravelTimeRequest): AxiosPromise<CalculateTravelTimeResponse> => {
+const calculateTravelTime = (body: CalculateTravelTimeRequest): AxiosPromise<string> => {
   return apiClient.private.post('/calculate-travel-time', body);
 };
 

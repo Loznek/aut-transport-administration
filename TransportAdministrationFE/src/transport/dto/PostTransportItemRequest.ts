@@ -2,7 +2,7 @@ import TransportSectionInfoDto from './TransportSectionInfoDto';
 
 interface PostTransportItemRequest {
   startSiteId: number;
-  startTime: Date;
+  startTime: string;
   destinationSiteId: number;
   transportSections: TransportSectionInfoDto[];
   truckId: number;

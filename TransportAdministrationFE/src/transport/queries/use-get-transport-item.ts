@@ -11,7 +11,6 @@ const useGetTransportItem = () => {
     queryKey: [TRANSPORT_ITEM_KEY, idParam],
     queryFn: () => transportClient.getTransportItem(idParam || '').then((res) => res.data),
     enabled: !!idParam && idParam != 'new',
-    gcTime: 0,
   });
 };
 

@@ -11,7 +11,6 @@ const useGetTruckItem = () => {
     queryKey: [TRUCK_ITEM_KEY, idParam],
     queryFn: () => trucksClient.getTruckItem(idParam!).then((res) => res.data),
     enabled: !!idParam && idParam != 'new',
-    gcTime: 0,
   });
 };
 

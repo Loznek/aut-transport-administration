@@ -8,7 +8,7 @@ import TransportCreationStep from './constants/TransportCreationStep';
 import StoreDto from '../core/dto/StoreDto';
 import { LoadingButton } from '@mui/lab';
 import { yupResolver } from '@hookform/resolvers/yup';
-import transportFormValidator from './validators/transport-form-validator';
+import transportFormValidator, { sectionsStartArrivalTime } from './validators/transport-form-validator';
 import TransportItemSectionForm from './TransportItemSectionForm';
 import CargoWithArrivalTimeDto from '../core/dto/CargoWithArrivalTimeDto';
 import TruckWithArrivalTimeDto from '../core/dto/TruckWithArrivalTimeDto';
@@ -18,32 +18,60 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import DriverWithArrivalTimeDto from '../core/dto/DriverWithArrivalTimeDto';
 import usePostTransportItem from './queries/use-post-transport-item';
 import {
+  getAvailableDriversInitialData,
+  getAvailableTrucksInitialData,
+  getFirstSectionStartTime,
+  getTransportableCargosInitialData,
   mapTransportFormDataToPostTransportItemRequest,
   mapTransportResponseToTransportFormData,
 } from './transport-form-helpers';
 import TransportCreationDto from './dto/TransportCreationDto';
 import usePutTransportItem from './queries/use-put-transport-item';
 import useIdParam from '../core/hooks/use-id-param';
+import CargoDto from '../core/dto/CargoDto';
+import TruckDto from '../core/dto/TruckDto';
+import DriverDto from '../core/dto/DriverDto';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../Routes';
 
 interface TruckItemFormProps {
   data?: TransportCreationDto;
   sites?: SiteDto[];
   stores?: StoreDto[];
+  allCargos?: CargoDto[];
+  allTrucks?: TruckDto[];
+  allDrivers?: DriverDto[];
 }
 
-const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps) => {
+const TransportItemForm = ({
+  data,
+  sites = [],
+  stores = [],
+  allCargos = [],
+  allDrivers = [],
+  allTrucks = [],
+}: TruckItemFormProps) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const idParam = useIdParam();
   const [currentStep, setCurrentStep] = useState(TransportCreationStep.DEFINE_SITES);
-  const [transportableCargos, setTransportableCargos] = useState<CargoWithArrivalTimeDto[]>([]);
-  const [availableTrucks, setAvailableTrucks] = useState<TruckWithArrivalTimeDto[]>([]);
-  const [availableSectionDrivers, setAvailableSectionDrivers] = useState<DriverWithArrivalTimeDto[][]>([]);
+  const [transportableCargos, setTransportableCargos] = useState<CargoWithArrivalTimeDto[] | null>(() =>
+    getTransportableCargosInitialData(data, allCargos)
+  );
+
+  console.log(transportableCargos);
+  const [availableTrucks, setAvailableTrucks] = useState<TruckWithArrivalTimeDto[] | null>(() =>
+    getAvailableTrucksInitialData(data, allTrucks)
+  );
+  const [availableSectionDrivers, setAvailableSectionDrivers] = useState<DriverWithArrivalTimeDto[][] | null>(() =>
+    getAvailableDriversInitialData(data, allDrivers)
+  );
   const [shouldUniqueDriverMessage, setShouldUniqueDriverMessage] = useState(false);
   const [shouldMultipleSections, setShouldMultipleSections] = useState(false);
   const { mutateAsync: getAvailableTrucks, isPending: isGetAvailableTrucksPending } = useGetSiteAvailableTrucks();
   const { mutateAsync: getTransportableCargos, isPending: isGetTransportableCargosPending } =
     useGetSiteTransportableCargos();
-  const { mutateAsync: createTransport } = usePostTransportItem();
+  const { mutateAsync: createTransport, isPending: isCreateTransportPending } = usePostTransportItem();
   const { mutateAsync: updateTransport } = usePutTransportItem();
   const {
     control,
@@ -57,7 +85,12 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
     resolver: data
       ? undefined
       : yupResolver(
-          transportFormValidator({ t, transportableCargos, availableTrucks, availableDrivers: availableSectionDrivers })
+          transportFormValidator({
+            t,
+            transportableCargos: transportableCargos || [],
+            availableTrucks: availableTrucks || [],
+            availableDrivers: availableSectionDrivers || [],
+          })
         ),
     reValidateMode: 'onSubmit',
   });
@@ -67,27 +100,42 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
   const startSiteId = useWatch({ control, name: 'sections.0.startSite' });
 
   useEffect(() => {
-    if (Number.isInteger(startSiteId)) {
+    if (Number.isInteger(startSiteId) && !data) {
       getAvailableTrucks(startSiteId).then((resData) => {
         setAvailableTrucks(resData || []);
       });
       getTransportableCargos(startSiteId).then((resData) => {
         setTransportableCargos(resData || []);
-        if (data) {
-          setValue(
-            'cargos',
-            resData.filter((cargo) => data.cargoIds.includes(cargo.cargo.id)).map((cargo) => cargo.cargo)
-          );
-        }
       });
     }
   }, [data, getAvailableTrucks, getTransportableCargos, setValue, startSiteId]);
+
+  useEffect(() => {
+    if (data) {
+      setValue(
+        'cargos',
+        allCargos.filter((cargo) => data.cargoIds.includes(cargo.id)).map((cargo) => cargo)
+      );
+    }
+  }, [data, allCargos, setValue]);
 
   const handleFormSubmit: SubmitHandler<TransportFormModel> = async (formData) => {
     if (data && idParam) {
       await updateTransport({ body: data, id: idParam });
     } else {
-      await createTransport(mapTransportFormDataToPostTransportItemRequest(formData));
+      const startTime = getFirstSectionStartTime({
+        formData,
+        availableDrivers: (availableSectionDrivers || [])[0],
+        availableTrucks: availableTrucks || [],
+        transportableCargos: transportableCargos || [],
+      });
+      await createTransport(
+        mapTransportFormDataToPostTransportItemRequest({
+          formData,
+          sectionsStartArrivalTimes: sectionsStartArrivalTime,
+          startTime,
+        })
+      );
     }
   };
 
@@ -135,7 +183,7 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
 
   const handleSetDriverForSection = useCallback((drivers: DriverWithArrivalTimeDto[], index: number) => {
     setAvailableSectionDrivers((prev) => {
-      const newArray = [...prev];
+      const newArray = [...(prev || [])];
       newArray[index] = drivers;
       return newArray;
     });
@@ -162,14 +210,15 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
                 </Box>
               )}
               <TransportItemSectionForm
+                data={data}
                 index={index}
                 control={control}
                 currentStep={currentStep}
                 sites={sites}
                 stores={stores}
-                trucks={availableTrucks.map((at) => at.truck)}
-                cargos={transportableCargos.map((tc) => tc.cargo)}
-                drivers={availableSectionDrivers[index]?.map((asd) => asd.driver) || []}
+                trucks={availableTrucks?.map((at) => at.truck) || null}
+                cargos={transportableCargos?.map((tc) => tc.cargo) || null}
+                drivers={availableSectionDrivers?.[index]?.map((asd) => asd.driver) || null}
                 multiple={shouldMultipleSections}
                 sectionsAmount={fields.length}
                 setDrivers={handleSetDriverForSection}
@@ -192,14 +241,20 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
               onClick={handleBackFromDefineDetails}
               disabled={isSubmitting || isValidating || disableForm}
             >
-              {t('common.back')}
+              {t('common.cancel')}
             </Button>
           ) : (
             <Box />
           )}
-          <LoadingButton variant="contained" type="submit" loading={isSubmitting || isValidating}>
-            {t('common.next')}
-          </LoadingButton>
+          {data ? (
+            <Button variant="contained" type="button" onClick={() => navigate(ROUTES.TRANSPORTS())}>
+              {t('common.back')}
+            </Button>
+          ) : (
+            <LoadingButton variant="contained" type="submit" loading={isValidating || isCreateTransportPending}>
+              {t('common.next')}
+            </LoadingButton>
+          )}
         </Box>
       </Box>
     </form>

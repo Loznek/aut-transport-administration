@@ -13,16 +13,19 @@ import useGetSiteAvailableDrivers from '../sites/queries/use-get-site-available-
 import { useEffect } from 'react';
 import DriverWithArrivalTimeDto from '../core/dto/DriverWithArrivalTimeDto';
 import DriverDto from '../core/dto/DriverDto';
+import TransportCreationDto from './dto/TransportCreationDto';
+import { GoogleMap, MarkerF } from '@react-google-maps/api';
 
 interface TransportItemSectionFormProps {
+  data?: TransportCreationDto;
   index: number;
   control: Control<TransportFormModel>;
   currentStep: TransportCreationStep;
   stores: StoreDto[];
   sites: SiteDto[];
-  trucks: TruckDto[];
-  cargos: CargoDto[];
-  drivers: DriverDto[];
+  trucks: TruckDto[] | null;
+  cargos: CargoDto[] | null;
+  drivers: DriverDto[] | null;
   setDrivers: (drivers: DriverWithArrivalTimeDto[], index: number) => void;
   sectionsAmount: number;
   multiple: boolean;
@@ -30,6 +33,7 @@ interface TransportItemSectionFormProps {
 }
 
 const TransportItemSectionForm = ({
+  data,
   index,
   control,
   currentStep,
@@ -47,6 +51,15 @@ const TransportItemSectionForm = ({
   const { mutateAsync: getAvailableDrivers } = useGetSiteAvailableDrivers();
   const startSiteFormName: FieldPath<TransportFormModel> =
     index === 0 ? `sections.${index}.startSite` : `sections.${index - 1}.destinationSite`;
+  const mapContainerStyle = {
+    width: '100%',
+    height: '400px',
+  };
+
+  const center = {
+    lat: Number(sites?.[0]?.lan) || 47.4979,
+    lng: Number(sites?.[0]?.lon) || 19.0402,
+  };
 
   const startSiteId = useWatch({
     control,
@@ -54,10 +67,10 @@ const TransportItemSectionForm = ({
   });
 
   useEffect(() => {
-    if (Number.isInteger(startSiteId)) {
+    if (Number.isInteger(startSiteId) && !data) {
       getAvailableDrivers(startSiteId).then((data) => setDrivers(data || [], index));
     }
-  }, [getAvailableDrivers, index, setDrivers, startSiteId]);
+  }, [getAvailableDrivers, index, setDrivers, startSiteId, data]);
 
   return (
     <Paper elevation={2}>
@@ -91,6 +104,22 @@ const TransportItemSectionForm = ({
                 {site.address}
               </MenuItem>
             ))}
+            {sites !== null && sites.length === 0 && t('sites.noSites') && (
+              <GoogleMap mapContainerStyle={mapContainerStyle} zoom={6} center={center}>
+                {sites
+                  ?.filter((site) => site.lan !== null && site.lon !== null)
+                  .map((site) => (
+                    <MarkerF
+                      position={{
+                        lat: Number(site.lan),
+                        lng: Number(site.lon),
+                      }}
+                      key={site.id}
+                      label={site.id.toString()}
+                    />
+                  ))}
+              </GoogleMap>
+            )}
           </TextFieldWithController>
         </Box>
         <AutocompleteWithController
@@ -109,7 +138,7 @@ const TransportItemSectionForm = ({
           filterSelectedOptions
           multiple
         />
-        {index === 0 && !!trucks?.length && (
+        {index === 0 && !!trucks && (
           <TextFieldWithController
             controllerProps={{ control, name: 'truck' }}
             label={t('transports.truck')}
@@ -118,25 +147,25 @@ const TransportItemSectionForm = ({
           >
             {trucks.map((truck) => (
               <MenuItem key={truck.id} value={truck.id}>
-                {truck.licencePlate}
+                {`${truck.licensePlate} - ${truck.type} - ${truck.volumeCapacity}m³ - ${truck.weightCapacity} tonna`}
               </MenuItem>
             ))}
           </TextFieldWithController>
         )}
-        {index === 0 && !!cargos?.length && (
+        {index === 0 && !!cargos && (
           <AutocompleteWithController
             controllerProps={{ control, name: 'cargos' }}
             textFieldProps={{ label: t('transports.cargos') }}
             options={cargos}
             disabled={disabled}
             getOptionKey={(option) => option.id}
-            getOptionLabel={(option) => option.name}
+            getOptionLabel={(option) => `${option.name} - ${option.volume}m³ - ${option.weight} tonna`}
             noOptionsText={t('cargos.noCargos')}
             filterSelectedOptions
             multiple
           />
         )}
-        {!!drivers?.length && (
+        {!!drivers && (
           <TextFieldWithController
             controllerProps={{ control, name: `sections.${index}.driver` }}
             label={t('transports.driver')}

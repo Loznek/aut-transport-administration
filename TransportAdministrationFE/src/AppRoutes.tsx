@@ -15,6 +15,8 @@ import CargoListPage from './cargos/CargoListPage.tsx';
 import CargoItemPage from './cargos/CargoItemPage.tsx';
 import TransportListPage from './transport/TransportListPage';
 import TransportItemPage from './transport/TransportItemPage';
+import DriverListPage from './drivers/DriverListPage.tsx';
+import DriverItemPage from './drivers/DriverItemPage.tsx';
 
 const AppRoutes = () => {
   return (
@@ -34,6 +36,8 @@ const AppRoutes = () => {
             <Route path={ROUTES.STORE_ITEM(':id')} element={<StoreItemPage />} />
             <Route path={ROUTES.SITES()} element={<SiteListPage />} />
             <Route path={ROUTES.SITE_ITEM(':id')} element={<SiteItemPage />} />
+            <Route path={ROUTES.DRIVERS()} element={<DriverListPage />} />
+            <Route path={ROUTES.DRIVER_ITEM(':id')} element={<DriverItemPage />} />
           </Route>
         </Route>
       </Route>

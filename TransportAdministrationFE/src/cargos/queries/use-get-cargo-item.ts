@@ -11,7 +11,6 @@ const useGetCargoItem = () => {
     queryKey: [CARGO_ITEM_KEY, idParam],
     queryFn: () => cargosClient.getCargoItem(idParam!).then((res) => res.data),
     enabled: !!idParam && idParam != 'new',
-    gcTime: 0,
   });
 };
 

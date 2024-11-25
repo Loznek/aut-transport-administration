@@ -38,6 +38,11 @@ const getHomeNavigationCardDataByFunctionTypeMap: Record<FunctionType, (t: TFunc
     details: [t('administrations.stores.detail1'), t('administrations.stores.detail2')],
     to: ROUTES.STORES(),
   }),
+  [FunctionType.DRIVERS]: (t) => ({
+    title: t('administrations.drivers.manage'),
+    details: [t('administrations.drivers.detail1'), t('administrations.drivers.detail2')],
+    to: ROUTES.DRIVERS(),
+  }),
 };
 
 export default getHomeNavigationCardDataByFunctionTypeMap;

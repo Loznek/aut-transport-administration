@@ -3,6 +3,7 @@ import sitesClient from '../services/sites-client.ts';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../Routes.ts';
 import { SITE_LIST_KEY } from './use-get-site-list.ts';
+import { ALL_SITE_LIST_KEY } from './use-get-all-site-list';
 
 const usePutSiteItem = () => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ const usePutSiteItem = () => {
     mutationFn: sitesClient.putSiteItem,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: [SITE_LIST_KEY] });
-      await queryClient.invalidateQueries({ queryKey: [SITE_LIST_KEY] });
+      await queryClient.invalidateQueries({ queryKey: [ALL_SITE_LIST_KEY] });
       navigate(ROUTES.SITES());
     },
   });
