@@ -10,6 +10,7 @@ import { Fragment } from 'react';
 import useDeleteSiteItem from './queries/use-delete-site-item.ts';
 import DeleteIconButtonWithDialog from '../components/delete-icon-button-with-dialog/DeleteIconButtonWithDialog.tsx';
 import useIsAdmin from '../auth/hooks/use-is-admin';
+import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
 
 const SiteListPage = () => {
   const isAdmin = useIsAdmin();
@@ -17,6 +18,10 @@ const SiteListPage = () => {
   const navigate = useNavigate();
   const { data, isFetching, isError } = useGetSiteList();
   const { mutateAsync: deleteSiteItem, isPending: isDeleteSiteItemPending } = useDeleteSiteItem();
+  const googleMapsAPIKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string;
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: googleMapsAPIKey,
+  });
 
   const handleAddNew = () => {
     navigate(ROUTES.SITE_ITEM('new'));
@@ -30,13 +35,23 @@ const SiteListPage = () => {
     await deleteSiteItem(id.toString());
   };
 
-  if (isFetching) {
+  if (isFetching || !isLoaded) {
     return <LoadingSection />;
   }
 
   if (isError) {
     return <ErrorSection />;
   }
+
+  const mapContainerStyle = {
+    width: '100%',
+    height: '400px',
+  };
+
+  const center = {
+    lat: Number(data?.[0]?.lan) || 47.4979,
+    lng: Number(data?.[0]?.lon) || 19.0402,
+  };
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -47,6 +62,25 @@ const SiteListPage = () => {
           </Button>
         </Box>
       )}
+
+      <Box sx={{ padding: 2 }}>
+        <GoogleMap mapContainerStyle={mapContainerStyle} zoom={6} center={center}>
+          {data
+            ?.filter((site) => site.lan !== null && site.lon !== null)
+            .map((site) => (
+              <MarkerF
+                position={{
+                  lat: Number(site.lan),
+                  lng: Number(site.lon),
+                }}
+                key={site.id}
+                label={site.id.toString()}
+                onClick={handleEdit(site.id)}
+              />
+            ))}
+        </GoogleMap>
+      </Box>
+
       {data?.length ? (
         <List>
           {data?.map((site, index) => (
@@ -67,7 +101,7 @@ const SiteListPage = () => {
                   </Box>
                 }
               >
-                {`${site.name} - ${site.address}`}
+                {`${site.id} - ${site.name} - ${site.address}`}
               </ListItem>
             </Fragment>
           ))}

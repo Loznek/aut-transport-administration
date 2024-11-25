@@ -14,11 +14,11 @@ server.use(jsonServer.bodyParser);
 const lowdb = router.db;
 
 server.post('/api/login', (req, res) => {
-  if (req.body.username === 'driver') {
-    return res.send(lowdb.get('auth-driver'));
+  if (req.body.email === 'admin@admin.com') {
+    return res.send(lowdb.get('auth-admin'));
   }
 
-  res.send(lowdb.get('auth-admin'));
+  res.send(lowdb.get('auth-driver'));
 });
 
 server.get('/api/me', (req, res) => {
@@ -138,6 +138,22 @@ server.put('/api/transport/:id', (req, res) => {
 });
 
 server.delete('/api/transport/:id', (req, res) => {
+  res.send();
+});
+
+server.get('/api/drivers/all-drivers', (req, res) => {
+  res.send(lowdb.get('getDrivers'));
+});
+
+server.get('/api/drivers/:id', (req, res) => {
+  res.send(lowdb.get('getDriverItem'));
+});
+
+server.post('/api/drivers', (req, res) => {
+  res.send();
+});
+
+server.delete('/api/drivers/:id', (req, res) => {
   res.send();
 });
 
