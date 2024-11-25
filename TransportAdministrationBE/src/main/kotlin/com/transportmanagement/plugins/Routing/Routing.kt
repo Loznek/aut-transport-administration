@@ -21,10 +21,11 @@ fun Application.configureRouting() {
     val cargoStayingRepository = CargoStayingRepository()
 
 
+
     routing {
         cargoRoutes(cargoRepository, cargoStayingRepository)
         driverRoutes(driverRepository, driverStayingRepository)
-        travelCalculationRoutes()
+        travelCalculationRoutes(siteRepository, storeRepository)
         siteRoutes(siteRepository, driverStayingRepository, cargoRepository, truckRepository)
         storeRoutes(storeRepository, cargoRepository)
         truckRoutes(truckRepository, truckStayingRepository)
@@ -34,6 +35,7 @@ fun Application.configureRouting() {
             cargoStayingRepository,
             cargoRepository,
             storeStopRepository,
-            driverStayingRepository)
+            driverStayingRepository, siteRepository, storeRepository)
+
     }
 }

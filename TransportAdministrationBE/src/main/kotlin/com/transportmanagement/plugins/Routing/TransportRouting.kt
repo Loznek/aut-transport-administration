@@ -4,20 +4,27 @@ import CargoRepository
 import com.transportmanagement.DTOs.ReferredObjects
 import com.transportmanagement.DTOs.TransportCreation
 import com.transportmanagement.DTOs.TransportSectionInfo
+import com.transportmanagement.DTOs.TransportSectionPoints
+import com.transportmanagement.Service.TimePredictionService
 import com.transportmanagement.model.entity.*
 import com.transportmanagement.model.repository.*
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.datetime.toJavaLocalDateTime
+import kotlinx.datetime.toKotlinLocalDateTime
 
-fun Route.transportRoutes(transportRepository: TransportRepository,
-                          transportSectionRepository: TransportSectionRepository,
-                          truckStayingRepository: TruckStayingRepository,
-                          cargoStayingRepository: CargoStayingRepository,
-                          cargoRepository: CargoRepository,
-                          storeStopRepository: StoreStopPointsRepository,
-                          driverStayingRepository: DriverStayingRepository
+fun Route.transportRoutes(
+    transportRepository: TransportRepository,
+    transportSectionRepository: TransportSectionRepository,
+    truckStayingRepository: TruckStayingRepository,
+    cargoStayingRepository: CargoStayingRepository,
+    cargoRepository: CargoRepository,
+    storeStopRepository: StoreStopPointsRepository,
+    driverStayingRepository: DriverStayingRepository,
+    siteRepository: SiteRepository,
+    storeRepository: StoreRepository
 ) {
     route("/transport") {
         get("/{id}") {
@@ -50,6 +57,27 @@ fun Route.transportRoutes(transportRepository: TransportRepository,
         }
         post() {
             val transport = call.receive<TransportCreation>()
+            for (trans in transport.transportSections) {
+                val timeList = TimePredictionService(
+                    siteRepository,
+                    storeRepository
+                ).predictTimes(TransportSectionPoints(
+                    trans.transportSection.startSiteId,
+                    trans.transportSection.destinationSiteId,
+                    trans.transportSection.startTime,
+                    trans.storeStops
+                ))
+
+                var timeCounter=0.0;
+                for(i in 0 until timeList.size-1){
+                    timeCounter+=timeList[i]
+                    trans.storeStops[i].arrivalTime = trans.storeStops[i].arrivalTime!!.toJavaLocalDateTime().plusMinutes(timeCounter.toLong()).toKotlinLocalDateTime()
+                }
+                timeCounter+timeList[timeList.size-1]
+                trans.transportSection.arrivalTime=trans.transportSection.arrivalTime!!.toJavaLocalDateTime().plusMinutes(timeCounter.toLong()).toKotlinLocalDateTime()
+            }
+
+
             val arrivalTime =
                 transport.transportSections.map { it.transportSection.arrivalTime }
                     .maxByOrNull { it!! }
@@ -190,7 +218,10 @@ fun Route.transportRoutes(transportRepository: TransportRepository,
                         startTime = null
                     )
                 )
-                transportRepository.updateTransportTruck(originalTransport.id!!, updatedTransport.truckId)
+                transportRepository.updateTransportTruck(
+                    originalTransport.id,
+                    updatedTransport.truckId
+                )
             }
             for (cargoId in cargosToBeRestored) {
                 cargoStayingRepository.restoreCargoStayingByCargoIdByTransportId(
@@ -221,7 +252,8 @@ fun Route.transportRoutes(transportRepository: TransportRepository,
                     )
                 )
             }
-            val storeIds = updatedTransport.transportSections.flatMap { it.storeStops.map { it.storeId } }
+            val storeIds =
+                updatedTransport.transportSections.flatMap { it.storeStops.map { it.storeId } }
             val deliveredCargoIds = cargoRepository.getDeliveredCargos(cargosToBeAdded, storeIds)
             cargoStayingRepository.noteDeliveredCargo(
                 deliveredCargoIds as List<Int>,
@@ -259,7 +291,10 @@ fun Route.transportRoutes(transportRepository: TransportRepository,
                                 startTime = null
                             )
                         )
-                        transportRepository.updateTransportDriver(updatedTransportSection.id, updatedTransportSection.driverId)
+                        transportRepository.updateTransportDriver(
+                            updatedTransportSection.id,
+                            updatedTransportSection.driverId
+                        )
                     }
                 }
             }

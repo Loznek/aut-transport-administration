@@ -8,7 +8,7 @@ fun Application.configureDatabases() {
         url = "jdbc:postgresql://localhost:5432/transport_management",
         user = "postgres",
         driver = "org.h2.Driver",
-        password = "dbpassword", //You need to remember that or ty admin :D
+        password = "Darius44", //You need to remember that or ty admin :D
     )
 
     /*

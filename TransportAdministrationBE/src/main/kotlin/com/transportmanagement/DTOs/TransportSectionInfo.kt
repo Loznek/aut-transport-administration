@@ -7,6 +7,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class TransportSectionInfo (
-    val transportSection: TransportSection,
-    val storeStops: List<StoreStopPoint>
+    var transportSection: TransportSection,
+    var storeStops: List<StoreStopPoint>
 )
