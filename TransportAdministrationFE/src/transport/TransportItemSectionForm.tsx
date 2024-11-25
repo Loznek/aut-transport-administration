@@ -13,8 +13,10 @@ import useGetSiteAvailableDrivers from '../sites/queries/use-get-site-available-
 import { useEffect } from 'react';
 import DriverWithArrivalTimeDto from '../core/dto/DriverWithArrivalTimeDto';
 import DriverDto from '../core/dto/DriverDto';
+import TransportCreationDto from './dto/TransportCreationDto';
 
 interface TransportItemSectionFormProps {
+  data?: TransportCreationDto;
   index: number;
   control: Control<TransportFormModel>;
   currentStep: TransportCreationStep;
@@ -30,6 +32,7 @@ interface TransportItemSectionFormProps {
 }
 
 const TransportItemSectionForm = ({
+  data,
   index,
   control,
   currentStep,
@@ -54,10 +57,10 @@ const TransportItemSectionForm = ({
   });
 
   useEffect(() => {
-    if (Number.isInteger(startSiteId)) {
+    if (Number.isInteger(startSiteId) && !data) {
       getAvailableDrivers(startSiteId).then((data) => setDrivers(data || [], index));
     }
-  }, [getAvailableDrivers, index, setDrivers, startSiteId]);
+  }, [getAvailableDrivers, index, setDrivers, startSiteId, data]);
 
   return (
     <Paper elevation={2}>

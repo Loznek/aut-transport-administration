@@ -5,6 +5,9 @@ import SiteDto from '../core/dto/SiteDto';
 import DriverWithArrivalTimeDto from '../core/dto/DriverWithArrivalTimeDto';
 import TruckWithArrivalTimeDto from '../core/dto/TruckWithArrivalTimeDto';
 import CargoWithArrivalTimeDto from '../core/dto/CargoWithArrivalTimeDto';
+import TruckDto from '../core/dto/TruckDto';
+import CargoDto from '../core/dto/CargoDto';
+import DriverDto from '../core/dto/DriverDto';
 
 interface MapTransportResponseToTransportFormDataArgs {
   data?: TransportCreationDto;
@@ -87,6 +90,40 @@ export const mapTransportResponseToTransportFormData = ({
 export const formatDate = (date: Date): string => {
   const dateString = new Date(date).toISOString();
   return dateString.substring(0, dateString.length - 1);
+};
+
+export const getAvailableTrucksInitialData = (
+  data: TransportCreationDto | undefined,
+  allTrucks: TruckDto[]
+): TruckWithArrivalTimeDto[] | null => {
+  if (!data) {
+    return null;
+  }
+
+  return allTrucks.filter((truck) => truck.id === data.truckId).map((truck) => ({ truck, arrivalTime: '' }));
+};
+
+export const getTransportableCargosInitialData = (
+  data: TransportCreationDto | undefined,
+  allCargos: CargoDto[]
+): CargoWithArrivalTimeDto[] | null => {
+  if (!data) {
+    return null;
+  }
+  return allCargos.filter((cargo) => data.cargoIds.includes(cargo.id)).map((cargo) => ({ cargo, arrivalTime: '' }));
+};
+
+export const getAvailableDriversInitialData = (
+  data: TransportCreationDto | undefined,
+  allDrivers: DriverDto[]
+): DriverWithArrivalTimeDto[][] | null => {
+  if (!data) {
+    return null;
+  }
+
+  return data?.transportSections
+    .map((ts) => ts.transportSection.driverId)
+    .map((driver) => [{ driver: allDrivers.find((d) => d.id === driver)!, arrivalTime: '' }]);
 };
 
 export const mapTransportFormDataToPostTransportItemRequest = ({

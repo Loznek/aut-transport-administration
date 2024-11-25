@@ -4,6 +4,7 @@ import CargoWithArrivalTimeDto from '../../core/dto/CargoWithArrivalTimeDto';
 import TruckWithArrivalTimeDto from '../../core/dto/TruckWithArrivalTimeDto';
 import DriverWithArrivalTimeDto from '../../core/dto/DriverWithArrivalTimeDto';
 import SiteDto from '../../core/dto/SiteDto';
+import DriverDto from '../../core/dto/DriverDto';
 
 const getSiteList = (): AxiosPromise<SiteDto[]> => {
   return apiClient.private.get('/sites/active-sites');
@@ -37,6 +38,10 @@ const getSiteAvailableDrivers = (id: number): AxiosPromise<DriverWithArrivalTime
   return apiClient.private.get(`/sites/available-drivers/${id}`);
 };
 
+const getAllDrivers = (): AxiosPromise<DriverDto[]> => {
+  return apiClient.private.get('/drivers/all-drivers');
+};
+
 const sitesClient = {
   getSiteList,
   getAllSiteList,
@@ -46,6 +51,7 @@ const sitesClient = {
   getSiteAvailableTrucks,
   getSiteTransportableCargos,
   getSiteAvailableDrivers,
+  getAllDrivers,
 };
 
 export default sitesClient;

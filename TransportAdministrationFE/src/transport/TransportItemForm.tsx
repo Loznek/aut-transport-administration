@@ -18,27 +18,54 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import DriverWithArrivalTimeDto from '../core/dto/DriverWithArrivalTimeDto';
 import usePostTransportItem from './queries/use-post-transport-item';
 import {
+  getAvailableDriversInitialData,
+  getAvailableTrucksInitialData,
   getFirstSectionStartTime,
+  getTransportableCargosInitialData,
   mapTransportFormDataToPostTransportItemRequest,
   mapTransportResponseToTransportFormData,
 } from './transport-form-helpers';
 import TransportCreationDto from './dto/TransportCreationDto';
 import usePutTransportItem from './queries/use-put-transport-item';
 import useIdParam from '../core/hooks/use-id-param';
+import CargoDto from '../core/dto/CargoDto';
+import TruckDto from '../core/dto/TruckDto';
+import DriverDto from '../core/dto/DriverDto';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../Routes';
 
 interface TruckItemFormProps {
   data?: TransportCreationDto;
   sites?: SiteDto[];
   stores?: StoreDto[];
+  allCargos?: CargoDto[];
+  allTrucks?: TruckDto[];
+  allDrivers?: DriverDto[];
 }
 
-const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps) => {
+const TransportItemForm = ({
+  data,
+  sites = [],
+  stores = [],
+  allCargos = [],
+  allDrivers = [],
+  allTrucks = [],
+}: TruckItemFormProps) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const idParam = useIdParam();
   const [currentStep, setCurrentStep] = useState(TransportCreationStep.DEFINE_SITES);
-  const [transportableCargos, setTransportableCargos] = useState<CargoWithArrivalTimeDto[] | null>(null);
-  const [availableTrucks, setAvailableTrucks] = useState<TruckWithArrivalTimeDto[] | null>(null);
-  const [availableSectionDrivers, setAvailableSectionDrivers] = useState<DriverWithArrivalTimeDto[][] | null>(null);
+  const [transportableCargos, setTransportableCargos] = useState<CargoWithArrivalTimeDto[] | null>(() =>
+    getTransportableCargosInitialData(data, allCargos)
+  );
+
+  console.log(transportableCargos);
+  const [availableTrucks, setAvailableTrucks] = useState<TruckWithArrivalTimeDto[] | null>(() =>
+    getAvailableTrucksInitialData(data, allTrucks)
+  );
+  const [availableSectionDrivers, setAvailableSectionDrivers] = useState<DriverWithArrivalTimeDto[][] | null>(() =>
+    getAvailableDriversInitialData(data, allDrivers)
+  );
   const [shouldUniqueDriverMessage, setShouldUniqueDriverMessage] = useState(false);
   const [shouldMultipleSections, setShouldMultipleSections] = useState(false);
   const { mutateAsync: getAvailableTrucks, isPending: isGetAvailableTrucksPending } = useGetSiteAvailableTrucks();
@@ -73,21 +100,24 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
   const startSiteId = useWatch({ control, name: 'sections.0.startSite' });
 
   useEffect(() => {
-    if (Number.isInteger(startSiteId)) {
+    if (Number.isInteger(startSiteId) && !data) {
       getAvailableTrucks(startSiteId).then((resData) => {
         setAvailableTrucks(resData || []);
       });
       getTransportableCargos(startSiteId).then((resData) => {
         setTransportableCargos(resData || []);
-        if (data) {
-          setValue(
-            'cargos',
-            resData.filter((cargo) => data.cargoIds.includes(cargo.cargo.id)).map((cargo) => cargo.cargo)
-          );
-        }
       });
     }
   }, [data, getAvailableTrucks, getTransportableCargos, setValue, startSiteId]);
+
+  useEffect(() => {
+    if (data) {
+      setValue(
+        'cargos',
+        allCargos.filter((cargo) => data.cargoIds.includes(cargo.id)).map((cargo) => cargo)
+      );
+    }
+  }, [data, allCargos, setValue]);
 
   const handleFormSubmit: SubmitHandler<TransportFormModel> = async (formData) => {
     if (data && idParam) {
@@ -180,6 +210,7 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
                 </Box>
               )}
               <TransportItemSectionForm
+                data={data}
                 index={index}
                 control={control}
                 currentStep={currentStep}
@@ -210,14 +241,20 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
               onClick={handleBackFromDefineDetails}
               disabled={isSubmitting || isValidating || disableForm}
             >
-              {t('common.back')}
+              {t('common.cancel')}
             </Button>
           ) : (
             <Box />
           )}
-          <LoadingButton variant="contained" type="submit" loading={isValidating || isCreateTransportPending}>
-            {t('common.next')}
-          </LoadingButton>
+          {data ? (
+            <Button variant="contained" type="button" onClick={() => navigate(ROUTES.TRANSPORTS())}>
+              {t('common.back')}
+            </Button>
+          ) : (
+            <LoadingButton variant="contained" type="submit" loading={isValidating || isCreateTransportPending}>
+              {t('common.next')}
+            </LoadingButton>
+          )}
         </Box>
       </Box>
     </form>
