@@ -8,14 +8,12 @@ import transportClient from '../services/transport-client';
 import CargoDto from '../../core/dto/CargoDto';
 import StoreDto from '../../core/dto/StoreDto';
 import { getFirstSectionStartTime } from '../transport-form-helpers';
-import { Dispatch } from 'react';
 
 interface TransportSectionFormValidatorArgs {
   t: TFunction;
   availableDrivers: DriverWithArrivalTimeDto[][];
   availableTrucks: TruckWithArrivalTimeDto[];
   transportableCargos: CargoWithArrivalTimeDto[];
-  saveSectionTimes: Dispatch<{ startTime: Date; arrivalTime: Date }[]>;
 }
 
 interface CalculateSectionTravelTimeInHoursArgs {
@@ -27,6 +25,8 @@ interface CalculateSectionTravelTimeInHoursArgs {
   previousSectionArrivalTime: Date | null;
   sectionFormData: TransportSectionFormModel;
 }
+
+export let sectionsStartArrivalTime: { startTime: Date; arrivalTime: Date }[] = [];
 
 const calculateSectionTravelDestinationArrivalTime = async ({
   sectionIndex,
@@ -98,7 +98,6 @@ const transportFormValidator = ({
   transportableCargos,
   availableTrucks,
   availableDrivers,
-  saveSectionTimes,
 }: TransportSectionFormValidatorArgs): yup.ObjectSchema<TransportFormModel> =>
   yup.object().shape({
     truck: yup.number().typeError(t('validation.required')).required(),
@@ -140,7 +139,6 @@ const transportFormValidator = ({
           transportableCargos,
           availableDrivers,
           availableTrucks,
-          saveSectionTimes,
         })
       )
       .test('uniqueDriver', '', (value = []) => {
@@ -149,10 +147,10 @@ const transportFormValidator = ({
       })
       .test('moreThen9Hour', '', async (value = [], context): Promise<boolean> => {
         let isValid = true;
+        sectionsStartArrivalTime = [];
         const formData = context.parent as TransportFormModel;
         let previousSectionArrivalTime: Date | null = null;
         let previousSectionDestinationSiteId: number | null = null;
-        const sectionsStartArrivalTime: { startTime: Date; arrivalTime: Date }[] = [];
 
         for (let i = 0; i < value.length; i++) {
           const sectionFormData = value[i];
@@ -176,10 +174,9 @@ const transportFormValidator = ({
 
           if (travelTimeInHour > 9) {
             isValid = false;
+            break;
           }
         }
-
-        saveSectionTimes(sectionsStartArrivalTime);
 
         return isValid;
       })

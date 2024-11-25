@@ -8,7 +8,7 @@ import TransportCreationStep from './constants/TransportCreationStep';
 import StoreDto from '../core/dto/StoreDto';
 import { LoadingButton } from '@mui/lab';
 import { yupResolver } from '@hookform/resolvers/yup';
-import transportFormValidator from './validators/transport-form-validator';
+import transportFormValidator, { sectionsStartArrivalTime } from './validators/transport-form-validator';
 import TransportItemSectionForm from './TransportItemSectionForm';
 import CargoWithArrivalTimeDto from '../core/dto/CargoWithArrivalTimeDto';
 import TruckWithArrivalTimeDto from '../core/dto/TruckWithArrivalTimeDto';
@@ -39,12 +39,6 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
   const [transportableCargos, setTransportableCargos] = useState<CargoWithArrivalTimeDto[]>([]);
   const [availableTrucks, setAvailableTrucks] = useState<TruckWithArrivalTimeDto[]>([]);
   const [availableSectionDrivers, setAvailableSectionDrivers] = useState<DriverWithArrivalTimeDto[][]>([]);
-  const [sectionStartArrivalTimes, setSectionStartArrivalTimes] = useState<
-    {
-      startTime: Date;
-      arrivalTime: Date;
-    }[]
-  >([]);
   const [shouldUniqueDriverMessage, setShouldUniqueDriverMessage] = useState(false);
   const [shouldMultipleSections, setShouldMultipleSections] = useState(false);
   const { mutateAsync: getAvailableTrucks, isPending: isGetAvailableTrucksPending } = useGetSiteAvailableTrucks();
@@ -69,7 +63,6 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
             transportableCargos,
             availableTrucks,
             availableDrivers: availableSectionDrivers,
-            saveSectionTimes: setSectionStartArrivalTimes,
           })
         ),
     reValidateMode: 'onSubmit',
@@ -109,7 +102,7 @@ const TransportItemForm = ({ data, sites = [], stores = [] }: TruckItemFormProps
       await createTransport(
         mapTransportFormDataToPostTransportItemRequest({
           formData,
-          sectionsStartArrivalTimes: sectionStartArrivalTimes,
+          sectionsStartArrivalTimes: sectionsStartArrivalTime,
           startTime,
         })
       );
